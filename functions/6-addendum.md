@@ -1,10 +1,10 @@
-# Functions: addendum
+# Addendum
 
 ## Memoization
 
 💡 **Idea:** reduce the calculation time of a function
 
-❓ **How to:** cache results \
+❓ **How to:** cache results\
 → next call with same arguments, return cached result
 
 👉 **In practice :** function `memoizeN` from library [FSharpPlus](https://fsprojects.github.io/FSharpPlus/reference/fsharpplus-memoization.html#memoizeN)
@@ -17,7 +17,7 @@
 
 Syntax sugar to create a .NET `Lazy<'T>` object from an expression
 
-* Expression not evaluated immediately but on 1st request _([_Thunk_](https://en.wikipedia.org/wiki/Thunk))_
+* Expression not evaluated immediately but on 1st request _(_[_Thunk_](https://en.wikipedia.org/wiki/Thunk)_)_
 * Interesting for improving performance without overcomplexifying the code
 
 ```fsharp
@@ -90,22 +90,20 @@ type Product =
 
 ## Function _vs_ Method
 
-| Feature                           | Function          | Method                                                   |
-| --------------------------------- | ----------------- | -------------------------------------------------------- |
-| Naming convention                 | camelCase         | PascalCase                                               |
-| Currying                          | ✅ yes            | ✅ if not tuplified nor overridden                      |
-| Named parameters                  | ❌ no             | ✅ if tuplified                                         |
-| Optional parameters               | ❌ no             | ✅ if tuplified                                         |
-| Overload                          | ❌ no             | ✅ if tuplified                                         |
-| Parameter inference (declaration) | ➖ Possible       | ➖ yes for `this`, possible for the other parameters    |
-| Argument inference (usage)        | ✅ yes            | ❌ no, object type annotation needed                    |
-| High-order function argument      | ✅ yes            | ➖ yes with shorthand member, no with lambda otherwise  |
-| `inline` supported                | ✅ yes            | ✅ yes                                                  |
-| Recursive                         | ✅ yes with `rec` | ✅ yes                                                  |
+| Feature                           | Function         | Method                                                |
+| --------------------------------- | ---------------- | ----------------------------------------------------- |
+| Naming convention                 | camelCase        | PascalCase                                            |
+| Currying                          | ✅ yes            | ✅ if not tuplified nor overridden                     |
+| Named parameters                  | ❌ no             | ✅ if tuplified                                        |
+| Optional parameters               | ❌ no             | ✅ if tuplified                                        |
+| Overload                          | ❌ no             | ✅ if tuplified                                        |
+| Parameter inference (declaration) | ➖ Possible       | ➖ yes for `this`, possible for the other parameters   |
+| Argument inference (usage)        | ✅ yes            | ❌ no, object type annotation needed                   |
+| High-order function argument      | ✅ yes            | ➖ yes with shorthand member, no with lambda otherwise |
+| `inline` supported                | ✅ yes            | ✅ yes                                                 |
+| Recursive                         | ✅ yes with `rec` | ✅ yes                                                 |
 
-## Interop with the BCL
-
-> BCL = Base Class Library .NET
+## Interop with the BCL[^1]
 
 ### void method
 
@@ -124,14 +122,13 @@ abstract member Add:
 Conversely, an F# function returning `unit` is compiled into a `void` method.
 
 ```fsharp
-// F#
 let ignore _ = ()
 ```
 
 Equivalent C# based on [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfYBTALgAgJYHMB2A9gE4oYD6GAvBgBQCUQA==):
 
 ```csharp
-public static void ignore<a>(a _arg1) {}
+public static void ignore<T>(T _arg) {}
 ```
 
 ### Calling a BCL method with N arguments
@@ -153,7 +150,7 @@ System.String.Compare tuple     // ❌ (3)
 
 ### `out` Parameter - In C♯
 
-`out` used to have multiple output values from a method
+`out` used to have multiple output values from a method\
 → Ex : `Int32.TryParse`, `Dictionary<,>.TryGetValue` :
 
 ```csharp
@@ -203,3 +200,5 @@ let createReaderByStream stream =
     new System.IO.StreamReader(stream = stream)
     // ☝️ Param `stream` of type `System.IO.Stream`
 ```
+
+[^1]: .NET Base Class Library
