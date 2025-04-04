@@ -51,7 +51,7 @@ let items = ["a"; "bb"; "ccc"]
 let longestKo = List.maxBy (fun x -> x.Length) items  // ❌ Error FS0072
 //                                   ~~~~~~~~
 
-let longest = items |> List.maxBy (fun x -> x.Length) // ✅ Renvoie "ccc"
+let longest = items |> List.maxBy (fun x -> x.Length) // ✅ Return "ccc"
 ```
 
 ### Pipe left `<|`
@@ -108,14 +108,14 @@ let uncurry f (a,b) = f a b
 
 ## Compose `>>`
 
-Binary operators, placed **between two functions** \
+Binary operators, placed **between two functions**\
 → The result of the 1st function is used as an argument for the 2nd function
 
 `f >> g` ≡ `fun x -> g (f x)` ≡ `fun x -> x |> f |> g`
 
 {% hint style="warning" %}
-- The out/in types must match: `f: 'T -> 'U` and `g: 'U -> 'V` → `'U` ✅
-- Signature of the final function: `'T -> 'V`.
+* The out/in types must match: `f: 'T -> 'U` and `g: 'U -> 'V` → `'U` ✅
+* Signature of the final function: `'T -> 'V`.
 {% endhint %}
 
 ```fsharp
@@ -144,15 +144,7 @@ let Odd = not << Even
 
 ## _Pipe_ `|>` or _Compose_ `>>` ?
 
-TODO :table
-
-_**Compose**_ **`let h = f >> g`**
-
-* Deals with functions
-
-_**Pipe**_ **`let result = value |> f`**
-
-* Deals with values
+<table><thead><tr><th width="137"></th><th>Definition</th><th>Focus, Mindset</th></tr></thead><tbody><tr><td><em><strong>Compose</strong></em> </td><td><strong><code>let h = f >> g</code></strong></td><td>Functions</td></tr><tr><td><em><strong>Pipe</strong></em> </td><td><strong><code>let result = value |> f</code></strong></td><td>Values</td></tr></tbody></table>
 
 ## Point-free style
 
@@ -184,7 +176,7 @@ let greetShort = printfn "My name is %s and I am %d years old!" // (string -> in
 
 #### ❌ Cons
 
-Loses the name of the parameter now implicit in the signature \
+Loses the name of the parameter now implicit in the signature\
 → Unimportant if the function remains understandable:
 
 * When the parameters name is not significant (e.g. `x`)
@@ -215,7 +207,7 @@ let isNotEmpty' list = not (List.isEmpty list)  // 👌 Explicit parameter
 
 ## Operator overload
 
-Usually concerns a specific type \
+Usually concerns a specific type\
 → Overload defined within the associated type _(as in C♯)_
 
 ```fsharp
@@ -258,23 +250,23 @@ tryMatch 2;; // Some "Even 2"
 
 ## Symbols allowed in an operator
 
-**Unary operator "tilde "** \
+**Unary operator "tilde "**\
 → `~` followed by `+`, `-`, `+.`, `-.`, `%`, `%%`, `&`, `&&`
 
-**Unary operator "snake "** \
+**Unary operator "snake "**\
 → Several `~`, e.g. `~~~~`
 
-**Unary operator "bang "** \
-→ `!` followed by a combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?` \
+**Unary operator "bang "**\
+→ `!` followed by a combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?`\
 → Except `!=` (!=) which is binary
 
-**Binary operator** \
-→ Any combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?` \
+**Binary operator**\
+→ Any combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?`\
 → which does not match a unary operator
 
 ## Usage symbols
 
-All operators are used as is \
+All operators are used as is\
 ❗ Except the unary operator "tilde": used without the initial `~`.
 
 | Operator     | Declaration         | Usage     |
@@ -284,7 +276,7 @@ All operators are used as is \
 | Unaire bang  | `let (!!!) x = …`   | `!!!x`    |
 | Binary       | `let (<ˆ>) x y = …` | `x <ˆ> y` |
 
-☝ To define an operator beginning or ending with a `*`, you must put a space between `(` and `*` as well as between `*` and `)` to distinguish from a block of F# comments `(* *)`.
+☝ To define an operator beginning or ending with a `*`, you must put a space between `(` and `*` as well as between `*` and `)` to distinguish from a block of F# comments `(* *)`.\
 → `let ( *+ ) x y = x * y + y` ✅
 
 ## Operator or function?
@@ -294,10 +286,10 @@ All operators are used as is \
 👍 **Pros** :
 
 * Respects the natural reading order (left → right)
-* avoids parentheses \
-  → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
+*   avoids parentheses\
+    → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
 
-  → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
+    → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
 
 ⚠️ **Cons** :
 
@@ -309,7 +301,7 @@ All operators are used as is \
 
 Examples:
 
-* Instead of a lambda: \
+* Instead of a lambda:\
   → `(+) 1` ≡ `fun x -> x + 1`
-* To define a new function : \
-  → `let isPositive = (<) 0` ≡ `let isPositive x = 0 < x` ≡ `x >= 0` \
+* To define a new function :\
+  → `let isPositive = (<) 0` ≡ `let isPositive x = 0 < x` ≡ `x >= 0` \\
