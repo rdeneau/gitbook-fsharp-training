@@ -20,3 +20,4 @@
 * [Syntax](functions/3-syntax.md)
 * [Standard functions](functions/4-standard.md)
 * [Operators](functions/5-operators.md)
+* [Addendum](functions/6-addendum.md)
