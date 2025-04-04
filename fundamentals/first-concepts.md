@@ -65,7 +65,7 @@ let test1' = firstItemOrDefault -1 (fun x -> x > 5) [| 1 |]     // -1
 The most recommended and idiomatic solution in functional programming is to use a recursive function 📍
 
 ```fsharp
-[<TailCall>] // 👈 F# 8
+[<TailCall>] // F# 8 📍
 let rec firstOr defaultValue predicate list =
     match list with
     | [] -> defaultValue                                // 👈 Exit

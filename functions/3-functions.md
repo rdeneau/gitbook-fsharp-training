@@ -1,16 +1,17 @@
 # Functions
 
-## Binding of a function
+## Declaration
 
 `let f x y = x + y + 1`
 
 * Binding made with `let` keyword
 * Binds both name (`f`) and parameters (`x` and `y`)
-* Optional type annotations for parameters and/or return
+* Optional type annotations for parameters and/or returned value
   * `let f (x: int) (y: int) : int = ...`
-  * Otherwise, type inference, with possible automatic generalization
-* Last expression = function return value
-* Possible definition of (non-generic) sub-functions
+* Otherwise, they will be inferred, eventually with an automatic generalization
+* The function body is an expression:
+  * → no need for a `return` keyword here.
+  * → possibility to define intermediary variables and functions inside the body
 
 ## Generic function
 
@@ -28,12 +29,12 @@
 
 Expression defining a function
 
-Syntax: `fun parameter1 parameter2 etc -> expression`
+Syntax: `fun parameter1 parameter2 etc. -> expression`
 
 ☝ **Note:**
 
 * `fun` keyword mandatory
-* Thin arrow `->` _(like Java)_ ≠ Bold arrow `=>` _(C♯, Js)_
+* Thin arrow `->` ≠ Bold arrow `=>` _(C♯, Js)_
 
 ### Lambda: usage examples
 
@@ -51,7 +52,9 @@ let add1 i = i + 1
 ```
 
 {% hint style="warning" %}
-Beware of useless lambdas: `List.map (fun x -> f x)` ≡ `List.map f`
+Beware of useless lambdas:\
+`List.map (fun x -> f x)` ❌\
+`List.map f` ✅
 {% endhint %}
 
 #### **2.** In a `let` binding with inference
@@ -71,7 +74,7 @@ let add'' = fun x -> (fun y -> x + y)   // 2 nested lambdas
 The function signature is pre-defined using a type alias
 
 * Force implementation to follow signature
-* Widely used in 📗 _Domain modelling made functional_ by Scott Wlaschin
+* 📗 _Domain modelling made functional_ by Scott Wlaschin
 
 ```fsharp
 type Add = int -> int -> int
@@ -81,13 +84,14 @@ let add: Add =
         x + y
 
 // val add: x: int -> y: int -> int
-// ☝ Parameters are sont nommés 👍
 ```
 
 {% hint style="info" %}
-- We can't provide the names of the parameters in the type alias. ❌
-- But the parameters are named in the function signature. 👍
-- To get named parameters in the type itself, we can use a `delegate` type or an `interface`. 📍
+### Parameter naming
+
+* We can't provide the names of the parameters in the type alias. ❌
+* But the parameters are named in the function signature. 👍
+* To get named parameters in the type itself, we can use a `delegate` type or an `interface`. 📍
 {% endhint %}
 
 ### Conversion to a Func
@@ -99,14 +103,13 @@ let isNull = System.Func<_, _>(fun x -> x = null)
 // val isNull: System.Func<'a,bool> when 'a: equality and 'a: null
 ```
 
-### Conversion to LINQ Expression
+### Conversion to a LINQ Expression 🚀
 
-It's a bit more complex to write an `Expression<Func<>` from a lambda. You have to go through a _quotation_ [^quotation] and then convert it into an expression using either the `FSharp.Linq.RuntimeHelpers.LeafExpressionConverter` for simple cases (see example below), or the NuGet package `FSharp.Quotations.Evaluator` for more complex cases.
+<details>
 
-[^quotation]: The _quotations_ are out of scope. Just 2 words about them:
-    - They are written between `<@ ... @>`.
-    - They're a bit like C# `Expression`
-    - more info [here](https://stackoverflow.com/a/8134113/8634147).
+<summary>Conversion to a LINQ Expression 🚀</summary>
+
+Contrary to C#, it's more complex in F# to write an `Expression<Func<>` from a lambda. You have to go through a _quotation_ and then convert it into an expression using either the `FSharp.Linq.RuntimeHelpers.LeafExpressionConverter` for simple cases (see example below), or the NuGet package `FSharp.Quotations.Evaluator` for more complex cases.
 
 ```fsharp
 open System
@@ -125,6 +128,8 @@ let isNullExpr =
 //   x => (x == null)
 ```
 
+</details>
+
 ### `function` keyword
 
 * Define an anonymous function with an implicit `match` expression surrounding the body.
@@ -139,20 +144,22 @@ let ouiNon x =
 // val ouiNon: x: bool -> string
 
 // 👉 Same with `function`:
-let ouiNon = function
+let ouiNon =
+  function
   | true  -> "Oui"
   | false -> "Non"
 // val ouiNon: _arg1: bool -> string
 ```
 
 {% hint style="info" %}
-## A matter of taste
-- For fans of point-free 📍
-- More generally, in a succession of _pipes_ `arg |> f1 |> function ... |> f2...` \
-→ The idea is to pattern match a large expression without storing it in an intermediate variable.
+### A matter of taste
+
+* For fans of point-free 📍
+* More generally, in a succession of _pipes_ `arg |> f1 |> function ... |> f2...`\
+  → The idea is to pattern match a large expression without storing it in an intermediate variable.
 {% endhint %}
 
-## Parameters deconstructing
+## Parameters deconstruction
 
 * As in JavaScript, you can deconstruct _inline_ a parameter.
 * This is also a way of indicating the type of parameter.
@@ -171,7 +178,7 @@ let bob = { Name = "Bob"; Age = 18 } // Person
 let bobAge = age bob // int = 18
 ```
 
-This is also called _pattern matching_.
+This is also called _pattern matching_.\
 → But I prefer to reserve this expression to `match x with ...`
 
 ## Tuple parameter
@@ -199,8 +206,8 @@ let f (x, y, z) = ...
   * The function now only has only 1 parameter instead of 3.
   * Loss of partial application of each element of the tuple.
 
-{% hint style="info" %}
-## ☝ **Conclusion**
+{% hint style="success" %}
+### ☝ **Conclusion**
 
 * Resist the temptation to use a tuple all the time _(because it's familiar, a habit from C♯)_
 * Use it only when it makes sense to group parameters together.
@@ -215,7 +222,7 @@ let f (x, y, z) = ...
   * Because it's often easier to design
   * And still performant thanks to tail recursion _(details just after)_
 
-Example: find the number of steps to reach 1 in the [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
+**Example:** find the number of steps to reach 1 in the [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture)
 
 ```fsharp
 let rec steps (n: int) : int =
@@ -227,19 +234,37 @@ let rec steps (n: int) : int =
 ## Tail recursion
 
 * Type of recursion where the recursive call is the last instruction
-* Detected by the compiler and optimized as a loop
-  * Prevents stack overflow
-* The usual way of making tail recursive is:
-  * Add an "accumulator" parameter, just like with `fold`/`reduce` functions. 📍
+* Detected by the compiler
+* Rewritten into a simple loop\
+  → Prevents stack overflow 👍
 
+&#x20;💡 Tips: in general, we can transform a non-tail-recursive function into a tail-recursive one by adding an additional parameter, playing the role of "accumulator" like with `fold`/`reduce` functions. 📍
+
+**→ Example:** previous steps function rewritten as tail-recursive
+
+{% code lineNumbers="true" %}
 ```fsharp
 let steps (number: int) : int =
-    let rec loop count n = // 👈 `loop` = idiomatic name for this type of recursive internal function
+    [<TailCall>] // (1)
+    let rec loop count n = // (2)
         if n = 1       then count
-        elif n % 2 = 0 then loop (count + 1) (n / 2)      // 👈 Last call is `loop` -> Tail recursive
-        else                loop (count + 1) (3 * n + 1)  // 👈 Same
+        elif n % 2 = 0 then loop (count + 1) (n / 2)
+        else                loop (count + 1) (3 * n + 1)
+
     loop 0 number // 👈 Start the loop with 0 as the initial value for `count`
 ```
+{% endcode %}
+
+{% hint style="info" %}
+Notes
+
+1. `TailCall`  attribute was added in F# 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
+2. `loop` is a name idiomatic for this type of recursive sub-function.
+3. At lines 5 and 6, we see that now the recursive calls to `loop` are really the last call, hence the tail recursion.
+4. &#x20;We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
+{% endhint %}
+
+🔗 [Tail recursion | Wikipedia](https://en.wikipedia.org/wiki/Tail_call)
 
 ## Mutually recursive functions
 
@@ -262,13 +287,13 @@ and Odd x =             // 👈 Keyword `and`
 ## Function overload
 
 {% hint style="warning" %}
-- A function cannot be overloaded!
-- Each version should have a dedicated name.
+* A function cannot be overloaded!
+* Each version should have a dedicated name.
 {% endhint %}
 
 Example:
 
-* `List.map  (mapping:                 'T -> 'U) (items: 'T list) : 'U list`
+* `List.map  (mapping:                 'T -> 'U) (items: 'T list) : 'U list`
 * `List.mapi (mapping: (index: int) -> 'T -> 'U) (items: 'T list) : 'U list`
 
 ## Template function
@@ -276,9 +301,8 @@ Example:
 Create specialized "overloads":
 
 ```fsharp
-type ComparisonResult = Bigger | Smaller | Equal
+type ComparisonResult = Bigger | Smaller | Equal // Union type 📍
 
-// Fonction template, 'private' pour la "cacher"
 let private compareTwoStrings (comparison: StringComparison) string1 string2 =
 //  ^^^^^^^ private to hide it (implementation details)
     let result = System.String.Compare(string1, string2, comparison)
@@ -316,7 +340,7 @@ compareCaseSensitive :                     String -> String -> ComparisonResult
 
 ### Principle
 
-> **Inline extansion** ou **inlining :** compiler optimization to replace a function call with the its body. \
+> **Inline extansion** ou **inlining :** compiler optimization to replace a function call with the its body.\
 > 🔗 [Inline expansion | Wikipedia](https://en.wikipedia.org/wiki/Inline_expansion)
 
 * Performance gain 👍
@@ -326,12 +350,10 @@ compareCaseSensitive :                     String -> String -> ComparisonResult
 
 ### `inline` keyword
 
-- Tells the compiler to _"inline"_ the function
-- Typical usage: small "syntactic sugar" function/operator
+* Tells the compiler to _"inline"_ the function
+* Typical usage: small "syntactic sugar" function/operator
 
-Examples from [FSharp.Core](https://github.com/dotnet/fsharp/blob/main/src/fsharp/FSharp.Core/prim-types.fs): \
-→ Function `ignore`  📍 TODO: fonctions-standard.md \
-→ Operator `|>`      📍 TODO: operateur-pipe-right-or-greater-than
+**Examples from** [**FSharp.Core**](https://github.com/dotnet/fsharp/blob/main/src/fsharp/FSharp.Core/prim-types.fs)**:**
 
 ```fsharp
 let inline ignore _ = ()
@@ -342,4 +364,4 @@ let t = true |> ignore
 //   ~= ()          // After the inlining of ignore
 ```
 
-The other use of `inline` functions relates to SRTP 📍
+The other uses of `inline` functions relate to SRTP 📍
