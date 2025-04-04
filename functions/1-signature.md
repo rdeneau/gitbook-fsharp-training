@@ -26,9 +26,11 @@ interface ITelemetry
 
 ### Type Void
 
-☝ The issue with the`void` is that it's neither a type nor a value.
+{% hint style="warning" %}
+The issue with the `void` is that it's neither a type nor a value.
+{% endhint %}
 
-💡 What about a `Void` type, a singleton with no data in it:
+💡 What about creating a `Void` type, a singleton with no data in it:
 
 ```csharp
 public class Void
