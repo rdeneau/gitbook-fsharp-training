@@ -87,22 +87,18 @@ In F♯ the`Void` type exists! It's called `unit` because it has only one instan
 
 ### Impact on the function signature
 
-* Rather than `void` functions, we have functions returning the `unit` type. (1)
-* Rather than functions with 0 parameter, we have functions taking a unit parameter that can only be `()`. (2)
+* [Rather than `void` functions, we have functions returning the `unit` type.](#user-content-fn-1)[^1]
+* [Rather than functions with 0 parameter, we have functions taking a unit parameter that can only be `()`.](#user-content-fn-2)[^2]
 
 ```fsharp
 let doNothing () = () // unit -> unit
+let now () = System.DateTime.Now // unit -> DateTime
 ```
-
-**Notes:**
-
-* (1) This kind of functions either does nothing or produces side-effects.
-* (2) The choice of `()` to write the instance of the `unit` type is smart: it allows functions without parameters to resemble their equivalent in C#.
 
 ## `ignore` function
 
-In F♯, "everything is an expression"\
-→ No value is ignored, except `()`/`unit`\
+Remember : in F♯, everything is an expression.\
+→ No value is ignored, except `()`/`unit` designed for this purpose\
 → At the beginning of an expression or between several `let` bindings, we can insert `unit` expressions worth ()/unit, for example `printf "mon message"`
 
 **Issue:** we call a function which triggers a side-effect but also returns a value we are not interested in.
@@ -141,8 +137,7 @@ let solution2 =
 
 **Other examples:**
 
-```fsharp
-// Side-effects / file system
+<pre class="language-fsharp"><code class="lang-fsharp">// Side-effects / file system
 System.IO.Directory.CreateDirectory folder |> ignore
 // Ignore the returned DirectoryInfo
 
@@ -152,11 +147,11 @@ let configureAppConfigurationForEnvironment (env: Environment) (basePath: string
         .SetBasePath(basePath)
         .AddJsonFile("appsettings.json", optional = false, reloadOnChange = true)
         .AddJsonFile($"appsettings.{env.name}.json", optional = false, reloadOnChange = true)
-    |> ignore
-
+<strong>    |> ignore
+</strong>
 // Event handler:
 textbox.onValueChanged(ignore)
-```
+</code></pre>
 
 :warning: **Trap:** ignoring a value that we should use in our program.
 
@@ -183,3 +178,7 @@ textbox.onValueChanged(ignore)
 > What is the underlying concept?
 
 Answer in the next page...
+
+[^1]: This kind of functions either does nothing or produces side-effects.
+
+[^2]: The choice of `()` to write the instance of the `unit` type is smart: it allows functions without parameters to resemble their equivalent in C#.
