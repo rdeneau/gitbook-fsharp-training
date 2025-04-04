@@ -17,4 +17,4 @@
 
 * [Signature](functions/1-signature.md)
 * [Concepts](functions/2-concepts.md)
-* [Functions](functions/3-functions.md)
+* [Syntax](functions/3-syntax.md)
