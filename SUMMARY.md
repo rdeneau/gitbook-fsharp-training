@@ -21,4 +21,4 @@
 * [Operators](functions/5-operators.md)
 * [Addendum](functions/6-addendum.md)
 * [🍔 Quiz](functions/quiz/README.md)
-* [Key takeaway](functions/8-summary.md)
+* [📜 Summary](functions/8-summary.md)
