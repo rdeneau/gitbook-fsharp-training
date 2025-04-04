@@ -4,22 +4,16 @@
 
 ## Fundamentals
 
-* [Introduction](fundamentals/introduction.md)
-
-***
-
-* [Syntax](syntax/README.md)
-  * [Syntax: Bases](syntax/syntax-bases.md)
-  * [Syntax: Functions](syntax/syntax-functions.md)
-  * [Syntax: Rules](syntax/syntax-rules.md)
-* [First concepts](first-concepts.md)
-* [🍔 Quiz](quiz/README.md)
-  * [Answers](quiz/answers.md)
+* [Introduction](fundamentals/README.md)
+* [Syntax](fundamentals/syntax/README.md)
+  * [Bases](fundamentals/syntax/1-bases.md)
+  * [Functions](fundamentals/syntax/2-functions.md)
+  * [Rules](fundamentals/syntax/3-rules.md)
+* [First concepts](fundamentals/first-concepts.md)
+* [🍔 Quiz](fundamentals/quiz/README.md)
+  * [Answers](fundamentals/quiz/answers.md)
 
 ## Functions
 
-* [Signature](functions/signature.md)
-
-***
-
-* [Concepts](concepts.md)
+* [Signature](functions/1-signature.md)
+* [Concepts](functions/2-concepts.md)
