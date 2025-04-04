@@ -150,16 +150,17 @@ let price = 5.95m         // val price : decimal = 5.95M • System.Decimal
 
 → 💡 Use `int`, `float`, `decimal` helper functions to do this conversion
 
-<pre class="language-fsharp"><code class="lang-fsharp"><strong>let i = 1
-</strong><strong>i * 1.2;;  // 💣 error FS0001: The type 'float' does not match the type 'int'
-</strong><strong>
-</strong><strong>float 3;;             // val it : float = 3.0
-</strong>decimal 3;;           // val it : decimal = 3M
+```fsharp
+let i = 1
+i * 1.2;;  // 💣 error FS0001: The type 'float' does not match the type 'int'
+​
+float 3;;             // val it : float = 3.0
+decimal 3;;           // val it : decimal = 3M
 int 3.6;;             // val it : int = 3
 int "2";;             // val it : int = 2
-</code></pre>
+```
 
-☝️ Norte that this rule has been relaxed in some cases in [F# 6](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-6#additional-implicit-conversions).
+☝️ Note that this rule has been relaxed in some cases in [F# 6](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-6#additional-implicit-conversions).
 
 ## String
 
