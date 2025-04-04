@@ -11,7 +11,6 @@
   * [Rules](fundamentals/syntax/3-rules.md)
 * [First concepts](fundamentals/first-concepts.md)
 * [🍔 Quiz](fundamentals/quiz/README.md)
-  * [Answers](fundamentals/quiz/answers.md)
 
 ## Functions
 
@@ -21,3 +20,5 @@
 * [Standard functions](functions/4-standard.md)
 * [Operators](functions/5-operators.md)
 * [Addendum](functions/6-addendum.md)
+* [🍔 Quiz](functions/quiz/README.md)
+* [Key takeaway](functions/8-summary.md)
