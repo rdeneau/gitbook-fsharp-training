@@ -75,15 +75,15 @@ let t1' = t2.MakeGenericType(typeof<string>)
 
 Definition `let id x = x`
 
-Signature : `(x: 'T) -> 'T` \
-→ Single input parameter function \
+Signature : `(x: 'T) -> 'T`\
+→ Single input parameter function\
 → Only returns this parameter
 
-Why such a function ❓ \
-→ Name `id` = abbreviation of `identity` \
+Why such a function ❓\
+→ Name `id` = abbreviation of `identity`\
 → Zero / Neutral element of function composition
 
-<table><thead><tr><th>Operation</th><th width="186.33333333333331">Neutral element</th><th>Example</th></tr></thead><tbody><tr><td><code>+ </code> Addition</td><td><code>0</code></td><td><code>0 + 5</code> ≡ <code>5 + 0</code> ≡ <code>5</code></td></tr><tr><td><code>* </code> Multiplication</td><td><code>1</code></td><td><code>1 * 5</code> ≡ <code>5 * 1</code> ≡ <code>5</code></td></tr><tr><td><code>&gt;&gt;</code> Composition</td><td><code>id</code></td><td><code>id >> fn</code> ≡ <code>fn >> id</code> ≡ <code>fn</code></td></tr></tbody></table>
+<table><thead><tr><th width="216">Operation</th><th width="186.33333333333331">Neutral element</th><th>Example</th></tr></thead><tbody><tr><td><code>+</code> Addition</td><td><code>0</code></td><td><code>0 + 5</code> ≡ <code>5 + 0</code> ≡ <code>5</code></td></tr><tr><td><code>*</code> Multiplication</td><td><code>1</code></td><td><code>1 * 5</code> ≡ <code>5 * 1</code> ≡ <code>5</code></td></tr><tr><td><code>>></code> Composition</td><td><code>id</code></td><td><code>id >> fn</code> ≡ <code>fn >> id</code> ≡ <code>fn</code></td></tr></tbody></table>
 
 #### `id` use cases
 
@@ -150,12 +150,12 @@ let d = dateIn2022Manual 1 31  // val d: System.DateTime = 31/01/2022 00:00:00
 ```
 
 {% hint style="info" %}
-## Comparison
+### ⚖️ Comparison
 
 * `dateIn2022Curry3: (int -> int -> System.DateTime)`
 * `dateIn2022Manual: month: int -> day: int -> System.DateTime`
 
-👉 `dateIn2022Manual` has a little longer implementation but is more easy to use thanks to named parameters.
+👉 `dateIn2022Manual` has a little longer implem. but is easier to use thanks to **named parameters**.
 {% endhint %}
 
 ### Konst
