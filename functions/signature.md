@@ -170,14 +170,14 @@ textbox.onValueChanged(ignore)
 |> Seq.iter (save >> ignore)
 ```
 
-## Notation fléchée
+## Arrow notation
 
-* Fonction à 0 paramètre : `unit -> TResult`
-* Fonction à 1 paramètre : `T -> TResult`
-* Fonction à 2 paramètres : `T1 -> T2 -> TResult`
-* Fonction à 3 paramètres : `T1 -> T2 -> T3 -> TResult`
+* 0-parameters function: `unit -> TResult`.
+* 1-parameter  function: `T -> TResult`.
+* 2-parameters function: `T1 -> T2 -> TResult` * 3-parameter function: `T1 -> T2 -> T3 -> TResult
+* 3-parameters function: `T1 -> T2 -> T3 -> TResult`
 
-❓ **Quiz** : Pourquoi des `->` entre les paramètres ? Quel est le concept sous-jacent ?
+❓ **Quiz** : Do you know why there are `->` between parameters? What is the underlying concept?
 
 ## Curryfication
 
