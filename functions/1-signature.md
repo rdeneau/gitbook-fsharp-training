@@ -87,8 +87,8 @@ In F♯ the`Void` type exists! It's called `unit` because it has only one instan
 
 ### Impact on the function signature
 
-* [Rather than `void` functions, we have functions returning the `unit` type.](#user-content-fn-1)[^1]
-* [Rather than functions with 0 parameter, we have functions taking a unit parameter that can only be `()`.](#user-content-fn-2)[^2]
+* Rather than `void` functions, we have functions returning the `unit` type. (1)[^1]
+* Rather than functions with 0 parameter, we have functions taking a unit parameter that can only be `()`. (2)[^2]
 
 ```fsharp
 let doNothing () = () // unit -> unit

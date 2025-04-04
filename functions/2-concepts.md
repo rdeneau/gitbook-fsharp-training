@@ -6,9 +6,9 @@
 
 Consists in transforming :
 
-* a function taking N parameters \
+* a function taking N parameters\
   `Func<T1, T2, ...Tn, TReturn>` in C♯
-* into a chain of N functions taking 1 parameter \
+* into a chain of N functions taking 1 parameter\
   `Func<T1, Func<Tn, ...Func<Tn, TReturn>>`
 
 ### Partial application
@@ -87,10 +87,11 @@ let triplet x y z = (x, y, z)
 
 ☝ A curried function is compiled differently depending on how it's called!
 
-* Basically, it is compiled as a method with tuple-parameters \
+* Basically, it is compiled as a method with tuple-parameters\
   → Viewed as a regular method when consumed in C♯
 
-Example: F♯ then C♯ equivalent, based on a simplified version from [_SharpLab_](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfAtgexgV2AUwAQEFcBeAWAChdLccAXXAQxhlwA9cBPY13eD8q6tjoA3esAx4iuAEy5EAPgZNcARnJA===)_ :
+**Example:** \
+F♯ then C♯ equivalent, based on a simplified version from [_SharpLab_](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfAtgexgV2AUwAQEFcBeAWAChdLccAXXAQxhlwA9cBPY13eD8q6tjoA3esAx4iuAEy5EAPgZNcARnJA===):
 
 ```fsharp
 module A =
@@ -108,7 +109,8 @@ public static class A
 
 * When partially applied, the function is compiled as a pseudo `Delegate` class extending `FSharpFunc<int, int>` with an `Invoke` method that encapsulates the 1st supplied arguments.
 
-Example : F♯ then C♯ equivalent, based on a simplified version from [_SharpLab_](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfAtgexgV2AUwAQEFcBeAWAChdLccAXXAQxhlwA9cBPY13eD8q6tjqMYAeQB2eIgya4AjEA===)_:
+**Example:**\
+F♯ then C♯ equivalent, based on a simplified version from [_SharpLab_](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfAtgexgV2AUwAQEFcBeAWAChdLccAXXAQxhlwA9cBPY13eD8q6tjqMYAeQB2eIgya4AjEA===):
 
 ```fsharp
 module A =
@@ -154,7 +156,7 @@ Between C♯ and F♯, the parameter concerning the main object (the `this` in c
 * In a method extension C♯, the `this` object is the 1st parameter.
   * E.g. `items.Select(x => x)`
 * In F♯, the main object is _rather_ the **last parameter**:\
-  _(it's called the **data-last style**)_
+  &#xNAN;_(it's called the **data-last style**)_
   * E.g. `List.map (fun x -> x) items`
 
 The _data-last_ style favors :
