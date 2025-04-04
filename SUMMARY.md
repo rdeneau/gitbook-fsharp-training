@@ -19,3 +19,4 @@
 * [Concepts](functions/2-concepts.md)
 * [Syntax](functions/3-syntax.md)
 * [Standard functions](functions/4-standard.md)
+* [Operators](functions/5-operators.md)
