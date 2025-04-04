@@ -181,6 +181,8 @@ let printIfEven n msg =
         printfn msg
 ```
 
+💡 We can use `elif` keyword instead of `else if`.
+
 ## Expression `match`
 
 ```fsharp
