@@ -1,6 +1,6 @@
-# 📜 Summary
+# 📜 Wrap up
 
-That's a lot just about functions 😉
+That's a lot just about functions 😉 But they are corner stone.
 
 * Signature with arrow notation `->`
 * Universal signature `T -> U` thanks to `unit`type and currying

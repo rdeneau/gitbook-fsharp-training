@@ -298,13 +298,12 @@ Example:
 
 ## Template function
 
-Create specialized "overloads":
+Create specialized "overloads" • Example: wrap `String.Compare`:
 
 ```fsharp
 type ComparisonResult = Bigger | Smaller | Equal // Union type 📍
 
 let private compareTwoStrings (comparison: StringComparison) string1 string2 =
-//  ^^^^^^^ private to hide it (implementation details)
     let result = System.String.Compare(string1, string2, comparison)
     if result > 0 then
         Bigger
@@ -318,7 +317,11 @@ let compareCaseSensitive   = compareTwoStrings StringComparison.CurrentCulture
 let compareCaseInsensitive = compareTwoStrings StringComparison.CurrentCultureIgnoreCase
 ```
 
-☝ Parameter order
+{% hint style="warning" %}
+Note that `compareTwoStrings` is declared as `private`: to hide `implementation details`.
+{% endhint %}
+
+## Parameter order
 
 The additional parameter is placed at a different location in C♯ and F♯:
 

@@ -16,7 +16,7 @@ description: 6 questions to test your memory
 
 ***
 
-## 2. How to write an `add` function taking 2 `strings` and returning an `int`. ⏱ 20’’
+## 2. How to write an `add` function taking 2 `strings` and returning an `int`? ⏱ 20’’
 
 **A.** `let add a b = a + b`
 
@@ -52,7 +52,7 @@ description: 6 questions to test your memory
 
 ***
 
-## 5. Describe the following functions in terms of the number of parameters, their type, the type of return ⏱ 60’’
+## 5. Describe the following functions in terms of the number of parameters, their type, the return type ⏱ 60’’
 
 **A.** `int -> unit`
 

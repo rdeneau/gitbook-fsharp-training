@@ -80,6 +80,12 @@
 
 > 2 parameters: `string` - return a `string`
 
+**D.** `string -> string -> string`
+
+> 2 parameters: a predicate and a list - returns a list \
+> → `filter` function
+
+
 ***
 
 ## 6. What is the signature of the `h` function below? ⏱ 30’’
@@ -96,7 +102,8 @@ let h = f >> g
 
 `let g x y = $"{+x} + {+y}"` → `(x: int) -> (y: int) -> string` » `%i{x}` → `int` » `$"..."` → `string`
 
-`let h = f >> g` » `h` peut s'écrire `let h x y = g (f x) y` » Même `x` que `f` → `int`, même `y` que `g` → `int`
+`let h = f >> g` \
+» `h` can be written `let h x y = g (f x) y`
 
 ☝️ **Note:** this question was hard enough to illustrate the **misuse** of `>>` because compound functions have different arities (`f` has 1 parameter, `g` has 2).
 
