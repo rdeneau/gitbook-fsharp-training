@@ -2,13 +2,11 @@
 
 ## Named functions
 
-* Declared with`let` _(like a variable)_
+* Declared a `let` binding _(like a variable)_
 * Naming convention: **camelCase**
-* No `return` keyword : the function always returns the last expression in its body
-* No `()` around all parameters, no `,` between parameters\
-  But `()` are necessary around each parameter to:\
-  \- add the type annotation (1) \
-  \- deconstruct an object (2)
+* No `return` keyword: the function always returns the last expression in its body
+* No `()` around all parameters, no `,` between parameters
+* `()` required around parameter with type annotation (1) or deconstruction (2)
 
 ```fsharp
 let square x = x * x  // Function with 1 parameter
@@ -22,37 +20,48 @@ let square' (x: int) : int = x * x
 let hotelId (HotelId value) = value
 ```
 
-### Functions of 0 parameter and more than 1 parameter
+### Functions of 2 or more parameters
 
-For a function of 2 or more parameters, separate the parameters with a **space**. \
-Same syntax to call it with the arguments.
+Separate parameters and arguments with **spaces**:
 
-<pre class="language-fsharp"><code class="lang-fsharp"><strong>// Function with 2 parameters
-</strong>let add x y = x + y  // val add: x: int -> y: int -> int
+```fsharp
+// Function with 2 parameters
+let add x y = x + y  // val add: x: int -> y: int -> int
 
 // Call with the 2 arguments
 let res = add 1 2    // val res: int = 3
-</code></pre>
+```
 
-:warning: The inference of the `add` function can be confusing: the `+` works for any numbers and for strings too, but `add` is limited to `int`! To get it work, we need to write `let inline add ...`\
-→ Leads to a special kind of generics: statically resolved type parameters (SRTP) 📍
+{% hint style="warning" %}
+## Inference
 
-:warning:️ Trap: `,` is used to instantiate/deconstruct a tuple that is seen as a single parameter
+The inference of the `add` function can be confusing: the `+` works for any numbers and for strings too, but `add` is limited to `int`! To get it work, we need to write `let inline add ...`\
+→ Related to a special kind of generics: statically resolved type parameters (SRTP) 📍
+{% endhint %}
+
+⚠️️ `,` creates another kind of functions using tuples 📍
 
 ```fsharp
 let addByPair (x, y) = x + y
+// val addByPair: x: int * y: int -> int
 ```
 
-For a function without parameter, use`()` as parameter _(like in C#)_
+## Functions without parameter
+
+Use `()` _(like in C#)_
 
 ```fsharp
 let printHello () = printfn "Hello"
-printHello ()
-// Displays "Hello" in the console
+// val printHello: unit -> unit
+printHello ();;
+// Hello
 
 let notAFunction = printfn "Hello"
-// Directly displays "Hello" in the console and returns "nothing" 📍
+// Hello
+// val notAFunction: unit = ()
 ```
+
+☝️ `unit` means "nothing" 📍
 
 ### Multi-line function
 
@@ -62,7 +71,7 @@ Can contain sub-function
 ```fsharp
 let evens list =
     let isEven x =  // 👈 Sub-function
-        x % 2 = 0   // 💡 `=` equality operator - No `==` operator in F#
+        x % 2 = 0   // 💡 `=` equality operator - No `==` operator in F♯
     List.filter isEven list
 // val evens: list: int list -> int list
 
@@ -70,47 +79,48 @@ let res = evens [1;2;3;4;5]
 // val res: int list = [2; 4]
 ```
 
-### Anonymous function
+## Anonymous function
 
 A.k.a. **Lambda**, arrow function
 
-* Syntax: \
-  `fun {parameters} -> body`  \
-  &#xNAN;_(`{parameters} ⇒ body` in C#)_
-* In general, we need `()` around for precedence reason
+* Syntax: `fun {parameters} -> body` _(≠ in C♯ `{parameters} ⇒ body`)_
+* In general, `()` required all around, for precedence reason
 
 ```fsharp
 let evens' list = List.filter (fun x -> x % 2 = 0) list
 ```
 
-### \_.Member shorthand (F# 8)
+### \_.Member shorthand (F♯ 8)
 
 ```fsharp
 type Person = { Name: string; Age: int }
-let people = [{ Name = "Alice"; Age = 30 }; { Name = "Bob"; Age = 5 }]
+
+let people =
+    [ { Name = "Alice"; Age = 30 }
+      { Name = "Billy"; Age =  5 } ]
 
 // Regular lambda (Shorthand not possible)
 let adults = people |> List.filter (fun person -> person.Age >= 18)
 // val adults: Person list = [{ Name = "Alice"; Age = 30 }]
 
 // Member chain shorthand
-let uppercaseNames = people |> List.map _.Name.ToUpperInvariant()
-// val uppercaseNames: string list = ["ALICE"; "BOB"]
+let uppercaseNames = people |> List.map _.Name.ToUpperInvariant() // 👈👈
+// val uppercaseNames: string list = ["ALICE"; "BILLY"]
 ```
 
-### Naming convention related to functions
+## Naming convention related to functions
 
-It's usual in F# to use short names:
+It's usual in F♯ to use short names:
 
 * `x`, `y`, `z` : parameters for values of the same type
 * `f`, `g`, `h` : parameters for input functions
-* `xs` : list of `x`&#x20;
+* `xs` : list of `x`
 * `_` : _discard_ an element not used _(like in C♯ 7.0)_
 
 ☝️ Suited for a short function body or for a generic function:
 
 ```fsharp
-// Function that simply returns its input paameter, whatever its type
+// Function that simply returns its input parameter, whatever its type
 let id x = x
 
 // Composition of 2 functions
@@ -122,16 +132,15 @@ let compose f g = fun x -> g (f x)
 ## Piping
 
 _Pipe_ operator `|>` : same idea that in UNIX with `|` \
-→ `value |> function` Send a value to a function\
-→ Can fit natural reading order: "subject verb"\
-→ Same order than with OOP: object.method
+→ `value |> function` send a value to a function \
+→ match left-to-right reading order: "subject verb" \
+→ same order than with OOP: object.method
 
 ```fsharp
 let a = 2 |> add 3  // to read "2 + 3"
 
 // We pipe a list to the "List.filter predicate" function
 let evens = [1;2;3;4;5] |> List.filter (fun x -> x % 2 = 0)
-
 ```
 
 ```csharp
@@ -141,11 +150,13 @@ var nums = new[] { 1, 2, 3, 4, 5 };
 var evens = nums.Where(x => x % 2 == 0);
 ```
 
-### _Pipeline: chain of pipings_
+### Pipeline: chain of pipings
 
-Can be a way to have a code closed to a natural way of thinking, where the input data is passed from functions to functions, in a data flow, without intermediary variable👍
+Style of coding to emphasize the data flowing from functions to functions
+→ without intermediary variable 👍
 
-Similar to a fluent API in C♯ but native: in C♯ we need to return the object at the end of each method👍
+Similar to a built-in *fluent API*
+→ no need to return the object at the end of each method 👍
 
 ```fsharp
 // Short syntax: in a single line fitting the screen width
@@ -159,11 +170,9 @@ let res' =
     |> List.map addOne    //      `let addOne x = x + 1`
 ```
 
-## Expression `if/then/else`
+## If/then/else expression
 
-In F♯, `if/then(/else)`  is an expression, not a statement, so every branch (`if-then` and `else`) should return a value and both returned values should be type-compatible.
-
-💡 `if b then x else y` ≃ C♯ ternary operator `b ? x : y`
+In F♯, `if/then(/else)` is an expression, not a statement, so every branch (`then` and `else`) should return a value and both returned values should be type-compatible.
 
 ```fsharp
 let isEven n =
@@ -173,7 +182,9 @@ let isEven n =
         "Odd"
 ```
 
-☝ When `then` returns "noting", `else` is optional:
+💡 `if b then x else y` ≃ C♯ ternary operator `b ? x : y`
+
+☝ When `then` returns "nothing", `else` is optional:
 
 ```fsharp
 let printIfEven n msg =
@@ -183,10 +194,10 @@ let printIfEven n msg =
 
 💡 We can use `elif` keyword instead of `else if`.
 
-## Expression `match`
+## Match expression
 
 ```fsharp
-let translate civility =
+let translateInFrench civility =
     match civility with
     | "Mister" -> "Monsieur"
     | "Madam"  -> "Madame"
@@ -197,7 +208,7 @@ let translate civility =
 Equivalent in C♯ 8 :
 
 ```csharp
-public static string Translate(string civility) =>
+public static string TranslateInFrench(string civility) =>
     civility switch {
         "Mister" => "Monsieur"
         "Madam"  => "Madame"
@@ -210,7 +221,7 @@ public static string Translate(string civility) =>
 
 ### Handling Exception
 
-→  `try/with` expression
+→ `try/with` expression
 
 ```fsharp
 let tryDivide x y =
@@ -220,7 +231,7 @@ let tryDivide x y =
        None
 ```
 
-:warning: **Trap**: it's `with` keyword, not `catch` keyword, contrary to C#.
+⚠️ **Trap**: the keyword used is `with`, not `catch`, contrary to C#.
 
 💡 There is no `try/with/finally` expression, only `try/finally` that we can nest in another `try/with`.
 

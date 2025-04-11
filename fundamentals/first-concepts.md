@@ -8,41 +8,47 @@
 * F♯ is a functional, expression-based language only.
 * In comparison, C♯ is an imperative language, based on statements, but includes more and more syntactic sugar based on expressions:
   * Ternary operator `b ? x : y`
-  * [Null-conditional operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/member-access-operators#null-conditional-operators--and-) `?.` in C♯ 6 : `model?.name`
-  * [Null-coalescing operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator) `??` in C♯ 8 : `label ?? '(Vide)'`
-  * Lambda expressions in C♯ 3 with LINQ : `numbers.Select(x => x + 1)`
+  * [Null-coalescing operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator) `??` in C♯ 8 : `label ?? "(Empty)"`
   * [Expression-bodied members](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/expression-bodied-members) in C♯ 6 and 7
   * `switch` expression in C♯ 8
 
 ### ⚖️ Benefits of expressions over instructions
 
-* **Conciseness**: code + compact == + readable
+* **Conciseness**: less visual clutters → more readable
 * **Composability**: composing expressions is like composing values
 * **Understanding**: no need to know the previous instructions to understand the current one
-* **Testability**: pure expressions _(no side effects)_, easier to test
-  * _Predictable_: same inputs produce same outputs
-  * _Isolated_: shorter Arrange/Setup phase in tests _(no mocks...)_
+* **Testability**: pure expressions[^pure] are easier to test
+  * _Predictable_: same inputs mean same outputs
+  * _Isolated_: shorter _Arrange/Setup_ phase in tests, no need for mocks
+
+[^pure]: with no side-effects
 
 ## Everything is an expression
 
 * A function is declared and behaves like a value
-  * We can pass it as parameter or return it from another function \
-    &#xNAN;_&#x53;ee high-order functions_
+  * We can pass it as parameter or return it from another function (1)
 * The _control flow_ building blocks are also expressions
-  * `if/else` , `match`
-  * `for` , **`while`** just return nothing - see `unit` below
+  * `if … then/else` , `match … with`
+  * `for … in`, `for … to`, `while … do` just return "nothing" (2)
+
+{% hint style="info" %}
+### Notes
+
+* (1) See _1st-class citizens, high-order functions_ 📍
+* (2) Except in _collection comprehensions_ 📍
+{% endhint %}
 
 **Consequences**
 
 * No `void` \
-  → Best replaced by the `unit` type having only one value written`()` 📍
+  → Best replaced by the `unit` type 📍
 * No _**Early Exit**_
   * In C#, you can exit a function with `return` and exit a `for/while` loop with `break`.
-  * In F# these keywords do not exist.
+  * In F♯ these keywords do not exist.
 
 ### Early exit alternatives
 
-The most questionable solution is to raise an exception 💩 (see [réponse StackOverflow](https://stackoverflow.com/a/42018355/8634147))
+The most questionable solution is to raise an exception 💩 (see [StackOverflow](https://stackoverflow.com/a/42018355/8634147))
 
 One solution in imperative style is to use mutable variables 😕
 
@@ -65,7 +71,7 @@ let test1' = firstItemOrDefault -1 (fun x -> x > 5) [| 1 |]     // -1
 The most recommended and idiomatic solution in functional programming is to use a recursive function 📍
 
 ```fsharp
-[<TailCall>] // F# 8 📍
+[<TailCall>] // F♯ 8 📍
 let rec firstOr defaultValue predicate list =
     match list with
     | [] -> defaultValue                                // 👈 Exit
@@ -76,15 +82,23 @@ let test1 = firstOr -1 (fun x -> x > 5) [1]     // -1
 let test2 = firstOr -1 (fun x -> x > 5) [1; 6]  // 6
 ```
 
-&#x20;💡 As indicated by the `TailCall` attribute (introduced in F# 8), this is a case of [tail recursion](https://en.wikipedia.org/wiki/Tail_call): the compiler will convert the call to this recursive function into a simple loop with much better performance. You can check this in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
-
 ## Typing, inference and ceremony
 
-The ceremony is correlated to the typing strength
+The ceremony is correlated to the typing weakness
 
-<table><thead><tr><th width="146">Language</th><th>Typing strength</th><th>Inference strength</th><th>Ceremony</th></tr></thead><tbody><tr><td>JS</td><td>Low <br><em>(dynamic typing)</em></td><td>×</td><td>Low</td></tr><tr><td>C♯</td><td>Moyen (statique nominal)</td><td>Low</td><td>High</td></tr><tr><td>TS</td><td>Fort (statique structurel + ADT)</td><td>Medium</td><td>Medium</td></tr><tr><td>F♯</td><td>Fort (statique nominal + ADT)</td><td>High</td><td>Low</td></tr></tbody></table>
+<table>
+  <thead>
+    <tr><th width="146">Language</th><th>Typing strength</th><th>Inference strength</th><th>Ceremony</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>JS</td><td>Low <br><em>(dynamic typing)</em></td><td>×</td><td>Low</td></tr>
+    <tr><td>C♯</td><td>Medium (static nominal)</td><td>Low</td><td>High</td></tr>
+    <tr><td>TS</td><td>Strong (static structural + ADT)</td><td>Medium</td><td>Medium</td></tr>
+    <tr><td>F♯</td><td>Strong (static nominal + ADT)</td><td>High</td><td>Low</td></tr>
+  </tbody>
+</table>
 
-🔗 [Zone of Ceremony](https://blog.ploeh.dk/2019/12/16/zone-of-ceremony/) by Mark Seemann
+🔗 [Zone of Ceremony](https://blog.ploeh.dk/2019/12/16/zone-of-ceremony/) _by Mark Seemann_
 
 ## Type inference
 
@@ -94,12 +108,26 @@ Goal: write type annotations as little as possible
 * Compiler ensures consistency
 * IntelliSense helps with coding and reading
 
+### Type inference in C♯
+
+* Method parameters and return value ❌
+* Variable declaration: `var o = new { Name = "John" }` ✔️
+* Lambda as argument: `list.Find(i => i == 5)` ✔️
+* Lambda declaration: `var f3 = () => 1;` ✔️ in C# 10 _(limited)_
+* Array initialisation: `var a = new[] { 1, 2 };` ✔️
+* Generic classes:
+  * constructor: `new Tuple<int, string>(1, "a")` ❌
+  * static helper class: `Tuple.Create(1, "a")` ✔️
+* C♯ 9 _target-typed expression_ `StringBuilder sb = new();` ✔️
+
 ### Type inference in F♯
 
 [Hindley–Milner](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner_type_system) method
 
 * Able to deduce the type of variables, expressions and functions in a program without any type annotation
-* Based on both the implementation and the usage(s)
+* Based on both the implementation and the usage
+
+**Example:**
 
 ```fsharp
 let helper instruction source =
@@ -128,7 +156,13 @@ let listOf2 x y = [x; y]
 let max x y = if x > y then x else y
 ```
 
-☝ In F♯, a generic type starts with an apostrophe and can be in camelCase (`'a`) or PascalCase (`'A`) .
+{% hint style="info" %}
+### Generic type parameter notation
+
+* starts with an apostrophe `'` *(a.k.a. tick)*
+* can be in camelCase (`'a`) or PascalCase (`'A`)
+* C♯ `TXxx` → F♯ `'xxx` or `'Xxx`
+{% endhint %}
 
 ### Inference _vs_ type annotation
 
@@ -137,7 +171,7 @@ let max x y = if x > y then x else y
   * automatic generalization
 * Cons:
   * we can break code in cascade
-  * inference limited:&#x20;
+  * inference limited:
     * an object type cannot be determine by the call to one of its members (1)\
       → exception: Record types 📍
     * sensible to the order of declaration (2)
@@ -170,6 +204,6 @@ let listKo = List.sortBy (fun x -> x.Length) ["three"; "two"; "one"]
 // Solution 1: reverse the order by piping the list
 let listOk = ["three"; "two"; "one"] |> List.sortBy (fun x -> x.Length)
 
-// Solution 2: use the equivalent function
+// Solution 2: use a named function  instead of a lambda
 let listOk' = List.sortBy String.length ["three"; "two"; "one"]
 ```

@@ -1,6 +1,6 @@
 # Standard functions
 
-The `FSharp.Core.dll` library is automatically imported into an F# project or into the FSI console. It provides standard operators and functions ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-operators.html)). Here are the main functions:
+The `FSharp.Core.dll` library is automatically imported into an F♯ project or into the FSI console. It provides standard operators and functions ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-operators.html)). Here are the main functions:
 
 ## Conversion
 

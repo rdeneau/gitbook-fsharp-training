@@ -30,7 +30,7 @@
 
 ## 3. Find the intruder!
 
-B et C are functions, while A is a simple value: a `string`.
+B and C are functions, while A is a simple value: a `string`.
 
 **A.** `let a = "a"` ✅
 
@@ -58,14 +58,17 @@ Line **3.** `x % 2 = 0` : an indentation is missing
 
 **D.** Pipe ✅
 
-## 6. Which expression compile?
+## 6. Which expression compiles?
 
-**A.** `a == b && b != ""` ❌
+**A.** `a == "a" && b != ""` ❌
 
-**B.** `a == b && b <> ""` ❌
+**B.** `a == "a" && b <> ""` ❌
 
-**C.** `a = b && b <> ""` ✅
+**C.** `a = "a" && b <> ""` ✅
 
-**D.** `a = b && b != ""` ❌
+**D.** `a = "a" && b != ""` ❌
 
-☝ In F♯, the equality and inequality operators are respectively `=` and `<>`.
+| Operator   | C♯             | F♯             |
+|------------|----------------|----------------|
+| Equality   | `==`           | `=`            |
+| Inequality | `!=` (`!` `=`) | `<>` (`<` `>`) |

@@ -196,7 +196,7 @@ let isNotEmpty<'a> = not << List.isEmpty<'a>    // 👌 Explicit type annotation
 let isNotEmpty' list = not (List.isEmpty list)  // 👌 Explicit parameter
 ```
 
-🔗 [F# coding conventions > Partial application and point-free programming](https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#partial-application-and-point-free-programming)
+🔗 [F♯ coding conventions > Partial application and point-free programming](https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#partial-application-and-point-free-programming)
 
 ## Custom operators
 
@@ -276,7 +276,7 @@ All operators are used as is\
 | Unaire bang  | `let (!!!) x = …`   | `!!!x`    |
 | Binary       | `let (<ˆ>) x y = …` | `x <ˆ> y` |
 
-☝ To define an operator beginning or ending with a `*`, you must put a space between `(` and `*` as well as between `*` and `)` to distinguish from a block of F# comments `(* *)`.\
+☝ To define an operator beginning or ending with a `*`, you must put a space between `(` and `*` as well as between `*` and `)` to distinguish from a block of F♯ comments `(* *)`.\
 → `let ( *+ ) x y = x * y + y` ✅
 
 ## Operator or function?

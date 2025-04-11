@@ -1,6 +1,6 @@
 # Syntax
 
-F# **succinct** syntax is its first key point 💪
+F♯ **succinct** syntax is its first key point 💪
 
 {% hint style="warning" %}
 ### Explicit > Succinct

@@ -109,7 +109,7 @@ let isNull = System.Func<_, _>(fun x -> x = null)
 
 <summary>Conversion to a LINQ Expression 🚀</summary>
 
-Contrary to C#, it's more complex in F# to write an `Expression<Func<>` from a lambda. You have to go through a _quotation_ and then convert it into an expression using either the `FSharp.Linq.RuntimeHelpers.LeafExpressionConverter` for simple cases (see example below), or the NuGet package `FSharp.Quotations.Evaluator` for more complex cases.
+Contrary to C#, it's more complex in F♯ to write an `Expression<Func<>` from a lambda. You have to go through a _quotation_ and then convert it into an expression using either the `FSharp.Linq.RuntimeHelpers.LeafExpressionConverter` for simple cases (see example below), or the NuGet package `FSharp.Quotations.Evaluator` for more complex cases.
 
 ```fsharp
 open System
@@ -238,7 +238,7 @@ let rec steps (n: int) : int =
 * Rewritten into a simple loop\
   → Prevents stack overflow 👍
 
-&#x20;💡 Tips: in general, we can transform a non-tail-recursive function into a tail-recursive one by adding an additional parameter, playing the role of "accumulator" like with `fold`/`reduce` functions. 📍
+💡 Tips: in general, we can transform a non-tail-recursive function into a tail-recursive one by adding an additional parameter, playing the role of "accumulator" like with `fold`/`reduce` functions. 📍
 
 **→ Example:** previous steps function rewritten as tail-recursive
 
@@ -258,10 +258,10 @@ let steps (number: int) : int =
 {% hint style="info" %}
 Notes
 
-1. `TailCall`  attribute was added in F# 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
+1. `TailCall`  attribute was added in F♯ 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
 2. `loop` is a name idiomatic for this type of recursive sub-function.
 3. At lines 5 and 6, we see that now the recursive calls to `loop` are really the last call, hence the tail recursion.
-4. &#x20;We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
+4. We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
 {% endhint %}
 
 🔗 [Tail recursion | Wikipedia](https://en.wikipedia.org/wiki/Tail_call)

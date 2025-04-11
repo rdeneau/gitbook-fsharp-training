@@ -1,10 +1,8 @@
 ---
-description: F# Training, covering versions 5.0 to 9.0 (2021-2024)
+description: F♯ Training, covering versions 5.0 to 9.0 (2021-2024)
 ---
 
 # Presentation
-
-
 
 ## Author
 
@@ -36,7 +34,7 @@ In detail :
   * Robust code: predictable and reproducible results (immutability, structural equality, no nulls, exhaustive pattern matching)
   * Interactive programming: check code by evaluating it in the FSI console
   * Narrowed community but strong and friendly
-* F# compared to other back-end functional languages
+* F♯ compared to other back-end functional languages
   * Its syntax is not hybrid, unlike **Scala** and **Kotlin** (mixing OOP and FP)
   * Easier to learn than **Haskell** or **OCaml** _(but with fewer FP features, partially compensated for by OOP features)_
   * Static typing, unlike **Closure** _(and far fewer brackets 😜)_

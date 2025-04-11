@@ -34,7 +34,7 @@ description: 6 questions to test your memory
 
 ***
 
-## 4. What line does not compile? ⏱ 15’’
+## 4. What line does not compile? ⏱ 20’’
 
 {% code lineNumbers="true" %}
 ```fsharp
@@ -59,7 +59,7 @@ description: 6 questions to test your memory
 
 ***
 
-## 6. Which expression compile? ⏱ 15’’
+## 6. Which expression compiles? ⏱ 20’’
 
 **A.** `a == "a" && b != "*"`
 

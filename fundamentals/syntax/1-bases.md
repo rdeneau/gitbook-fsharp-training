@@ -21,13 +21,13 @@
 ## Variables
 
 * Values for the purists
-* Keyword:`let` to declare/name a value
+* Keyword: `let` to declare/name a value
 * No need for `;` at the end of the declaration
-* It creates a _Binding_ that is immutable by default
+* Creates a _Binding_ that is immutable by default
   * ≃ `const` in JS, `readonly` members in C♯
 * Mutable binding with `let mutable`
   * ≃ `let` en JS, `var` en C♯
-  * ⚠️ The assignment operator is `<-`, not `=` used for equility
+  * ⚠️ The assignment operator is `<-`, not `=` used for equality
   * Use it sparingly, on a limited scope
 
 ```fsharp
@@ -36,7 +36,7 @@ x <- 2
 // 💥 error FS0027: This value is not mutable. Consider using the mutable keyword...
 
 let mutable x = 1
-x <- 2 // ✅ Autorisé
+x <- 2 // ✅ OK
 ```
 
 ### Traps ⚠️
@@ -67,9 +67,9 @@ let result = collector.Close()
 
 * Same constraints on variable naming than in C♯
 * ... except the apostrophe `'`  _(tick)_
-  * allowed in name in the middle or at the end, but not at the beginning!
+  * allowed in the middle or at the end of the name, but not at the beginning!
   * at the end of the name → indicates a variant _(code convention)_
-* Between double _backticks_&#x20;
+* Between double _backticks_
   * allow any character, in particular whitespaces, except line breaks
 
 ```fsharp
@@ -80,12 +80,12 @@ let x' = x + 1
 let if' b t f = if b then t else f
 
 let ``123 456`` = "123 456"
-// 💡 Auto-complétion : no need to enter the ``, just the 123
+// 💡 Auto-completion : no need to enter the ``, just the 123
 ```
 
 ## _Shadowing_
 
-* Use to redefine a value with a name already used above\
+* Use to redefine a value with a name already used above \
   → The previous value is no longer accessible in the current scope
 * Not allowed at `module` level but allowed in a sub-scope
 * Convenient but can be misleading\
@@ -107,7 +107,7 @@ let b =
 ## Type Annotation
 
 * Optional thanks to inference
-* The Type is declared after the name `name: type` _(like in TypeScript)_
+* The type is declared after the name `name: type` _(like in TypeScript)_
 * The value is mandatory, even with `mutable` which is a good constraint for the code 👍
 
 ```fsharp
@@ -128,7 +128,7 @@ let mutable z2: int
   * ≃ `const` C♯ - same idea than `const enum` in TypeScript
 * _How:_ Value decorated with the `Literal` attribute\
   ⚠️ Attributes are between `[< >]` \
-  → It's a frequent beginner error to use`[ ]` _(like in C♯)_
+  → It's a frequent beginner error to use `[ ]` _(like in C♯)_
 * Recommended naming convention : PascalCase
 
 ```fsharp
@@ -138,11 +138,11 @@ let AgeOfMajority = 18
 let [<Literal>] Pi = 3.14 // Also possible but not recommended by MS/Fantomas formatter
 ```
 
-## Nombre
+## Number
 
 ```fsharp
-let pi = 3.14             // val pi : float = 3.14       • System.Double
-let age = 18              // val age : int = 18          • System.Int32
+let pi = 3.14             // val pi    : float   = 3.14  • System.Double
+let age = 18              // val age   : int     = 18    • System.Int32
 let price = 5.95m         // val price : decimal = 5.95M • System.Decimal
 ```
 
@@ -152,7 +152,7 @@ let price = 5.95m         // val price : decimal = 5.95M • System.Decimal
 
 ```fsharp
 let i = 1
-i * 1.2;;  // 💣 error FS0001: The type 'float' does not match the type 'int'
+i * 1.2;;  // 💣 Error FS0001: The type 'float' does not match the type 'int'
 ​
 float 3;;             // val it : float = 3.0
 decimal 3;;           // val it : decimal = 3M
@@ -160,7 +160,7 @@ int 3.6;;             // val it : int = 3
 int "2";;             // val it : int = 2
 ```
 
-☝️ Note that this rule has been relaxed in some cases in [F# 6](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-6#additional-implicit-conversions).
+☝️ Note that this rule has been relaxed in some cases in [F♯ 6](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-6#additional-implicit-conversions).
 
 ## String
 
@@ -171,16 +171,16 @@ let name = "Bob"              // val name : string = "Bob"
 let name2 = sprintf "%s Marley" name  // val name2 : string = "Bob Marley"
 
 // String interpolation (F♯ 5)
-let name2' = $"{name} Marley"  // val name2' : string = "Bob Marley"
+let name3 = $"{name} Marley"  // val name3 : string = "Bob Marley"
 
 // Type safe string interpolation
 let rank = 1
-let name2'' = $"%s{name} Marley, number %i{rank}"
-// val name2'': string = "Bob Marley, number 1"
+let name4 = $"%s{name} Marley, number %i{rank}"
+// val name4: string = "Bob Marley, number 1"
 
 // Access to a character by its index (>= 0) (F♯ 6)
 let initial = name2[0]         // val initial :  char = 'B'
-let initial = name2.[0]        // ☝️ Previous syntax, still supported
+let initial = name2.[0]        // Dot syntax, still supported
 
 // String slicing (F♯ 6) (Alternative to x.Substring(index [, length]) method)
 let firstName = name2[0..2]   // val firstName : string = "Bob"
@@ -203,10 +203,10 @@ let poemIndented = "
     A master limned you in the finest inks
     And with a fresh-cut quill."
 
-// Solution : backslash strings :
-// Whitespaces (space and line break) are ignored 
-// between the \ terminating a line and the following non-whitespace character
-// (hence the \n to add line breaks):
+// Solution: backslash strings
+// - Whitespaces (space and line break) are ignored between
+//   the \ terminating a line and the following non-whitespace character
+// - hence the \n to add line breaks
 let poem = "\
     The lesser world was daubed\n\
     By a colorist of modest skill\n\
@@ -224,31 +224,28 @@ let poemWithoutBackslashN = "\
     And with a fresh-cut quill."
 ```
 
-### String interpolation in F# 8
+### String interpolation in F♯ 8
 
-An interpolated string cannot contain braces (`$"{xxx}"`) unless they are doubled (`$"{{xxx}}"`). Since F# 8, the $ character is doubled (`$$$` $$) or tripled ($$) to indicate the number of braces from which interpolation starts, respectively `{{ }}` and `{{{ }}}`.
+An interpolated string cannot contain braces (`$"{xxx}"`) unless they are doubled (`$"{{xxx}}"`). Since F♯ 8, the $ character is doubled (`$$$` $$) or tripled ($$) to indicate the number of braces from which interpolation starts, respectively `{{ }}` and `{{{ }}}`.
 
 ```fsharp
 let classAttr = "bold"
 let cssNew = $$""".{{classAttr}}:hover {background-color: #eee;}"""
 ```
 
-**Conclusion**: there are many many ways to write a string in F#!
+**Conclusion**: there are many many ways to write a string in F♯!
 
 ### Encoding
 
 String literals are encoded in **Unicode**:
 
-{% code fullWidth="false" %}
 ```fsharp
 let unicodeString1 = "abc"  // val unicodeString1: string = "abc"
 let unicodeString2 = "ab✅" // val unicodeString2: string = "ab✅"
 ```
-{% endcode %}
 
 We can work in **ASCII** using the `B` suffix, but in this case we get a `byte array`:
 
-{% code fullWidth="false" %}
 ```fsharp
 let asciiBytes = "abc"B
 // val asciiBytes1: byte array = [|97uy; 98uy; 99uy|]
@@ -257,13 +254,20 @@ let asciiBytesKO = "ab🚫"B
 // 💥 Error FS1140: This byte array literal contains characters
 //    that do not encode as a single byte
 ```
-{% endcode %}
 
-💡 Works also for character: `'a'B`.
+💡 Works also for character: `'a'B`
 
-## Lists
+## Collections
 
-The `List` in F♯ is immutable and is different from `System.Collection.Generic.List<T>` .
+* Lists
+* Arrays
+* Sequences
+
+### Lists
+
+A list is an immutable collection of elements of the same type. It's a different type than `System.Collection.Generic.List<T>` BCL type. It's implemented internally as a linked list.
+
+Creation with `[]` • Items separated by `;` or line breaks + indentation
 
 ```fsharp
 let abc = [ 'a'; 'b'; 'c' ] // val abc : char list = ['a'; 'b'; 'c']
@@ -272,24 +276,18 @@ let a =
     3 ]  // val a : int list = [2; 3]
 ```
 
-* Creation with`[]`, items separated by `;` ou line breaks + indentation\
-  :warning: Common trap : using `,` to separate items\
+⚠️ **Trap:** using `,` to separate items\
   E.g. `[ 1, 2 ]`  compiles but it is not a list of 2 items! \
   It's a list of 1 item, a tuple of 2 elements! 📍
-* Type annotation is using the ML notation (legacy from OCaml):\
-  → `int list` equivalent to `List<int>` \
-  ☝ Idiomatic only for a limited number of FSharp.Core types:\
-  &#x20;      → `array`, `list` and `option` 📍
+
+☝ **ML style type annotation:** `int list` = `List<int>`\
+→ Idiomatic only for some `FSharp.Core` types: `array`, `list`, `option` 📍
 
 ### List operators
 
-* `::`  _Cons_ operator (_Cons_ meaning "construction")\
-  → Add an item to the top of the list.
-* `@` _Append_ operator\
-  → Append 2 lists
-* `..` _Range_ operator\
-  → `min..max`: range of numbers or characters between a min and max (included)\
-  → `min..step..max`: the step defines the difference between 2 consecutive numbers/characters
+`::`  _Cons_ _(for "construction")_: add an item to the top of the list
+`..` _Range_ of numbers between `min..max` *(included)* or `min..step..max`
+`@`  _Append_ 2 lists
 
 ```fsharp
 let ints = [2..5]                 // val ints : int list = [2; 3; 4; 5]
@@ -301,14 +299,56 @@ let chars' = chars @ [ 'e'; 'f' ] // val chars' : char list = ['a'; 'b'; 'c'; 'd
 let e = chars'[4]                 // val e: char = 'e'
 ```
 
-⚠️ A space must be placed before `[]` to create a list, to distinguish it from the access by index.
+⚠️ **Space** required before `[]` to create a list; otherwise: access by index
 
-### `List`  module
+### Arrays
 
-This module contains functions for manipulating one or more lists.
+Mutable fixed-size collections of elements of the same type.
+`array 't` = `'t[]`: BCL type
 
-| F♯ List            | C♯ LINQ (IEnumerable)      | JS Array             |
-| ------------------ | -------------------------- | -------------------- |
+Creation with `[||]` • Items separated by `;` or line breaks + indentation
+
+```fsharp
+let a1 = [| 'a'; 'b'; 'c' |]
+// val a1: char array = [|'a'; 'b'; 'c'|]
+
+let a2 =
+    [| 2
+       3 |]
+// val a2: int array = [|2; 3|]
+```
+
+⚠️ **Trap:** `[]` used for list creation and array type!
+
+### Sequences
+
+Series of elements of the same type
+`'t seq` = alias for `System.Collections.Generic.IEnumerable<'t>` BCL type
+
+Creation with `seq { }`
+
+```fsharp
+let seq1 = seq { 'a'; 'b'; 'c' }
+// val seq1: char seq
+
+let seq2 =
+    seq {
+        2
+        3
+    }
+// val seq2: int seq
+```
+
+⚠️ **Lazy**: possible multiple enumeration • hence not evaluated in FSI console
+
+### Collections functions
+
+Each type has its own module containing dedicated functions.
+
+Common functions:
+
+| F♯ collections     | C♯ LINQ (`IEnumerable<_>`) | JS `Array`           |
+|--------------------|----------------------------|----------------------|
 | `map`, `collect`   | `Select()`, `SelectMany()` | `map()`, `flatMap()` |
 | `exists`, `forall` | `Any(predicate)`, `All()`  | `some()`, `every()`  |
 | `filter`           | `Where()`                  | `filter()`           |
@@ -316,4 +356,4 @@ This module contains functions for manipulating one or more lists.
 | `fold`, `reduce`   | `Aggregate([seed]])`       | `reduce()`           |
 | `average`, `sum`   | `Average()`, `Sum()`       | ×                    |
 
-☝ **Other functions :** see the [documentation](syntax-bases.md#syntaxe-cle)
+🔗 Full documentation on fsharp.github.io: [Array](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-arraymodule.html) • [List](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-listmodule.html) • [Seq](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-seqmodule.html)

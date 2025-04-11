@@ -107,7 +107,7 @@ type Product =
 
 ### void method
 
-A .NET `void` method is seen in F# as returning `unit`.
+A .NET `void` method is seen in F♯ as returning `unit`.
 
 ```fsharp
 let list = System.Collections.Generic.List<int>()
@@ -119,7 +119,7 @@ abstract member Add:
 *)
 ```
 
-Conversely, an F# function returning `unit` is compiled into a `void` method.
+Conversely, an F♯ function returning `unit` is compiled into a `void` method.
 
 ```fsharp
 let ignore _ = ()
