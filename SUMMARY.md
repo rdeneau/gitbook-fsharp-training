@@ -24,3 +24,14 @@
 * [🍔 Quiz](functions/quiz/README.md)
   * [Answers](functions/quiz/answers.md)
 * [📜 Summary](functions/8-summary.md)
+
+## Types
+
+* [Overview](types/1-overview)
+* [Tuples](types/2-tuples.md)
+* [Records](types/3-records.md)
+* [Unions](types/4-unions.md)
+* [Enums](types/5-enums.md)
+* [Records anonymes](types/6-anonymous-records.md)
+* [Types valeur](types/7-value-types.md)
+* [🍔 Quiz](types/quiz.md)
