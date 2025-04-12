@@ -2,32 +2,33 @@
 
 ## Introduction
 
-* Depuis F♯ 4.6 _(mars 2019)_
-* Syntaxe : idem _Record_ avec accolades "larges" `{| fields |}`
-  * `{| Age: int |}` → signature
-  * `{| Age = 15 |}` → instance
-* Typage _inline_ : pas besoin de pré-définir un `type` nommé
-  * Alternative aux _Tuples_
-* Autorisé en entrée/sortie de fonction
-  * ≠ Type anonyme C♯
+- Since F♯ 4.6 *(March 2019)*
+- Syntax: same as *Record* with "fat" braces `{| fields |}`
+  - `{| Age: int |}` → signature
+  - `{| Age = 15 |}` → instance
+- Inline typing: no need to pre-define a named `type`
+  - Alternative to *Tuples*
+- Allowed in function input/output
+  - ≠ Anonymous type C♯
 
-## Bénéfices ✅
+## Benefits ✅
 
-Réduire _boilerplate_ • Améliorer interop avec systèmes externes (JavaScript, SQL...)
+- Reduce *boilerplate*
+- Improve interop with external systems (JavaScript, SQL...)
 
-Exemples :
+Examples *(more on this later)* :
 
-* Projection LINQ
-* Personnalisation d'un record existant
-* Sérialisation JSON
-* Signature _inline_
-* Alias par module
+- LINQ projection
+- Customization of an existing record
+- JSON serialization
+- Inline signature
+- Alias by module
 
-### ✅ Projection LINQ
+### ✅ LINQ Projection
 
-💡 Sélectionner un sous-ensemble de propriétés
+💡 Select a subset of properties
 
-```fsharp
+```fs
 let names =
     query {
         for p in persons do
@@ -35,38 +36,40 @@ let names =
     }
 ```
 
-En C♯, on utiliserait un type anonyme :
+In C♯, we would use an anonymous type:
 
-```csharp
+```cs
 var names =
     from p in persons
     select new { Name = p.FirstName };
 ```
 
-_🔗_ [https://queil.net/2019/10/fsharp-vs-csharp-anonymous-records/](https://queil.net/2019/10/fsharp-vs-csharp-anonymous-records/)
+🔗 [F# vs C#: Anonymous Records](https://queil.net/2019/10/fsharp-vs-csharp-anonymous-records/) by Krzysztof Kraszewski
 
-### ✅ Personnalisation d'un record existant
+### ✅ Customize an existing record
 
-💡 Un record anonyme peut être instancié à partir d'une instance de record
+💡 An anonymous record can be instantiated from a record instance
 
-```fsharp
+```fs
 type Person = { Age: int; Name: string }
 let william = { Age = 12; Name = "William" }
 
-// Ajout d'un champ (Gender)
+// Add a field (Gender)
 let william' = {| william with Gender = "Male" |}
             // {| Age = 12; Name = "William"; Gender = "Male" |}
 
-// Modification de champs (Name, Age: int => float)
+// Modify fields (Name, Age: int => float)
 let jack = {| william' with Name = "Jack"; Age = 16.5 |}
         // {| Age = 16.5; Name = "Jack"; Gender = "Male" |}
 ```
 
-### ✅ Sérialisation JSON
+### ✅ JSON serialization
 
-😕 Unions sérialisées dans un format pas pratique
+💡 An anonymous record can be used as an intermediary type to serialize a union in JSON.
 
-```fsharp
+**Example:**
+
+```fs
 #r "nuget: Newtonsoft.Json"
 let serialize obj = Newtonsoft.Json.JsonConvert.SerializeObject obj
 
@@ -75,6 +78,8 @@ type Customer = { Id: CustomerId; Age: int; Name: string; Title: string option }
 
 serialize { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Some "Mr" }
 ```
+
+Resulting JSON:
 
 ```json
 {
@@ -85,7 +90,9 @@ serialize { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Some "Mr" }
 }
 ```
 
-💡 Définir un record anonyme pour sérialiser un _customer_
+→ Format verbose and not practical.
+
+💡 **Solution:** Define an anonymous record as "DTO" to serialize a *customer*.
 
 ```fsharp
 let serialisable customer =
@@ -97,6 +104,8 @@ let serialisable customer =
 serialize (serialisable { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Some "Mr" })
 ```
 
+Resulting JSON:
+
 ```json
 {
   "Id": 1, // ✅
@@ -106,11 +115,11 @@ serialize (serialisable { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Som
 }
 ```
 
-### ✅ Signature _inline_
+### ✅ Signature *inline*
 
-💡 Utiliser un record anonyme _inline_ pour réduire charge cognitive
+💡 Use an anonymous record declared inside a bigger type to reduce cognitive load:
 
-```fsharp
+```fs
 type Title = Mr | Mrs
 type Customer =
     { Age  : int
@@ -118,52 +127,24 @@ type Customer =
       Title: Title option }
 ```
 
-### ✅ Alias par module
+## Limits 🛑
 
-```fsharp
-module Api =
-    type Customer = // ☝ Customer est un alias
-        {| Id   : System.Guid
-           Name : string
-           Age  : int |}
-
-module Dto =
-    type Customer =
-        {| Id   : System.Guid
-           Name : string
-           Age  : int |}
-
-let (customerApi: Api.Customer) = {| Id = Guid.Empty; Name = "Name"; Age = 34 |}
-let (customerDto: Dto.Customer) = customerApi // 🎉 Pas besoin de convertir
-```
-
-💡 Instant t : même type dans 2 modules&#x20;
-
-💡 Plus tard : facilite personnalisation des types par module
-
-## Limites 🛑
-
-```fsharp
-// Inférence limitée
+```fs
+// No inference from field usage
 let nameKo x = x.Name  // 💥 Error FS0072: Lookup on object of indeterminate type...
 let nameOk (x: {| Name:string |}) = x.Name
 
-// Pas de déconstruction
+// No deconstruction
 let x = {| Age = 42 |}
 let {  Age = age  } = x  // 💥 Error FS0039: The record label 'Age' is not defined
 let {| Age = age |} = x  // 💥 Error FS0010: Unexpected symbol '{|' in let binding
 
-// Pas de fusion
+// No full objects merge
 let banana = {| Fruit = "Banana" |}
 let yellow = {| Color = "Yellow" |}
 let banYelKo = {| banana with yellow |} // 💥 Error FS0609...
 let banYelOk = {| banana with Color = "Yellow" |}
 
-// Pas d'omission
-let ko = {| banYelOk without Color |}  // 💥 Mot clé 'without' n'existe pas
-
-// Pas du typage structurel => tous les champs sont requis
-let capitaliseFruit (x: {| Fruit: string |}) = x.Fruit.ToUpper()
-capitaliseFruit {| Fruit = "Banana" |}                      // 👌 "BANANA"
-capitaliseFruit {| Fruit = "Banana"; Origin = "Réunion" |}  // 💥 Too much fields... [Origin]
+// No omissions
+let ko = {| banYelOk without Color |}  // 💥 No 'without' keyword
 ```

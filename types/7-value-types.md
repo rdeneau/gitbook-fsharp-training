@@ -1,47 +1,45 @@
-# Types valeur
+# Value Types
 
-## Type composite _struct_
+Regular tuple/record/union are reference-types by default, but it's possible to get them as value-types
 
-Un type composite peut être déclaré en tant que type valeur
+- Instances stored on the *Stack* rather than in the *Heap*
+- Records, Unions: `[<Struct>]` attribute
+- Tuples, Anonymous Records: `struct` keyword
 
-* Instances stockées dans la **pile** _(stack)_ plutôt que dans le tas _(heap)_
-* Permet parfois de gagner en performance
-* Plutôt adapté aux types compacts : peu de champs, peu de comportements
+## Struct tuples & anonymous records
 
-Types de déclaration :
+```fs
+// Struct tuple
+let a = struct (1, 'b', "Three") // struct (int * char * string)
 
-* Attribut `[<Struct>]`
-* Mot clé `struct`
-* Structure
+// Struct anonymous record
+let b = struct {| Num = 1; Char = 'b'; Text = "Three" |}
+```
 
-## Attribut `[<Struct>]`
+## Struct records & unions
 
-Pour _Record_ et _Union_
-
-À placer avant ou après le mot cle `type`
-
-```fsharp
-type [<Struct>] Point = { X: float; Y: float }
-
+```fs
+// Struct record
 [<Struct>]
-type SingleCase = Case of string
+type Point = { X: float; Y: float }
+let p = { X = 1.0; Y = 2.3 } // val p: Point = { X = 1.0; Y = 2.3 }
+
+// Struct union: unique fields labels are required❗
+[<Struct>]
+type Multicase =
+    | Int  of i: int
+    | Char of c: char
+    | Text of s: string
+let t = Int 1 // val t: Multicase = Int 1
 ```
 
-## Mot clé `struct`
+## ⚖️ Pros/Cons
 
-Pour littéral de Tuple et _Record_ anonyme
+- ✅ Efficient because no *garbage collection*
+- ⚠️ Passed by value → memory pressure
 
-```fsharp
-let t = struct (1, "a")
-// struct (int * string)
+**Recommendations:**
 
-let a = struct {| Id = 1; Value = "a" |}
-// struct {| Id: int; Value: string |}
-```
+> Consider structs for small types with high allocation rates
 
-## Structures
-
-Alternatives aux classes 📍 [#classe](../oriente-objet/classe-structure.md#classe "mention")\
-mais + limités / héritage et récursivité
-
-👉 Cf. session sur l'orienté-objet et les classes...
+🔗 [F# coding conventions / Performance](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#performance)

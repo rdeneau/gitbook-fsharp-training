@@ -10,7 +10,7 @@
   * [Functions](fundamentals/syntax/2-functions.md)
   * [Rules](fundamentals/syntax/3-rules.md)
 * [First concepts](fundamentals/first-concepts.md)
-* [🍔 Quiz](fundamentals/quiz/README.md)
+* [Quiz](fundamentals/quiz/README.md)
   * [Answers](fundamentals/quiz/answers.md)
 
 ## Functions
@@ -21,9 +21,9 @@
 * [Standard functions](functions/4-standard.md)
 * [Operators](functions/5-operators.md)
 * [Addendum](functions/6-addendum.md)
-* [🍔 Quiz](functions/quiz/README.md)
+* [Quiz](functions/quiz/README.md)
   * [Answers](functions/quiz/answers.md)
-* [📜 Summary](functions/8-summary.md)
+* [Summary](functions/8-summary.md)
 
 ## Types
 
@@ -32,6 +32,6 @@
 * [Records](types/3-records.md)
 * [Unions](types/4-unions.md)
 * [Enums](types/5-enums.md)
-* [Records anonymes](types/6-anonymous-records.md)
-* [Types valeur](types/7-value-types.md)
-* [🍔 Quiz](types/quiz.md)
+* [Anonymous records](types/6-anonymous-records.md)
+* [Value types](types/7-value-types.md)
+* [Synthesis](types/8-synthesis.md)
