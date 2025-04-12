@@ -1,34 +1,34 @@
-# Records anonymes
+# Anonymous records
 
 ## Introduction
 
-- Since F♯ 4.6 *(March 2019)*
-- Syntax: same as *Record* with "fat" braces `{| fields |}`
-  - `{| Age: int |}` → signature
-  - `{| Age = 15 |}` → instance
-- Inline typing: no need to pre-define a named `type`
-  - Alternative to *Tuples*
-- Allowed in function input/output
-  - ≠ Anonymous type C♯
+* Since F♯ 4.6 _(March 2019)_
+* Syntax: same as _Record_ with "fat" braces `{| fields |}`
+  * `{| Age: int |}` → signature
+  * `{| Age = 15 |}` → instance
+* Inline typing: no need to pre-define a named `type`
+  * Alternative to _Tuples_
+* Allowed in function input/output
+  * ≠ Anonymous type C♯
 
 ## Benefits ✅
 
-- Reduce *boilerplate*
-- Improve interop with external systems (JavaScript, SQL...)
+* Reduce _boilerplate_
+* Improve interop with external systems (JavaScript, SQL...)
 
-Examples *(more on this later)* :
+Examples _(more on this later)_ :
 
-- LINQ projection
-- Customization of an existing record
-- JSON serialization
-- Inline signature
-- Alias by module
+* LINQ projection
+* Customization of an existing record
+* JSON serialization
+* Inline signature
+* Alias by module
 
-### ✅ LINQ Projection
+### LINQ Projection
 
 💡 Select a subset of properties
 
-```fs
+```fsharp
 let names =
     query {
         for p in persons do
@@ -46,11 +46,11 @@ var names =
 
 🔗 [F# vs C#: Anonymous Records](https://queil.net/2019/10/fsharp-vs-csharp-anonymous-records/) by Krzysztof Kraszewski
 
-### ✅ Customize an existing record
+### Customize an existing record
 
 💡 An anonymous record can be instantiated from a record instance
 
-```fs
+```fsharp
 type Person = { Age: int; Name: string }
 let william = { Age = 12; Name = "William" }
 
@@ -63,13 +63,13 @@ let jack = {| william' with Name = "Jack"; Age = 16.5 |}
         // {| Age = 16.5; Name = "Jack"; Gender = "Male" |}
 ```
 
-### ✅ JSON serialization
+### JSON serialization
 
 💡 An anonymous record can be used as an intermediary type to serialize a union in JSON.
 
 **Example:**
 
-```fs
+```fsharp
 #r "nuget: Newtonsoft.Json"
 let serialize obj = Newtonsoft.Json.JsonConvert.SerializeObject obj
 
@@ -92,7 +92,7 @@ Resulting JSON:
 
 → Format verbose and not practical.
 
-💡 **Solution:** Define an anonymous record as "DTO" to serialize a *customer*.
+💡 **Solution:** Define an anonymous record as "DTO" to serialize a _customer_.
 
 ```fsharp
 let serialisable customer =
@@ -115,11 +115,11 @@ Resulting JSON:
 }
 ```
 
-### ✅ Signature *inline*
+### Signature _inline_
 
 💡 Use an anonymous record declared inside a bigger type to reduce cognitive load:
 
-```fs
+```fsharp
 type Title = Mr | Mrs
 type Customer =
     { Age  : int
@@ -129,7 +129,7 @@ type Customer =
 
 ## Limits 🛑
 
-```fs
+```fsharp
 // No inference from field usage
 let nameKo x = x.Name  // 💥 Error FS0072: Lookup on object of indeterminate type...
 let nameOk (x: {| Name:string |}) = x.Name

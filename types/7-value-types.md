@@ -1,14 +1,14 @@
-# Value Types
+# Value types
 
 Regular tuple/record/union are reference-types by default, but it's possible to get them as value-types
 
-- Instances stored on the *Stack* rather than in the *Heap*
-- Records, Unions: `[<Struct>]` attribute
-- Tuples, Anonymous Records: `struct` keyword
+* Instances stored on the _Stack_ rather than in the _Heap_
+* Records, Unions: `[<Struct>]` attribute
+* Tuples, Anonymous Records: `struct` keyword
 
 ## Struct tuples & anonymous records
 
-```fs
+```fsharp
 // Struct tuple
 let a = struct (1, 'b', "Three") // struct (int * char * string)
 
@@ -18,7 +18,7 @@ let b = struct {| Num = 1; Char = 'b'; Text = "Three" |}
 
 ## Struct records & unions
 
-```fs
+```fsharp
 // Struct record
 [<Struct>]
 type Point = { X: float; Y: float }
@@ -35,8 +35,8 @@ let t = Int 1 // val t: Multicase = Int 1
 
 ## ⚖️ Pros/Cons
 
-- ✅ Efficient because no *garbage collection*
-- ⚠️ Passed by value → memory pressure
+* ✅ Efficient because no _garbage collection_
+* ⚠️ Passed by value → memory pressure
 
 **Recommendations:**
 

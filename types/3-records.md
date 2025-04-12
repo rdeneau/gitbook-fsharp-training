@@ -2,16 +2,16 @@
 
 ## Records: key points
 
-> Product type with named elements called *fields.*
+> Product type with named elements called _fields._
 
 Alternative to tuples when they are imprecise, for instance `float * float`:
 
-- Point? Coordinates? Vector?
-- Real and imaginary parts of a complex number?
+* Point? Coordinates? Vector?
+* Real and imaginary parts of a complex number?
 
 Eleviate the doubt by naming both the type and its elements:
 
-```fs
+```fsharp
 type Point = { X: float; Y: float }
 type Coordinate = { Latitude: float; Longitude: float }
 type ComplexNumber = { Real: float; Imaginary: float }
@@ -21,7 +21,7 @@ type ComplexNumber = { Real: float; Imaginary: float }
 
 Base syntax:
 
-```fs
+```fsharp
 type RecordName =
     { Label1: type1
       Label2: type2
@@ -32,7 +32,7 @@ type RecordName =
 
 Complete syntax:
 
-```fs
+```fsharp
 [ attributes ]                                // [<Struct>]
 type [accessibility-modifier] RecordName =    // private, internal
     { [ mutable ] Label1: type1
@@ -43,11 +43,11 @@ type [accessibility-modifier] RecordName =    // private, internal
 
 ## Formatting styles
 
-- Single-line: properties separated by `;`
-- Multi-line: properties separated by line breaks
-  - 3 variations: *Cramped, Aligned, Stroustrup*
+* Single-line: properties separated by `;`
+* Multi-line: properties separated by line breaks
+  * 3 variations: _Cramped, Aligned, Stroustrup_
 
-```fs
+```fsharp
 // Single line
 type PostalAddress = { Address: string; City: string; Zip: string }
 
@@ -62,13 +62,13 @@ type PostalAddress =   ┆  type PostalAddress =     ┆  type PostalAddress = {
 
 ### Styles comparison
 
-| Criterion                                                     | Best styles 🏆       |
-|---------------------------------------------------------------|----------------------|
-| Compactness                                                   | Single-line, Cramped |
-| Refacto Easiness <br/> *(re)indentation, fields (re)ordering* | Aligned, Stroustrup  |
+| Criterion                                                                | Best styles 🏆       |
+| ------------------------------------------------------------------------ | -------------------- |
+| Compactness                                                              | Single-line, Cramped |
+| <p>Refacto Easiness<br><em>(re)indentation, fields (re)ordering</em></p> | Aligned, Stroustrup  |
 
-☝️ **Recommendation:** *Strive for Consistency*
-→ Apply consistently the same multi-line style across a repository
+☝️ **Recommendation:** _Strive for Consistency_\
+→ Apply consistently the same multi-line style across a repository\
 → In addition, use the single-line style when relevant: line with < 80 chars
 
 ### Styles configuration
@@ -86,7 +86,7 @@ fsharp_record_multiline_formatter = character_width
 fsharp_max_record_width = 120
 ```
 
-🔗 https://fsprojects.github.io/fantomas/docs/end-users/Configuration.html#fsharp_record_multiline_formatter
+🔗 [https://fsprojects.github.io/fantomas/docs/end-users/Configuration.html#fsharp\_record\_multiline\_formatter](https://fsprojects.github.io/fantomas/docs/end-users/Configuration.html#fsharp_record_multiline_formatter)
 
 ## Members
 
@@ -94,7 +94,7 @@ fsharp_max_record_width = 120
 
 ### Single-line style
 
-```fs
+```fsharp
 // `with` keyword required
 type PostalAddress = { Address: string; City: string; Zip: string } with
     member x.ZipAndCity = $"{x.Zip} {x.City}"
@@ -107,11 +107,11 @@ type PostalAddress =
     member x.CityAndZip = $"%s{x.City}, %s{x.Zip}"
 ```
 
-### Multi-line *Cramped* and *Aligned* styles
+### Multi-line _Cramped_ and _Aligned_ styles
 
 ☝️ 2 line breaks
 
-```fs
+```fsharp
 type PostalAddress =
     { Address: string
       City: string
@@ -121,11 +121,11 @@ type PostalAddress =
     member x.CityAndZip = $"%s{x.City}, %s{x.Zip}"
 ```
 
-### Multi-line *Stroustrup* style
+### Multi-line _Stroustrup_ style
 
 ☝️ `with` keyword + 1 line break + indentation
 
-```fs
+```fsharp
 type PostalAddress = {
     Address: string
     City: string
@@ -137,36 +137,36 @@ type PostalAddress = {
 
 ## Record expression for instanciation
 
-- Same syntax as an anonymous C♯ object without the `new` keyword
-- All fields must be populated, but in any order (but can be confusing)
-- Same possible styles: single/multi-lines
+* Same syntax as an anonymous C♯ object without the `new` keyword
+* All fields must be populated, but in any order (but can be confusing)
+* Same possible styles: single/multi-lines
 
-```fs
+```fsharp
 type Point = { X: float; Y: float }
 let point1 = { X = 1.0; Y = 2.0 }
 let pointKo = { Y = 2.0 }           // 💥 Error FS0764
 //            ~~~~~~~~~~~ FS0764: No assignment given for field 'X' of type 'Point'
 ```
 
-⚠️ **Trap:** differences declaration / instanciation
-     → `:` for field type in record declaration
-     → `=` for field value in record expression
+⚠️ **Trap:** differences declaration / instanciation\
+&#x20;    → `:` for field type in record declaration\
+&#x20;    → `=` for field value in record expression
 
 ## Deconstruction
 
-- Fields are accessible by "dotting" into the object
-- Alternative: deconstruction
-  - Same syntax for deconstructing a *Record* as for instantiating it 👍
-  - Unused fields can be ignored 💡
+* Fields are accessible by "dotting" into the object
+* Alternative: deconstruction
+  * Same syntax for deconstructing a _Record_ as for instantiating it 👍
+  * Unused fields can be ignored 💡
 
-```fs
+```fsharp
 let { X = x1 } = point1
 let { X = x2; Y = y2 } = point1
 ```
 
-⚠️ Additional members *(properties)* cannot be deconstructed!
+⚠️ Additional members _(properties)_ cannot be deconstructed!
 
-```fs
+```fsharp
 type PostalAddress =
     {
         Address: string
@@ -184,10 +184,10 @@ let cityLine = address.CityLine         // 👌 OK
 
 ## Inference
 
-- A record type can be inferred from the fields used 👍 but not with members ❗
-- As soon as the type is inferred, IntelliSense will work
+* A record type can be inferred from the fields used 👍 but not with members ❗
+* As soon as the type is inferred, IntelliSense will work
 
-```fs
+```fsharp
 type PostalAddress =
     { Address: string
       City: string
@@ -204,9 +204,9 @@ let departmentKo zip =
 
 ## Pattern matching
 
-Let's use an example: `inhabitantOf` is a function giving the inhabitants name *(in French)* at a given address *(in France)*
+Let's use an example: `inhabitantOf` is a function giving the inhabitants name _(in French)_ at a given address _(in France)_
 
-```fs
+```fsharp
 type Address = { Street: string; City: string; Zip: string }
 
 let department { Zip = zip } = int zip[0..1] // Address -> int
@@ -225,11 +225,11 @@ let inhabitantOf address = // Address -> string
 
 ## Name conflict
 
-In F♯, typing is nominal, not structural as in TypeScript
-→ Use qualification to resolve ambiguity
+In F♯, typing is nominal, not structural as in TypeScript\
+→ Use qualification to resolve ambiguity\
 → Even better: write ≠ types or put them in ≠ modules
 
-```fs
+```fsharp
 type Person1 = { First: string; Last: string }
 type Person2 = { First: string; Last: string }
 let alice = { First = "Alice"; Last = "Jones"}  // val alice: Person2... (by proximity)
@@ -246,11 +246,11 @@ let { Person1.Last = lastName } = alice     // 💥 Error FS0001
 
 ## Modification
 
-Record is immutable, but easy to get a modified copy
-→ **copy and update** expression of a *Record*
+Record is immutable, but easy to get a modified copy\
+→ **copy and update** expression of a _Record_\
 → use multi-line formatting for long expressions
 
-```fs
+```fsharp
 // Single-line
 let address2 = { address with Street = "Rue Vivienne" }
 
@@ -261,7 +261,7 @@ let address3 =
         Zip  = "69001" }
 ```
 
-### Record *copy-update*: C♯ / F♯ / JS
+### Record _copy-update_: C♯ / F♯ / JS
 
 ```csharp
 // Record C♯ 9.0
@@ -278,11 +278,11 @@ address with { Street = "Rue Vivienne" }
 { ...address, street: "Rue Vivienne" }
 ```
 
-### *Copy-update* limits (< F# 8)
+### _Copy-update_ limits (< F# 8)
 
 Reduced readability with several nested levels
 
-```fs
+```fsharp
 type Street = { Num: string; Label: string }
 type Address = { Street: Street }
 type Person = { Address: Address }
@@ -298,9 +298,9 @@ let person' =
                     Num = person.Address.Street.Num + " bis" } } }
 ```
 
-### *Copy-update* : F# 8 improvements
+### _Copy-update_ : F# 8 improvements
 
-```fs
+```fsharp
 type Street = { Num: string; Label: string }
 type Address = { Street: Street }
 type Person = { Address: Address }

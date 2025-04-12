@@ -2,7 +2,7 @@
 
 ## 🕹️ Quiz wrap up
 
-```fs
+```fsharp
 // Match types with concepts (1 to many)
 type Color1 = int * int * int
 type Color2 = Red | Green | Blue
@@ -29,7 +29,7 @@ type Color7 =
 ### Answer
 
 | Types                                       | Concepts                                |
-|---------------------------------------------|-----------------------------------------|
+| ------------------------------------------- | --------------------------------------- |
 | `type Color1 = int * int * int`             | **H.** Tuple + **A.** Alias             |
 | `type Color2 = Red ∣ Green ∣ Blue`          | **G.** Union enum-like                  |
 | `type Color3 = Red=1 ∣ Green=2 ∣ Blue=3`    | **B.** Enum                             |
