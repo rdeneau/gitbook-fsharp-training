@@ -27,7 +27,7 @@
 
 ## Types
 
-* [Overview](types/1-overview)
+* [Overview](types/1-overview.md)
 * [Tuples](types/2-tuples.md)
 * [Records](types/3-records.md)
 * [Unions](types/4-unions.md)
