@@ -34,3 +34,10 @@
 * [Value types](types/7-value-types.md)
 * [📜 Recap](types/8-recap.md)
 * [Addendum](types/9-addendum.md)
+
+## Monadic types
+
+* [Intro](types-monadic/0-intro.md)
+* [Option](types-monadic/1-option.md)
+* [Result](types-monadic/2-result.md)
+* [Smart constructor](types-monadic/3-smart-constructor.md)
