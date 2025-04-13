@@ -1,8 +1,8 @@
 # Result type
 
-A.k.a `Either` *(Haskell)*
+A.k.a `Either` _(Haskell)_
 
-Models a *double-track* Success/Failure
+Models a _double-track_ Success/Failure
 
 ```fsharp
 type Result<'Success, 'Error> = // 2 generic parameters
@@ -10,37 +10,37 @@ type Result<'Success, 'Error> = // 2 generic parameters
     | Error of 'Error // Failure Track
 ```
 
-Functional way of dealing with business errors *(expected errors)*
+Functional way of dealing with business errors _(expected errors)_
 
-- Allows exceptions to be used only for exceptional errors
-- As soon as an operation fails, the remaining operations are not launched
+* Allows exceptions to be used only for exceptional errors
+* As soon as an operation fails, the remaining operations are not launched
 
-🔗 [*Railway-oriented programming (ROP)*](https://fsharpforfunandprofit.com/rop/)
+🔗 [_Railway-oriented programming (ROP)_](https://fsharpforfunandprofit.com/rop/)
 
-## Module `Result`
+## Result module
 
 Main functions:
 
-`map f result` : to map the success \
+`map f result` : to map the success\
 • `('T -> 'U) -> Result<'T, 'Error> -> Result<'U, 'Error>`
 
-`mapError f result` : to map the error \
+`mapError f result` : to map the error\
 • `('Err1 -> 'Err2) -> Result<'T, 'Err1> -> Result<'T, 'Err2>`
 
-`bind f result` : same as `map` with `f` returning a `Result` \
-• `('T -> Result<'U, 'Error>) -> Result<'T, 'Error> -> Result<'U, 'Error>` \
-• 💡 The result is flattened, like the `flatMap` function on JS arrays \
+`bind f result` : same as `map` with `f` returning a `Result`\
+• `('T -> Result<'U, 'Error>) -> Result<'T, 'Error> -> Result<'U, 'Error>`\
+• 💡 The result is flattened, like the `flatMap` function on JS arrays\
 • ⚠️ Same type of `'Error` for `f` and the input `result`.
 
 💡 **Since F♯ 7.0**, more functions have been added to the `Result` module, but some functions are missing compared to the `Option` module:
 
 | Result                           | Option                            | List                     |
-|----------------------------------|-----------------------------------|--------------------------|
+| -------------------------------- | --------------------------------- | ------------------------ |
 | `Ok value`                       | `Some value`                      | `[ value ]`              |
 | `Error err`                      | `None`                            | `[ ]`                    |
 | `Result.isOk` / `Result.isError` | `Option.isSome` / `Option.isNone` | × / `List.isEmpty`       |
 | `Result.contains okValue`        | `Option.contains someValue`       | `List.contains value`    |
-| `Result.count`                   | `Option.count`                    | `List.length` ❗ *(O(N))* |
+| `Result.count`                   | `Option.count`                    | `List.length` ❗ _(O(N))_ |
 | `Result.defaultValue value`      | `Option.defaultValue value`       | ×                        |
 | `Result.defaultWith defThunk`    | `Option.defaultWith defThunk`     | ×                        |
 | ×                                | `Option.filter predicate`         | `List.filter predicate`  |
@@ -58,8 +58,8 @@ Implement `Result.map` and `Result.bind`
 
 💡 **Tips:**
 
-- *Map* the *Success* track
-- Access the *Success* value using pattern matching
+* _Map_ the _Success_ track
+* Access the _Success_ value using pattern matching
 
 <details>
 
@@ -82,7 +82,7 @@ let bind f result =
 
 </details>
 
-## `Result`: Success/Failure tracks
+## Success/Failure tracks
 
 `map`: no track change
 
@@ -101,17 +101,17 @@ Success ─ Ok x    ─┬─► bind( x -> Ok y     ) ───► Ok y
 Failure ─ Error e ───► bind(     ....      ) ─┴─► Error ~
 ```
 
-☝ The *mapping/binding* operation is never executed in track Failure.
+☝ The _mapping/binding_ operation is never executed in track Failure.
 
-## `Result` *vs* `Option`
+## `Result` _vs_ `Option`
 
-`Option` can represent the result of an operation that may fail \
+`Option` can represent the result of an operation that may fail\
 ☝ But if it fails, the option doesn't contain the error, just `None`
 
-`Option<'T>` ≃ `Result<'T, unit>`
-→ `Some x` ≃ `Ok x`
-→ `None` ≃ `Error ()`
-→ See `Result.toOption` *(built-in)* and `Result.ofOption` *(below)*
+`Option<'T>` ≃ `Result<'T, unit>`\
+→ `Some x` ≃ `Ok x`\
+→ `None` ≃ `Error ()`\
+→ See `Result.toOption` _(built-in)_ and `Result.ofOption` _(below)_
 
 ```fsharp
 [<RequireQualifiedAccess>]
@@ -124,14 +124,14 @@ module Result =
 
 ### 📅 Dates
 
-- The `Option` type is part of F# from the get go
-- The `Result` type is more recent: introduced in F# 4.1 (2016)
+* The `Option` type is part of F# from the get go
+* The `Result` type is more recent: introduced in F# 4.1 (2016)
 
 ### 📝 Memory
 
-- The `Option` type (alias: `option`) is a regular union: a reference type
-- The `Result` type is a *struct* union: a value type
-- The `ValueOption` type (alias: `voption`) is a *struct* union: `ValueNone | ValueSome of 't`
+* The `Option` type (alias: `option`) is a regular union: a reference type
+* The `Result` type is a _struct_ union: a value type
+* The `ValueOption` type (alias: `voption`) is a _struct_ union: `ValueNone | ValueSome of 't`
 
 ### Example
 
@@ -165,15 +165,15 @@ printAnswerCheck "A";;  // A: ❌ Wrong Answer
 printAnswerCheck "B";;  // B: ✅ Correct
 ```
 
-## `Result` *vs* `Validation`
+## `Result` _vs_ `Validation`
 
 `Result` is "monadic": on the 1st error, we "unplug".
 
-`Validation` is "applicative": allows to accumulate errors
-→ ≃ `Result<'ok, 'error list>`
+`Validation` is "applicative": allows to accumulate errors\
+→ ≃ `Result<'ok, 'error list>`\
 → Handy for validating user input and reporting all errors
 
 🔗 **Ressources**
 
-- [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling)
-- [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/)
+* [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling)
+* [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/)

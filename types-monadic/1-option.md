@@ -124,6 +124,8 @@ let filter predicate option =  // (predicate: 'T -> bool) -> 'T option -> 'T opt
     | _ -> None                // 🎁 2. Implement `filter` with `bind`?
 ```
 
+</details>
+
 <details>
 
 <summary>Bonus questions</summary>
@@ -141,8 +143,6 @@ let map (f: 'T -> 'U) (option: 'T option) : 'U option =
 let filter predicate option =  // (predicate: 'T -> bool) -> 'T option -> 'T option
     option |> bind (fun x -> if predicate x then option else None)
 ```
-
-</details>
 
 </details>
 
