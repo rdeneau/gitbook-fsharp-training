@@ -32,4 +32,5 @@
 * [Enums](types/5-enums.md)
 * [Anonymous records](types/6-anonymous-records.md)
 * [Value types](types/7-value-types.md)
-* [📜 Synthesis](types/8-synthesis.md)
+* [📜 Recap](types/8-recap.md)
+* [Addendum](types/9-addendum.md)
