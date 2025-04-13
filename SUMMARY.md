@@ -40,4 +40,6 @@
 * [Intro](types-monadic/0-intro.md)
 * [Option type](types-monadic/1-option.md)
 * [Result type](types-monadic/2-result.md)
-* [Smart constructor](monadic-types/smart-constructor.md)
+* [Smart constructor](types-monadic/3-smart-constructor.md)
+* [🚀 Computation expression (CE)](types-monadic/4-computation-expression.md)
+* [🚀 CE theoretical basements](types-monadic/5-ce-basements.md)
