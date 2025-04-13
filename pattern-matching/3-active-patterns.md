@@ -1,4 +1,4 @@
-# 🚀 Active Patterns
+# Active patterns
 
 ## Pattern Matching Limits
 
@@ -6,26 +6,26 @@ Limited number of patterns
 
 Impossibility of factoring the action of patterns with their own guard
 
-- `Pattern1 when Guard1 | Pattern2 when Guard2 -> do` 💥
-- `Pattern1 when Guard1 -> do | Pattern2 when Guard2 -> do` 😕
+* `Pattern1 when Guard1 | Pattern2 when Guard2 -> do` 💥
+* `Pattern1 when Guard1 -> do | Pattern2 when Guard2 -> do` 😕
 
-Patterns are not 1st class citizens \
-*Ex: a function can't return a pattern* \
+Patterns are not 1st class citizens\
+&#xNAN;_&#x45;x: a function can't return a pattern_\
 → Just a kind of syntactic sugar
 
 Patterns interact badly with an OOP style
 
-## Origin of *Active Patterns*
+## Origin of _Active Patterns_
 
-> 🔗 [*Extensible pattern matching via a lightweight language extension*](https://www.microsoft.com/en-us/research/publication/extensible-pattern-matching-via-a-lightweight-language-extension/) \
+> 🔗 [_Extensible pattern matching via a lightweight language extension_](https://www.microsoft.com/en-us/research/publication/extensible-pattern-matching-via-a-lightweight-language-extension/)\
 > ℹ️ 2007 publication by Don Syme, Gregory Neverov, James Margetson
 
 Integrated into F♯ 2.0 (2010)
 
 💡 **Ideas**
 
-- Enable *pattern matching* on other data structures
-- Make these new patterns 1st class citizens
+* Enable _pattern matching_ on other data structures
+* Make these new patterns 1st class citizens
 
 ## Syntax
 
@@ -34,29 +34,24 @@ General syntax : `let (|Cases|) [arguments] valueToMatch = expression`
 1. **Function** with a special name defined in a "banana" `(|...|)`
 2. Set of 1..N **cases** in which to store `valueToMatch` parameter
 
-💡 Kind of *factory* function of an "anonymous" **union** type, defined *inline*
+💡 Kind of _factory_ function of an "anonymous" **union** type, defined _inline_
 
 ## Types
 
 There are 4 types of active patterns:
 
-| Name                       | Cases | Exhaustive | Parameters |
-|----------------------------|-------|------------|------------|
-| `1.  Simple    Total`      | 1     | ✅ Yes     | ❔ 0+      |
-| `2.  Multiple  Total`      | 2+    | ✅ Yes     | ❌ 0       |
-| `3.            Partial`    | 1     | ❌ No      | ❌ 0       |
-| `4.            Parametric` | 1     | ❌ No      | ✅ 1+      |
+<table><thead><tr><th width="277">Name</th><th width="136.09088134765625">Cases</th><th>Exhaustive</th><th>Parameters</th></tr></thead><tbody><tr><td><code>1.  Simple    Total</code></td><td>1</td><td>✅ Yes</td><td>❔ 0+</td></tr><tr><td><code>2.  Multiple  Total</code></td><td>2+</td><td>✅ Yes</td><td>❌ 0</td></tr><tr><td><code>3.            Partial</code></td><td>1</td><td>❌ No</td><td>❌ 0</td></tr><tr><td><code>4.            Parametric</code></td><td>1</td><td>❌ No</td><td>✅ 1+</td></tr></tbody></table>
 
 💡 _Partial_ and _total_ indicate the feasibility of "placing the input value in the box(es)"
 
-- **Partial**: there is not always a corresponding box
-- **Total**: there is always a corresponding box → exhaustive pattern
+* **Partial**: there is not always a corresponding box
+* **Total**: there is always a corresponding box → exhaustive pattern
 
 ### Simple total active pattern
 
-*A.k.a Single-case Total Pattern*
+_A.k.a Single-case Total Pattern_
 
-Syntax: `let (|Case|) [...parameters] value = Case [data]` \
+Syntax: `let (|Case|) [...parameters] value = Case [data]`\
 Usage: on-site value adjustment
 
 ```fsharp
@@ -69,7 +64,8 @@ let (NotNullOrEmpty a) = "abc" // val a: string = "abc"
 let (NotNullOrEmpty b) = null  // val b: string = ""
 ```
 
-Can accept **parameters** → ⚠️ usually more difficult to understand
+Can accept **parameters** \
+⚠️ Usually more difficult to understand
 
 ```fsharp
 /// Get the value in the given option if there is some, otherwise the specified default value
@@ -104,9 +100,9 @@ let multiply' (x: System.Numerics.Complex) (y: System.Numerics.Complex) =
 
 ### Active pattern total multiple
 
-*A.k.a Multiple-case Total Pattern*
+_A.k.a Multiple-case Total Pattern_
 
-Syntax: `let (|Case1|...|CaseN|) value = CaseI [dataI]`
+Syntax: `let (|Case1|...|CaseN|) value = CaseI [dataI]`\
 ☝ No parameters❗
 
 ```fsharp
@@ -126,8 +122,8 @@ let hasSquare square value =                        ┆  let hasSquare' square v
 
 Partial active pattern
 
-Syntax: `let (|Case|_|) value = Some Case | Some data | None` \
-→ Returns the type `'T option` if *Case* includes data, otherwise `unit option` \
+Syntax: `let (|Case|_|) value = Some Case | Some data | None`\
+→ Returns the type `'T option` if _Case_ includes data, otherwise `unit option`\
 → Pattern matching is non-exhaustive → a default case is required
 
 ```fsharp
@@ -175,8 +171,8 @@ module Parsing =
 
 💡 To see how much more readable the code is, let's write a more low-level version of `tryParseBoolean` where we see:
 
-- Nesting `match` expressions
-- Difficulty reading lines 6 and 7 due to double Booleans (`true..false`, `true..true`)
+* Nesting `match` expressions
+* Difficulty reading lines 6 and 7 due to double Booleans (`true..false`, `true..true`)
 
 {% code lineNumbers="true" %}
 ```fsharp
@@ -195,7 +191,7 @@ module Parsing =
 
 Syntax: `let (|Case|_|) ...arguments value = Some Case | Some data | None`
 
-**Example 1: leap year**
+**Example 1: leap year**\
 → Year multiple of 4 but not 100 except 400
 
 ```fsharp
@@ -260,14 +256,14 @@ Partial simple | let (|Case|_|)                x |                     'T -> 'U 
 
 ## Understanding an active pattern
 
-> Understanding how to use an active pattern \
-> can be a real **intellectual challenge**! 😵
+> Understanding how to use an active pattern...\
+> ...can be a real **intellectual challenge**! 😵
 
 👉 Explanations using the previous examples...
 
 ### Understanding a total active pattern
 
-≃ *factory* function of an "anonymous" union type
+≃ _factory_ function of an "anonymous" union type
 
 ```fsharp
 // -- Single-case ----
@@ -290,27 +286,25 @@ printParity 10;; // 10 is even
 
 ### Understanding a partial active pattern
 
-☝ Distinguish parameters *(input)* from data *(output)*
+☝ Distinguish parameters _(input)_ from data _(output)_
 
 Examine the active pattern signature: `[...params ->] value -> 'U option`
 
-- **N-1 parameters:** active pattern parameters
-- **Last parameter:** `value` to match
-- **Return type:** `'U option` → data of type `'U`
-  - when `unit option` → no data
+* **N-1 parameters:** active pattern parameters
+* **Last parameter:** `value` to match
+* **Return type:** `'U option` → data of type `'U`
+  * when `unit option` → no data
 
 → Examples
 
 1. `let (|Integer|_|) (s: string) : int option`
-   - Usage `match s with Integer i` → `i: int` is the output data
-
+   * Usage `match s with Integer i` → `i: int` is the output data
 2. `let (|DivisibleBy|_|) (factor: int) (x: int) : unit option`
-   - Usage `match year with DivisibleBy 400` → `400` is the `factor` parameter
-
+   * Usage `match year with DivisibleBy 400` → `400` is the `factor` parameter
 3. `let (|Regexp|_|) (pattern: string) (value: string) : string list option`
-   - Usage `match s with Regexp "#([0-9...)" [ r; g; b ]`
-     - `"#([0-9...)"` is the `pattern` parameter
-     - `[ r; g; b ]` is the output data • It's a nested pattern: a list of 3 strings
+   * Usage `match s with Regexp "#([0-9...)" [ r; g; b ]`
+     * `"#([0-9...)"` is the `pattern` parameter
+     * `[ r; g; b ]` is the output data • It's a nested pattern: a list of 3 strings
 
 ## Exercice : fizz buzz with active pattern
 
@@ -380,14 +374,14 @@ let fizzBuzz = function
     | other -> string other
 ```
 
-- The 2 solutions are equal. It's a matter of style / personal taste.
-- In F♯ 9, no need to do `|> boolToOption`.
+* The 2 solutions are equal. It's a matter of style / personal taste.
+* In F♯ 9, no need to do `|> boolToOption`.
 
 ## Active patterns use cases
 
-1. Factor a guard *(see previous fizz buzz exercise)*
-2. Wrapping a BCL method *(see `(|Regexp|_|)` and below)*.
-3. Improve expressiveness, help to understand logic *(see below)*
+1. Factor a guard _(see previous fizz buzz exercise)_
+2. Wrapping a BCL method _(see `(|Regexp|_|)` and below)_.
+3. Improve expressiveness, help to understand logic _(see below)_
 
 ```fsharp
 [<RequireQualifiedAccess>]
@@ -436,7 +430,8 @@ let topAnimes =
 
 ## Active pattern: 1st class citizen
 
-An active pattern ≃ function with metadata → 1st class citizen in F#
+An active pattern ≃ function with metadata \
+→ 1st class citizen in F♯
 
 ```fsharp
 // 1. Return an active pattern from a function
