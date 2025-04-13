@@ -1,6 +1,20 @@
-# Answers
+---
+description: 6 questions to test your memory
+---
 
-## 1. Who is the father of the F♯ ?
+# 🍔 Quiz
+
+## 1. Who is the father of the F♯? ⏱ 10’’
+
+**A.** Anders Hejlsberg
+
+**B.** Don Syme
+
+**C.** Scott Wlaschin
+
+<details>
+
+<summary>Answer</summary>
 
 **A.** Anders Hejlsberg ❌
 
@@ -14,7 +28,21 @@
 
 → Famous blog [F♯ for Fun and Profit](https://fsharpforfunandprofit.com/), a gold mine for F♯
 
-## 2. What is the name of the `::` operator?
+</details>
+
+***
+
+## 2. What is the name of the `::` operator? ⏱ 10’’
+
+**A.** Append
+
+**B.** Concat
+
+**C.** Cons
+
+<details>
+
+<summary>Answer</summary>
 
 **A.** Append ❌
 
@@ -28,7 +56,21 @@
 
 `newItem :: list` is the fasted way to add an item at the top of a list
 
-## 3. Find the intruder!
+</details>
+
+***
+
+## 3. Find the intruder! ⏱ 15’’
+
+**A.** `let a = "a"`
+
+**B.** `let a () = "a"`
+
+**C.** `let a = fun () -> "a"`
+
+<details>
+
+<summary>Answer</summary>
 
 B and C are functions, while A is a simple value: a `string`.
 
@@ -38,7 +80,24 @@ B and C are functions, while A is a simple value: a `string`.
 
 **C.** `let a = fun () -> "a"` ❌
 
-## 4. What line does not compile?
+</details>
+
+***
+
+## 4. What line does not compile? ⏱ 20’’
+
+{% code lineNumbers="true" %}
+```fsharp
+ let evens list =
+     let isEven x =
+     x % 2 = 0
+     List.filter isEven list
+```
+{% endcode %}
+
+<details>
+
+<summary>Answer</summary>
 
 <pre class="language-fsharp" data-line-numbers><code class="lang-fsharp"> let evens list =
      let isEven x =
@@ -48,7 +107,23 @@ B and C are functions, while A is a simple value: a `string`.
 
 Line **3.** `x % 2 = 0` : an indentation is missing
 
-## 5. What is the name of `|>` operator?
+</details>
+
+***
+
+## 5. What is the name of `|>` operator? ⏱ 10’’
+
+**A.** Compose
+
+**B.** Chain
+
+**C.** Pipeline
+
+**D.** Pipe
+
+<details>
+
+<summary>Answer</summary>
 
 **A.** Compose ❌ - Composition operator is `>>` 📍
 
@@ -58,17 +133,29 @@ Line **3.** `x % 2 = 0` : an indentation is missing
 
 **D.** Pipe ✅
 
-## 6. Which expression compiles?
+</details>
 
-**A.** `a == "a" && b != ""` ❌
+***
 
-**B.** `a == "a" && b <> ""` ❌
+## 6. Which expression compiles? ⏱ 20’’
+
+**A.** `a == "a" && b != "*"`
+
+**B.** `a == "a" && b <> "*"`
+
+**C.** `a = "a" && b <> "*"`
+
+**D.** `a = "a" && b != "*"`
+
+<details>
+
+<summary>Answer</summary>
 
 **C.** `a = "a" && b <> ""` ✅
-
-**D.** `a = "a" && b != ""` ❌
 
 | Operator   | C♯             | F♯             |
 |------------|----------------|----------------|
 | Equality   | `==`           | `=`            |
 | Inequality | `!=` (`!` `=`) | `<>` (`<` `>`) |
+
+</details>

@@ -1,5 +1,5 @@
 ---
-description: 6 questions to test your memory
+description: 7 questions to apply what we've seen regarding functions
 ---
 
 # 🍔 Quiz

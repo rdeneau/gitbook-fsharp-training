@@ -4,14 +4,13 @@
 
 ## Fundamentals
 
-* [Introduction](fundamentals/README.md)
-* [Syntax](fundamentals/syntax/README.md)
+* [Introduction](fundamentals/1-intro.md)
+* [Syntax](fundamentals/2-syntax.md)
   * [Bases](fundamentals/syntax/1-bases.md)
   * [Functions](fundamentals/syntax/2-functions.md)
   * [Rules](fundamentals/syntax/3-rules.md)
-* [First concepts](fundamentals/first-concepts.md)
-* [🍔 Quiz](fundamentals/quiz/README.md)
-  * [Answers](fundamentals/quiz/answers.md)
+* [First concepts](fundamentals/3-first-concepts.md)
+* [🍔 Quiz](fundamentals/4-quiz.md)
 
 ## Functions
 
@@ -21,7 +20,7 @@
 * [Standard functions](functions/4-standard.md)
 * [Operators](functions/5-operators.md)
 * [Addendum](functions/6-addendum.md)
-* [🍔 Quiz](functions/quiz.md)
+* [🍔 Quiz](functions/7-quiz.md)
 * [📜 Summary](functions/8-summary.md)
 
 ## Types

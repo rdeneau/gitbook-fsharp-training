@@ -178,7 +178,7 @@ let helperKO instruction source =
 let helperOk instruction (source: string) = [...]
 // Type annotation needed here  : ^^^^^^
 
-// If there is a function equalivalent to the method, it will work
+// If there is a function equivalent to the method, it will work
 let info list = if list.Length = 0 then "Vide" else "..." // 💥 Error FS0072...
 let info list = if List.length list = 0 then "Vide" else $"{list.Length} éléments" // 👌
 ```
@@ -196,4 +196,4 @@ let listOk = ["three"; "two"; "one"] |> List.sortBy (fun x -> x.Length)
 let listOk' = List.sortBy String.length ["three"; "two"; "one"]
 ```
 
-[^1]: with no side-effects
+[^1]: **pure** means with no side-effects
