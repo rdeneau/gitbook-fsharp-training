@@ -48,3 +48,4 @@
 ## Pattern matching
 
 * [Patterns](pattern-matching/1-patterns.md)
+* [Match expression](pattern-matching/2-match-expression.md)
