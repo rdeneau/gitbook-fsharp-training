@@ -1,40 +1,35 @@
 # 🚀 Computation expression (CE)
 
-## Computation expression
+Syntactic sugar hiding a "machinery"
 
-Sucre syntaxique cachant une « machinerie »
+- Applies the *Separation of Concerns* principle
+- Code should be more readable inside the *computation expression*
 
-* Applique la _Separation of Concerns_
-* Code + lisible à l'intérieur de la _computation expression_ (CE)
+Syntax: `builder { expr }`
 
-Syntaxe : `builder { expr }`
+- `builder` instance of a "Builder" 📍
+- `expr` can contain `let`, `let!`, `do!`, `yield`, `yield!`, `return`, `return!`
 
-* `builder` instance d'un [#builder](computation-expression-ce.md#builder "mention")📍
-* `expr` peut contenir `let`, `let!`, `do!`, `yield`, `yield!`, `return`, `return!`
-
-💡 **Note :** `seq`, `async` et `task` sont des CE
+💡 **Note:** `seq`, `async` and `task` are computation expressions baked into the language.
 
 ## Builder
 
-Une _computation expression_ s'appuie sur un objet appelé _Builder_. → Cet objet permet éventuellement de stocker un état en _background_.
+A *computation expression* relies on an object called *Builder*. This object can be used to store a background state.
 
-Pour chaque mot-clé supporté (`let!`, `return`...), le _Builder_ implémente une ou plusieurs méthodes associées. Exemples :
+For each supported keyword (`let!`, `return`...), the *Builder* implements one or more related methods. Examples:
 
-* `builder { return expr }` \
-  → `builder.Return(expr)`
-* `builder { let! x = expr; cexpr }` \
-  → `builder.Bind(expr, (fun x -> {| cexpr |}))`
+- `builder { return expr }` → `builder.Return(expr)`
+- `builder { let! x = expr; cexpr }` → `builder.Bind(expr, (fun x -> {| cexpr |}))`
 
-Le _builder_ peut également wrappé le résultat dans un type qui lui est propre :
+The *builder* can also wrap the result in a type of its own:
 
-* `async { return x }` renvoie un type `Async<'X>`
-* `seq { yield x }` renvoie un type `Seq<'X>`
+- `async { return x }` returns an `Async<'X>`
+- `seq { yield x }` returns a `Seq<'X>`
 
 ## Builder desugaring
 
-Le compilateur opère la traduction vers les méthodes du _builder_.
-
-→ La CE masque la complexité de ces appels, souvent imbriqués :
+The compiler translates to the *builder* methods. \
+→ The CE hides the complexity of these calls, which are often nested:
 
 ```fsharp
 seq {
@@ -42,17 +37,17 @@ seq {
         yield n
         yield n * 10 }
 
-// Traduit en :
+// Desugared as:
 seq.For(list, fun () ->
     seq.Combine(seq.Yield(n),
                 seq.Delay(fun () -> seq.Yield(n * 10)) ) )
 ```
 
-## Exemples
+## Examples
 
 ### `logger`
 
-Besoin : logguer les valeurs intermédiaires d'un calcul
+Need: log the intermediate values of a calculation
 
 ```fsharp
 let log value = printfn $"{value}"
@@ -67,12 +62,27 @@ let loggedCalc =
     z
 ```
 
-**Problèmes** ⚠️
+⚠️ **Issues**
 
-1. Verbeux : les `log x` gênent lecture
-2. _Error prone_ : oublier un `log`, logguer mauvaise valeur...
+1. Verbose: the `log x` interfere with reading
+2. *Error prone*: forget a `log`, log wrong value...
 
-💡 Rendre les logs implicites dans une CE lors du `let!` / `Bind` :
+```fsharp
+let log value = printfn $"{value}"
+
+let loggedCalc =
+    let x = 42
+    log x  // ❶
+    let y = 43
+    log y  // ❶
+    let z = x + y
+    log z  // ❶
+    z
+```
+
+💡 **Solutions**
+
+Make logs implicit in a CE when `let!` / `Bind` :
 
 ```fsharp
 type LoggingBuilder() =
@@ -92,9 +102,11 @@ let loggedCalc = logger {
 }
 ```
 
+☝️ Each time we do a `let! var = value` in the `logger` CE, the `value` is printed in the console and is bound to `var`.
+
 ### `maybe`
 
-Besoin : simplifier enchaînement de "trySomething" renvoyant une `Option`
+Need: simplify the sequence of "trySomething" returning an `Option`
 
 ```fsharp
 let tryDivideBy bottom top = // (bottom: int) -> (top: int) -> int option
@@ -102,14 +114,14 @@ let tryDivideBy bottom top = // (bottom: int) -> (top: int) -> int option
     then None
     else Some (top / bottom)
 
-// Sans CE
+// W/o CE
 let division =
     36
     |> tryDivideBy 2                // Some 18
     |> Option.bind (tryDivideBy 3)  // Some 6
     |> Option.bind (tryDivideBy 2)  // Some 3
 
-// Avec CE
+// With CE
 type MaybeBuilder() =
     member _.Bind(x, f) = x |> Option.bind f
     member _.Return(x) = Some x
@@ -124,19 +136,21 @@ let division' = maybe {
 }
 ```
 
-**Bilan :** ✅ Symétrie, ❌ Valeurs intermédiaires
+**Result:** ✅ Symmetry, ❌ Intermediate values
 
-## Limites
+## Limits
 
-### Imbrication de CE
+### nested CEs
 
-✅ On peut imbriquer des CE différentes ❌ Mais code devient difficile à comprendre
+✅ Different CEs can be nested
+❌ But code becomes difficult to understand
 
-Exemple : combiner `logger` et `maybe` ❓
+Example: combining `logger` and `maybe` ❓
 
-Solution alternative :
+Alternative solution 🚀🚀:
 
 ```fsharp
+// Define an operator for `bind`
 let inline (>>=) x f = x |> Option.bind f
 
 let logM value = printfn $"{value}"; Some value  // 'a -> 'a option
@@ -147,9 +161,10 @@ let division' =
       >>= tryDivideBy 2 >>= logM
 ```
 
-### Combinaison de CE
+### Combining CEs
 
-Combiner `Async` + `Option`/`Result` ? → Solution : CE `asyncResult` + helpers dans [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling/#a-motivating-example)
+How to combine `Async` + `Option`/`Result` ? \
+→ `asyncResult` CE + helpers in [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling/#a-motivating-example)
 
 ```fsharp
 type LoginError =
@@ -160,13 +175,14 @@ let login username password =
     asyncResult {
         // tryGetUser: string -> Async<User option>
         let! user = username |> tryGetUser |> AsyncResult.requireSome InvalidUser
+
         // isPasswordValid: string -> User -> bool
         do! user |> isPasswordValid password |> Result.requireTrue InvalidPassword
+
         // authorize: User -> Async<Result<unit, AuthError>>
         do! user |> authorize |> AsyncResult.mapError Unauthorized
+
         // createAuthToken: User -> Result<AuthToken, TokenError>
         return! user |> createAuthToken |> Result.mapError TokenErr
     } // Async<Result<AuthToken, LoginError>>
 ```
-
-##
