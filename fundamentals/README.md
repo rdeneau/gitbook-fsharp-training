@@ -12,13 +12,13 @@ Microsoft language family on the **.NET** platform
 
 Multi-paradigm language **Functional-first** and very concise
 
-Whereas C♯ is imperative/objective-oriented-first and rather verbose \
-_(even if it's inspired by F♯ to become more succinct and functional)_
+Whereas C♯ is imperative/objective-oriented-first and rather verbose\
+&#xNAN;_(even if it's inspired by F♯ to become more succinct and functional)_
 
 ## History
 
 | Date | C♯         | F♯         | .NET               | Visual Studio |
-|------|------------|------------|--------------------|---------------|
+| ---- | ---------- | ---------- | ------------------ | ------------- |
 | 2002 | C♯ 1.0     |            | .NET Framework 1.0 | VS .NET 2002  |
 | 2005 | C♯ 2.0     | **F♯ 1.x** | .NET Framework ?.? | VS 2005       |
 | 2007 | **C♯ 3.0** |            | .NET Framework 3.5 | VS 2008       |
@@ -33,7 +33,7 @@ _(even if it's inspired by F♯ to become more succinct and functional)_
 
 ## Editors / IDE
 
-* VsCode + [Ionide](https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp) \
+* VsCode + [Ionide](https://marketplace.visualstudio.com/items?itemName=Ionide.Ionide-fsharp)\
   → ☝ More a boosted text editor than a full IDE\
   → ☝ Permissive: does not always report all compilation errors\
   → 🔗 [Fantastic F♯ and Azure Developer Extensions for VSCode](https://www.compositional-it.com/news-blog/fantastic-f-and-azure-developer-extensions-for-vscode/) by Compositional IT

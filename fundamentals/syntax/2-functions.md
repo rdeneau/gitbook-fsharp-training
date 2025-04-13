@@ -1,4 +1,4 @@
-# Syntax: Functions
+# Functions
 
 ## Named functions
 
@@ -33,7 +33,7 @@ let res = add 1 2    // val res: int = 3
 ```
 
 {% hint style="warning" %}
-## Inference
+### Inference
 
 The inference of the `add` function can be confusing: the `+` works for any numbers and for strings too, but `add` is limited to `int`! To get it work, we need to write `let inline add ...`\
 → Related to a special kind of generics: statically resolved type parameters (SRTP) 📍
@@ -65,7 +65,7 @@ let notAFunction = printfn "Hello"
 
 ### Multi-line function
 
-**Indentation** required, but no need for `{}` \
+**Indentation** required, but no need for `{}`\
 Can contain sub-function
 
 ```fsharp
@@ -131,9 +131,9 @@ let compose f g = fun x -> g (f x)
 
 ## Piping
 
-_Pipe_ operator `|>` : same idea that in UNIX with `|` \
-→ `value |> function` send a value to a function \
-→ match left-to-right reading order: "subject verb" \
+_Pipe_ operator `|>` : same idea that in UNIX with `|`\
+→ `value |> function` send a value to a function\
+→ match left-to-right reading order: "subject verb"\
 → same order than with OOP: object.method
 
 ```fsharp
@@ -152,10 +152,10 @@ var evens = nums.Where(x => x % 2 == 0);
 
 ### Pipeline: chain of pipings
 
-Style of coding to emphasize the data flowing from functions to functions
+Style of coding to emphasize the data flowing from functions to functions\
 → without intermediary variable 👍
 
-Similar to a built-in *fluent API*
+Similar to a built-in _fluent API_\
 → no need to return the object at the end of each method 👍
 
 ```fsharp

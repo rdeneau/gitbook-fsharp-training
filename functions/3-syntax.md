@@ -1,4 +1,4 @@
-# Functions
+# Syntax
 
 ## Declaration
 
@@ -87,7 +87,7 @@ let add: Add =
 ```
 
 {% hint style="info" %}
-### Parameter naming
+#### Parameter naming
 
 * We can't provide the names of the parameters in the type alias. ❌
 * But the parameters are named in the function signature. 👍
@@ -152,7 +152,7 @@ let ouiNon =
 ```
 
 {% hint style="info" %}
-### A matter of taste
+#### A matter of taste
 
 * For fans of point-free 📍
 * More generally, in a succession of _pipes_ `arg |> f1 |> function ... |> f2...`\
@@ -207,7 +207,7 @@ let f (x, y, z) = ...
   * Loss of partial application of each element of the tuple.
 
 {% hint style="success" %}
-### ☝ **Conclusion**
+#### ☝ **Conclusion**
 
 * Resist the temptation to use a tuple all the time _(because it's familiar, a habit from C♯)_
 * Use it only when it makes sense to group parameters together.
@@ -258,7 +258,7 @@ let steps (number: int) : int =
 {% hint style="info" %}
 Notes
 
-1. `TailCall`  attribute was added in F♯ 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
+1. `TailCall` attribute was added in F♯ 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
 2. `loop` is a name idiomatic for this type of recursive sub-function.
 3. At lines 5 and 6, we see that now the recursive calls to `loop` are really the last call, hence the tail recursion.
 4. We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
@@ -293,7 +293,7 @@ and Odd x =             // 👈 Keyword `and`
 
 Example:
 
-* `List.map  (mapping:                 'T -> 'U) (items: 'T list) : 'U list`
+* `List.map (mapping: 'T -> 'U) (items: 'T list) : 'U list`
 * `List.mapi (mapping: (index: int) -> 'T -> 'U) (items: 'T list) : 'U list`
 
 ## Template function

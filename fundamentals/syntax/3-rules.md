@@ -1,4 +1,4 @@
-# Syntax: Rules
+# Rules
 
 ## Declarations order
 
@@ -67,13 +67,13 @@ There are some exceptions to this rule, for instance with operators.\
 ### Recommendations
 
 * In temporary `fsx`, speed to write code is usually more important than code readability. F♯ allows us some inconsistency and that's fine.
-* In `fsproj`,  proper and consistent formatting is important for maintainability.\
+* In `fsproj`, proper and consistent formatting is important for maintainability.\
   → Use consistently only spaces (no ~~tabulations~~)\
-  → Use the same number of spaces for all indentation level, 4 spaces being idiomatic. The number spaces can vary only to fit the vertical indentation line _(see details below)._ \
+  → Use the same number of spaces for all indentation level, 4 spaces being idiomatic. The number spaces can vary only to fit the vertical indentation line _(see details below)._\
   → Avoid naming-sensible indentation a.k.a _Vanity Alignment_ (\*) :\
-     •  They can break compilation after a renaming.\
-     •  Blocks too far at the right is less readable for a left-to-right language reader.\
-  _→_ Use a code formatter like [**Fantomas**](https://github.com/fsprojects/fantomas) to ensure this consistency.
+  • They can break compilation after a renaming.\
+  • Blocks too far at the right is less readable for a left-to-right language reader.\
+  &#xNAN;_→_ Use a code formatter like [**Fantomas**](https://github.com/fsprojects/fantomas) to ensure this consistency.
 
 (\*) _Vanity alignment_ example:
 

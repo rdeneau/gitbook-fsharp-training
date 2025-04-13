@@ -172,7 +172,7 @@ let canSendEmailTo person =  // Person -> bool
 
 Behaviors/operations implementation:
 
-* **OO:** _virtual methods_ in separated classes
+* **OO:** _virtual methods_ in separate classes
 * **FP:** _functions_ relying on **pattern matchings**
   * exhaustivity
   * avoid duplication by grouping cases
@@ -182,8 +182,8 @@ Behaviors/operations implementation:
 
 **How we reason about the code** _(at both design and reading time)_
 
-* **FP: by functions** → how an operation is performed for the different cases
-* **OOP: by objects** → how all operations are performed for a single case
+* **FP:&#x20;**_**by functions**_ → how an operation is performed for the different cases
+* **OO:&#x20;**_**by objects**_ → how all operations are performed for a single case
 
 **Abstraction**
 
@@ -195,9 +195,9 @@ Behaviors/operations implementation:
 
 ### FP _vs_ OOP: Open-Closed Principle
 
-It's easier to extend what's **Open.**
+It's easier to **extend** what's **open.**
 
-**OOP:** open hierarchy, closed operations
+**OO:** open hierarchy, closed operations
 
 * Painful to add an operation: in all classes 😓
 * Easy to add a class in the hierarchy 👍

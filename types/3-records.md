@@ -135,7 +135,7 @@ type PostalAddress = {
     member x.CityAndZip = $"%s{x.City}, %s{x.Zip}"
 ```
 
-## Record expression for instanciation
+## Conostruction: _record expression_
 
 * Same syntax as an anonymous C♯ object without the `new` keyword
 * All fields must be populated, but in any order (but can be confusing)
@@ -156,7 +156,7 @@ let pointKo = { Y = 2.0 }           // 💥 Error FS0764
 
 * Fields are accessible by "dotting" into the object
 * Alternative: deconstruction
-  * Same syntax for deconstructing a _Record_ as for instantiating it 👍
+  * Same syntax for deconstructing a _Record_ as for creating it 👍
   * Unused fields can be ignored 💡
 
 ```fsharp
@@ -244,7 +244,7 @@ let { Person1.Last = lastName } = alice     // 💥 Error FS0001
 //                                ~~~~~ Type 'Person1' expected, 'Person2' given
 ```
 
-## Modification
+## Modification: _copy and update_
 
 Record is immutable, but easy to get a modified copy\
 → **copy and update** expression of a _Record_\
@@ -261,7 +261,7 @@ let address3 =
         Zip  = "69001" }
 ```
 
-### Record _copy-update_: C♯ / F♯ / JS
+### _Copy and update_: C♯ _vs_ F♯ _vs_ JS
 
 ```csharp
 // Record C♯ 9.0
@@ -278,7 +278,7 @@ address with { Street = "Rue Vivienne" }
 { ...address, street: "Rue Vivienne" }
 ```
 
-### _Copy-update_ limits (< F# 8)
+### _Copy and update_ limits (< F♯ 8)
 
 Reduced readability with several nested levels
 
@@ -298,7 +298,7 @@ let person' =
                     Num = person.Address.Street.Num + " bis" } } }
 ```
 
-### _Copy-update_ : F# 8 improvements
+### _Copy and update_: F♯ 8 improvements
 
 ```fsharp
 type Street = { Num: string; Label: string }
@@ -312,4 +312,8 @@ let person' =
         Person.Address.Street.Num = person.Address.Street.Num + " bis" }
 ```
 
-☝️ Usually we have to qualify the field: see `Person.`
+{% hint style="warning" %}
+#### Qualification
+
+Usually, we have to qualify the field to avoid a compilation error: see `Person.Address`.
+{% endhint %}

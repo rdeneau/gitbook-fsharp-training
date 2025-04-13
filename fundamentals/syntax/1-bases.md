@@ -1,4 +1,4 @@
-# Syntax: Bases
+# Bases
 
 ## Comments
 
@@ -66,7 +66,7 @@ let result = collector.Close()
 ## Names
 
 * Same constraints on variable naming than in C♯
-* ... except the apostrophe `'`  _(tick)_
+* ... except the apostrophe `'` _(tick)_
   * allowed in the middle or at the end of the name, but not at the beginning!
   * at the end of the name → indicates a variant _(code convention)_
 * Between double _backticks_
@@ -85,7 +85,7 @@ let ``123 456`` = "123 456"
 
 ## _Shadowing_
 
-* Use to redefine a value with a name already used above \
+* Use to redefine a value with a name already used above\
   → The previous value is no longer accessible in the current scope
 * Not allowed at `module` level but allowed in a sub-scope
 * Convenient but can be misleading\
@@ -127,7 +127,7 @@ let mutable z2: int
 * _What:_ Variable erased during compilation, every usage is replaced by the value
   * ≃ `const` C♯ - same idea than `const enum` in TypeScript
 * _How:_ Value decorated with the `Literal` attribute\
-  ⚠️ Attributes are between `[< >]` \
+  ⚠️ Attributes are between `[< >]`\
   → It's a frequent beginner error to use `[ ]` _(like in C♯)_
 * Recommended naming convention : PascalCase
 
@@ -277,17 +277,15 @@ let a =
 ```
 
 ⚠️ **Trap:** using `,` to separate items\
-  E.g. `[ 1, 2 ]`  compiles but it is not a list of 2 items! \
-  It's a list of 1 item, a tuple of 2 elements! 📍
+E.g. `[ 1, 2 ]` compiles but it is not a list of 2 items!\
+It's a list of 1 item, a tuple of 2 elements! 📍
 
 ☝ **ML style type annotation:** `int list` = `List<int>`\
 → Idiomatic only for some `FSharp.Core` types: `array`, `list`, `option` 📍
 
 ### List operators
 
-`::`  _Cons_ _(for "construction")_: add an item to the top of the list
-`..` _Range_ of numbers between `min..max` *(included)* or `min..step..max`
-`@`  _Append_ 2 lists
+`::` _Cons_ _(for "construction")_: add an item to the top of the list`..` _Range_ of numbers between `min..max` _(included)_ or `min..step..max@`  _Append_ 2 lists
 
 ```fsharp
 let ints = [2..5]                 // val ints : int list = [2; 3; 4; 5]
@@ -303,8 +301,7 @@ let e = chars'[4]                 // val e: char = 'e'
 
 ### Arrays
 
-Mutable fixed-size collections of elements of the same type.
-`array 't` = `'t[]`: BCL type
+Mutable fixed-size collections of elements of the same type.`array 't` = `'t[]`: BCL type
 
 Creation with `[||]` • Items separated by `;` or line breaks + indentation
 
@@ -322,8 +319,7 @@ let a2 =
 
 ### Sequences
 
-Series of elements of the same type
-`'t seq` = alias for `System.Collections.Generic.IEnumerable<'t>` BCL type
+Series of elements of the same type`'t seq` = alias for `System.Collections.Generic.IEnumerable<'t>` BCL type
 
 Creation with `seq { }`
 
@@ -348,7 +344,7 @@ Each type has its own module containing dedicated functions.
 Common functions:
 
 | F♯ collections     | C♯ LINQ (`IEnumerable<_>`) | JS `Array`           |
-|--------------------|----------------------------|----------------------|
+| ------------------ | -------------------------- | -------------------- |
 | `map`, `collect`   | `Select()`, `SelectMany()` | `map()`, `flatMap()` |
 | `exists`, `forall` | `Any(predicate)`, `All()`  | `some()`, `every()`  |
 | `filter`           | `Where()`                  | `filter()`           |

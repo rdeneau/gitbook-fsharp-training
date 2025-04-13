@@ -17,11 +17,9 @@
 * **Conciseness**: less visual clutters → more readable
 * **Composability**: composing expressions is like composing values
 * **Understanding**: no need to know the previous instructions to understand the current one
-* **Testability**: pure expressions[^pure] are easier to test
+* **Testability**: pure expressions[^1] are easier to test
   * _Predictable_: same inputs mean same outputs
   * _Isolated_: shorter _Arrange/Setup_ phase in tests, no need for mocks
-
-[^pure]: with no side-effects
 
 ## Everything is an expression
 
@@ -32,7 +30,7 @@
   * `for … in`, `for … to`, `while … do` just return "nothing" (2)
 
 {% hint style="info" %}
-### Notes
+#### Notes
 
 * (1) See _1st-class citizens, high-order functions_ 📍
 * (2) Except in _collection comprehensions_ 📍
@@ -40,7 +38,7 @@
 
 **Consequences**
 
-* No `void` \
+* No `void`\
   → Best replaced by the `unit` type 📍
 * No _**Early Exit**_
   * In C#, you can exit a function with `return` and exit a `for/while` loop with `break`.
@@ -86,17 +84,7 @@ let test2 = firstOr -1 (fun x -> x > 5) [1; 6]  // 6
 
 The ceremony is correlated to the typing weakness
 
-<table>
-  <thead>
-    <tr><th width="146">Language</th><th>Typing strength</th><th>Inference strength</th><th>Ceremony</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>JS</td><td>Low <br><em>(dynamic typing)</em></td><td>×</td><td>Low</td></tr>
-    <tr><td>C♯</td><td>Medium (static nominal)</td><td>Low</td><td>High</td></tr>
-    <tr><td>TS</td><td>Strong (static structural + ADT)</td><td>Medium</td><td>Medium</td></tr>
-    <tr><td>F♯</td><td>Strong (static nominal + ADT)</td><td>High</td><td>Low</td></tr>
-  </tbody>
-</table>
+<table><thead><tr><th width="146">Language</th><th>Typing strength</th><th>Inference strength</th><th>Ceremony</th></tr></thead><tbody><tr><td>JS</td><td>Low<br><em>(dynamic typing)</em></td><td>×</td><td>Low</td></tr><tr><td>C♯</td><td>Medium (static nominal)</td><td>Low</td><td>High</td></tr><tr><td>TS</td><td>Strong (static structural + ADT)</td><td>Medium</td><td>Medium</td></tr><tr><td>F♯</td><td>Strong (static nominal + ADT)</td><td>High</td><td>Low</td></tr></tbody></table>
 
 🔗 [Zone of Ceremony](https://blog.ploeh.dk/2019/12/16/zone-of-ceremony/) _by Mark Seemann_
 
@@ -157,9 +145,9 @@ let max x y = if x > y then x else y
 ```
 
 {% hint style="info" %}
-### Generic type parameter notation
+#### Generic type parameter notation
 
-* starts with an apostrophe `'` *(a.k.a. tick)*
+* starts with an apostrophe `'` _(a.k.a. tick)_
 * can be in camelCase (`'a`) or PascalCase (`'A`)
 * C♯ `TXxx` → F♯ `'xxx` or `'Xxx`
 {% endhint %}
@@ -207,3 +195,5 @@ let listOk = ["three"; "two"; "one"] |> List.sortBy (fun x -> x.Length)
 // Solution 2: use a named function  instead of a lambda
 let listOk' = List.sortBy String.length ["three"; "two"; "one"]
 ```
+
+[^1]: with no side-effects

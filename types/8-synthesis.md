@@ -1,4 +1,4 @@
-# Synthesis
+# 📜 Synthesis
 
 ## 🕹️ Quiz wrap up
 
@@ -24,9 +24,9 @@ type Color7 =
 // H. Tuple
 ```
 
-***
+<details>
 
-### Answer
+<summary>Answer</summary>
 
 | Types                                       | Concepts                                |
 | ------------------------------------------- | --------------------------------------- |
@@ -37,6 +37,8 @@ type Color7 =
 | `type Color5 = {∣ Red: int; Green: int… ∣}` | **D.** Anonymous Record + **A.** Alias  |
 | `type Color6 = Color of Red: int * …`       | **E.** Single-case union + **H.** Tuple |
 | `type Color7 = RGB of {∣…∣} ∣ HSL of {∣…∣}` | **F.** Union + **D.** Anonymous Record  |
+
+</details>
 
 ## Types Composition
 
@@ -64,33 +66,45 @@ type Red = Heart | Tile
 
 How do you combine them to create a union of `Pike`, `Club`, `Heart` or `Tile`?
 
-* By flattening, as in TypeScript?
+#### By flattening unions, as in TypeScript ❌
 
 ```fsharp
 type Color = Black | Red
 ```
 
-❌ It's not the expected result: `Color` is an enum-style union, with 2 cases `Black` and `Red`, totally disconnected from the `Black` and `Red` types!
+→ It's not the expected result: `Color` is an enum-style union, with 2 cases `Black` and `Red`, totally disconnected from the `Black` and `Red` types!
 
-* By creating a brand new union?
+#### By creating a brand new union ⚠️
 
 ```fsharp
 type Color = Pike | Club | Hear | Tile
 let pike = Pike
 ```
 
-⚠️ Can create confusion: `Pike` refers to `Color.Pike` or `Black.Pike`?
+{% hint style="warning" %}
+#### Warnings
 
-⚠️ Need to write mappers between the 2 models.
+* Can create confusion: `Pike` refers to `Color.Pike` or `Black.Pike`?
+* Need to write mappers between the 2 models: `(Black, Red) <-> Color`
+{% endhint %}
 
-* By composition?
+#### By composition ✅
 
 ```fsharp
 type Color = Black of Black | Red of Red
 let pike = Black Pike
 ```
 
-✅ It works!
+→  The new union `Color` is composed based on the 2 previous types:
+
+* `Black` union is used as data for the `Color.Black` case
+* `Red` union is used as data for the `Color.Red` case
+
+{% hint style="info" %}
+#### Note
+
+It's common in F♯ to write union cases like `Black of Black` where the case name matches the case field type.
+{% endhint %}
 
 ## Conclusion
 

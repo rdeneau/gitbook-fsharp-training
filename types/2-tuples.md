@@ -118,7 +118,7 @@ fst pair  // 'a' (char)
 snd pair  // "b" (string)
 ```
 
-## Quiz 🕹️
+## 🕹️ Quiz
 
 **1. Implement `fst` and `snd`**
 
@@ -127,15 +127,9 @@ let fst ... ?
 let snd ... ?
 ```
 
-**2. What is the signature of this function?**
+<details>
 
-```fsharp
-let toList (x, y) = [x; y]
-```
-
-### Answers
-
-**1. Implement `fst` and `snd`**
+<summary>Answer</summary>
 
 ```fsharp
 let inline fst (x, _) = x  // Signature : 'a * 'b -> 'a
@@ -146,14 +140,22 @@ let inline snd (_, y) = y  // Signature : 'a * 'b -> 'b
 * We _discard_ one element using `_` wildcard
 * Functions can be `inline`
 
+</details>
+
 **2. What is the signature of this function?**
 
 ```fsharp
-let inline toList (x, y) = [x; y]
+let toList (x, y) = [x; y]
 ```
 
-* Returns a list with the 2 elements of the pair
-* The elements are therefore of the same type
-* There is no constraint on this type → generic `'a`
+<details>
 
-**Answer :** `x: 'a * y: 'a -> 'a list`
+<summary>Answer</summary>
+
+`x: 'a * y: 'a -> 'a list`
+
+* Returns a list with the 2 elements `x` and `y` of the pair
+* The elements are therefore of the same type
+* There is no constraint on this type → generic type `'a`
+
+</details>

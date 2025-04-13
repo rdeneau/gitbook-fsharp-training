@@ -150,7 +150,7 @@ let d = dateIn2022Manual 1 31  // val d: System.DateTime = 31/01/2022 00:00:00
 ```
 
 {% hint style="info" %}
-### ⚖️ Comparison
+#### ⚖️ Comparison
 
 * `dateIn2022Curry3: (int -> int -> System.DateTime)`
 * `dateIn2022Manual: month: int -> day: int -> System.DateTime`
