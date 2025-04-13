@@ -1,70 +1,80 @@
 # Smart constructor
 
-## Empêcher les états invalides
+## Purpose
 
-🔗 [Designing with types: Making illegal states unrepresentable](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable/), F♯ for fun and profit, Jan 2013
+🔗 [Making illegal states unrepresentable](https://kutt.it/MksmkG), *F♯ for fun and profit*
 
-* Avoir un design qui empêche d'avoir des états invalides
-  * Encapsuler état _(∑ primitives)_ dans un objet
-* _Smart constructor_ sert à garantir un état initial valide
-  * Valide les données en entrée
-  * Si Ko, renvoie "rien" (`Option`) ou l'erreur (`Result`)
-  * Si Ok, renvoie l'objet créé wrappé dans l'`Option` / le `Result`
+- Design to prevent invalid states
+  - Encapsulate state *(all primitives)* in an object
+- *Smart constructor* guarantees a valid initial state
+  - Validates input data
+  - If Ko, returns "nothing" (`Option`) or an error (`Result`)
+  - If Ok, returns the created object wrapped in an `Option` / a `Result`
 
-## Encapsuler état dans un type
+## Encapsulate the state in a type
 
-👉 Ajouter du sens à une primitive
+→ *Single-case (discriminated) union*: `Type X = private X of a: 'a...` \
+🔗 [Designing with types: Single case union types](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/), *F♯ for fun and profit*
 
-👉 Faire émerger un concept, le réifier
+→ *Record*: `Type X = private { a: 'a... }` \
+🔗 [You Really Wanna Put a Union There? You Sure?](https://kutt.it/cYP4gY), by *Paul Blasucci*
 
-### Mot clé `private`
+☝ `private` keyword:
 
-* Cache contenu de l'objet
-* Champs et constructeur ne sont plus visibles de l'extérieur
-* Smart constructeur défini dans module compagnon 👍 ou méthode statique
+- Hide object content
+- Fields and constructor no longer visible from outside
+- Smart constructor defined in companion module or static method
 
-### Single-case union 👌
+## Example #1
 
-`Type X = private X of a: 'a...`
-
-🔗 [Designing with types: Single case union types](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/) sur F♯ for fun and profit, Jan 2013
-
-### Record 👍
-
-`Type X = private { a: 'a... }`
-
-🔗 [SCU: really?](https://paul.blasuc.ci/posts/really-scu.html) de Paul Blasucci, Mai 2021
-
-## Implémentations
-
-### Exemple 1
-
-Smart constructeur :
-
-* Fonction `tryCreate` dans module compagnon
-* Renvoie une `Option`
+Smart constructor :
+→ `tryCreate` function in companion module
+→ Returns an `Option`
 
 ```fsharp
-type Latitude = private { Latitude: float } // 👈 Un seul champ, nommé comme le type
+module Xxx.Types                            // 👈 Top-level module❗
 
-[<RequireQualifiedAccess>]                  // 👈 Optionnel
+type Latitude = private { Latitude: float } with
+    member this.Value = this.Latitude       // 👈 Required because `.Latitude` is private too
+
+[<RequireQualifiedAccess>]                  // 👈 Optional but recommended
 module Latitude =
     let tryCreate (latitude: float) =
         if latitude >= -90. && latitude <= 90. then
-            Some { Latitude = latitude }    // 👈 Constructeur accessible ici
+            Some { Latitude = latitude }    // 👈 Constructor accessible here
         else
             None
+```
+
+Usages:
+
+```fsharp
+module Xxx.Usages
+
+open Xxx.Types
 
 let lat_ok = Latitude.tryCreate 45.  // Some { Latitude = 45.0 }
 let lat_ko = Latitude.tryCreate 115. // None
 ```
 
-### Exemple 2
+{% hint style="warning" %}
+### Access control
 
-Smart constructeur :
+`private` keyword has not exactly the same meaning in F♯ as in C♯!
 
-* Méthode statique `Of`
-* Renvoie `Result` avec erreur de type `string`
+- In F♯, `private` indicates that the entity can be accessed only from the enclosing type or module.
+- In our example, `private` is applied on the `Latitude` definition that is on the `Xxx.Types` module.
+- `{ Latitude = ... }` and `latitude.Latitude` are accessible in `Xxx.Types` module as if there were no `private` keyword.
+- In the 2nd code block, we are in another module. The `Latitude` definition is not accessible.
+- We can use only `Latitude.tryCreate` and `latitude.Value`.
+{% endhint %}
+
+## Example #2
+
+Smart constructor with:
+
+- Static method `Of`
+- Returns a `Result` with a `string` in the `Error` track.
 
 ```fsharp
 type Tweet =
