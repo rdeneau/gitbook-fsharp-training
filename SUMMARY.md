@@ -49,3 +49,4 @@
 
 * [Patterns](pattern-matching/1-patterns.md)
 * [Match expression](pattern-matching/2-match-expression.md)
+* [Active patterns](pattern-matching/3-active-patterns.md)
