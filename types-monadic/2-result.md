@@ -164,16 +164,3 @@ printAnswerCheck "X";;  // X: ❌ Invalid Input
 printAnswerCheck "A";;  // A: ❌ Wrong Answer
 printAnswerCheck "B";;  // B: ✅ Correct
 ```
-
-## `Result` _vs_ `Validation`
-
-`Result` is "monadic": on the 1st error, we "unplug".
-
-`Validation` is "applicative": allows to accumulate errors\
-→ ≃ `Result<'ok, 'error list>`\
-→ Handy for validating user input and reporting all errors
-
-🔗 **Ressources**
-
-* [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling)
-* [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/)
