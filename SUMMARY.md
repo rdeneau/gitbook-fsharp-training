@@ -44,3 +44,7 @@
 * [🚀 Computation expression (CE)](types-monadic/4-computation-expression.md)
 * [🚀 CE theoretical basements](types-monadic/5-ce-basements.md)
 * [📜 Recap](types-monadic/6-recap.md)
+
+## Pattern matching
+
+* [Patterns](pattern-matching/1-patterns.md)
