@@ -52,3 +52,12 @@
 * [Active patterns](pattern-matching/3-active-patterns.md)
 * [Recap](pattern-matching/4-recap.md)
 * [Exercises](pattern-matching/5-exercises.md)
+
+## Collections
+
+* [Overview](collections/1-overview.md)
+* [Types](collections/2-types.md)
+* [Common functions](collections/3-common-functions.md)
+* [Dedicated functions](collections/4-dedicated-functions.md)
+* [🍔 Quiz](collections/5-quiz.md)
+* [📜 Recap](collections/6-recap.md)
