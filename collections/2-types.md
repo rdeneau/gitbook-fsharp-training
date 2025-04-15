@@ -2,12 +2,12 @@
 
 ## Type `List`
 
-Implemented as a **simply chained list:**
+Implemented as a **linked list:**
 
-- 1 list = 1 element _(Head)_ + 1 sub-list _(Tail)_
-- Construction named _Cons_ and noted `::`
+* 1 list = 1 element _(Head)_ + 1 sub-list _(Tail)_
+* Construction using `::` _Cons_ operator
 
-To avoid infinite recursion, we need an "exit" case: \
+To avoid infinite recursion, we need an "exit" case:\
 → Empty list named _Empty_ and noted `[]`
 
 👉 **Generic and recursive union type:**
@@ -22,44 +22,39 @@ type List<'T> =
 
 ### Type alias
 
-- `List` _(big L)_ refers to the F♯ type or its companion module.
-- `list` _(small l)_ is an alias of F♯'s `List` type, often used with OCaml notation: \
+* `List` _(big L)_ refers to the F♯ type or its companion module.
+* `list` _(small l)_ is an alias of F♯'s `List` type, often used with OCaml notation:\
   → `let l : string list = ...`
 
 ⚠️ **Warnings:**
 
-- ❗ After `open System.Collections.Generic`:
-  - `List` is the C♯ mutable list, hiding the F♯ type!
-  - The `List` F♯ companion module remains available → confusion!
-- 💡 Use the `ResizeArray` alias to reference the C♯ list directly
-  - no need for `open System.Collections.Generic` 👍
+* ❗ After `open System.Collections.Generic`:
+  * `List` is the C♯ mutable list, hiding the F♯ type!
+  * The `List` F♯ companion module remains available → confusion!
+* 💡 Use the `ResizeArray` alias to reference the C♯ list directly
+  * no need for `open System.Collections.Generic` 👍
 
 ### Immutability
 
-A `List` is **immutable**: \
+A `List` is **immutable**:\
 → It is not possible to modify an existing list.
 
-Adding an element in the list: \
-= Cheap operation with the _Cons_ operator (`::`) \
-→ Creates a new list with: \
-  • _Head_ = given element \
-  • _Tail_ = existing list
+Adding an element in the list:\
+\= Cheap operation with the _Cons_ operator (`::`)\
+→ Creates a new list with:\
+&#x20; • _Head_ = given element\
+&#x20; • _Tail_ = existing list
 
 🏷️ **Related concepts:**
 
-- linked list
-- recursive type
+* linked list
+* recursive type
 
 ### Literals
 
-| \# | Notation    | Equivalent          | Meaning (*)                         |
-|----|-------------|---------------------|-------------------------------------|
-| 0  | `[]`        | `[]`                | Empty                               |
-| 1  | `[1]`       | `1 :: []`           | Cons (1, Empty)                     |
-| 2  | `[2; 1]`    | `2 :: 1 :: []`      | Cons (2, Cons (1, Empty))           |
-| 3  | `[3; 2; 1]` | `3 :: 2 :: 1 :: []` | Cons (3, Cons (2, Cons (1, Empty))) |
+<table><thead><tr><th width="49">#</th><th width="146">Notation</th><th width="201">Equivalent</th><th>Meaning (*)</th></tr></thead><tbody><tr><td>0</td><td><code>[]</code></td><td><code>[]</code></td><td>Empty</td></tr><tr><td>1</td><td><code>[1]</code></td><td><code>1 :: []</code></td><td>Cons (1, Empty)</td></tr><tr><td>2</td><td><code>[2; 1]</code></td><td><code>2 :: 1 :: []</code></td><td>Cons (2, Cons (1, Empty))</td></tr><tr><td>3</td><td><code>[3; 2; 1]</code></td><td><code>3 :: 2 :: 1 :: []</code></td><td>Cons (3, Cons (2, Cons (1, Empty)))</td></tr></tbody></table>
 
-(*) We can verify it with [SharpLab.io](https://sharplab.io/#v2:DYLgZgzgPsCmAuACAbgBkQXkQbQLoFgAoOJZARkxzIOIRQCZLt6BuRaoklAZie7dbsaRIA==) :
+(\*) We can verify it with [SharpLab.io](https://sharplab.io/#v2:DYLgZgzgPsCmAuACAbgBkQXkQbQLoFgAoOJZARkxzIOIRQCZLt6BuRaoklAZie7dbsaRIA==) :
 
 ```csharp
 //...
@@ -67,6 +62,7 @@ v1@2 = FSharpList<int>.Cons(1, FSharpList<int>.Empty);
 v2@3 = FSharpList<int>.Cons(2, FSharpList<int>.Cons(1, FSharpList<int>.Empty));
 //...
 ```
+
 ### Initialisation
 
 ```fsharp
@@ -87,15 +83,15 @@ let pairsWithDistinctItems =
 
 ### Exercices 🕹️
 
-**1.** Implement the `rev` function \
+**1.** Implement the `rev` function\
 → Inverts a list: `rev [1; 2; 3]` ≡ `[3; 2; 1]`
 
-**2.** Implement the `map` function \
+**2.** Implement the `map` function\
 → Transforms each element: `[1; 2; 3] |> map ((+) 1)` ≡ `[2; 3; 4]`
 
-💡 **Hints**
-   → Use empty list `[]` or _Cons_ `head :: tail` patterns
-   → Write a recursive function
+💡 **Hints**\
+&#x20;  → Use empty list `[]` or _Cons_ `head :: tail` patterns\
+&#x20;  → Write a recursive function
 
 <details>
 
@@ -142,10 +138,10 @@ Signature: `'T array` _(recommended)_ or `'T[]` or `'T []`
 
 Main differences compared to the `List`:
 
-- Fixed-size
-- Fat square brackets `[| |]` for literals
-- Mutable ❗
-- Access by index in `O(1)` 👍
+* Fixed-size
+* Fat square brackets `[| |]` for literals
+* Mutable ❗
+* Access by index in `O(1)` 👍
 
 ```fsharp
 // Literal
@@ -176,7 +172,7 @@ names;;  // [| "Juliet"; "Bob" |]
 
 ## Alias `ResizeArray`
 
-Alias for BCL `System.Collections.Generic.List<T>`
+Alias for `System.Collections.Generic.List<T>` BCL type
 
 ```fsharp
 let rev items = items |> Seq.rev |> ResizeArray
@@ -186,14 +182,14 @@ let reversed = rev initial // ResizeArray [ 5..-1..0 ]
 
 **Advantages** 👍
 
-- No need for `open System.Collections.Generic`
-- No name conflicts on `List`
+* No need for `open System.Collections.Generic`
+* No name conflicts on `List`
 
 **Notes** ☝️
 
-- Do not confuse the alias `ResizeArray` with the `Array` F♯ type.
-- `ResizeArray` is in F♯ a better name for the BCL generic `List<T>`
-  - Closer semantically and in usages to an array than a list
+* Do not confuse the alias `ResizeArray` with the `Array` F♯ type.
+* `ResizeArray` is in F♯ a better name for the BCL generic `List<T>`
+  * Closer semantically and in usage to an array than a list
 
 ## Type `Seq`
 
@@ -201,7 +197,7 @@ let reversed = rev initial // ResizeArray [ 5..-1..0 ]
 
 `'t seq` ≡ `Seq<'T>` ≡ `IEnumerable<'T>`
 
-**Lazy:** sequence built gradually as it is iterated
+**Lazy:** sequence built gradually as it is iterated\
 ≠ All other collections built entirely from their declaration
 
 ### Syntax
@@ -225,15 +221,15 @@ seq { for i in 1 .. 5 do i, i * 2 }
 
 2 options to write an infinite sequence
 
-- Use `Seq.initInfinite` function
-- Write a recursive function to generate the sequence
+* Use `Seq.initInfinite` function
+* Write a recursive function to generate the sequence
 
 #### Option 1
 
 `Seq.initInfinite` function
 
-- Signature: `(initializer: (index: int) -> 'T) -> seq<'T>`
-- Parameter: `initializer` is used to create the specified index element (>= 0)
+* Signature: `(initializer: (index: int) -> 'T) -> seq<'T>`
+* Parameter: `initializer` is used to create the specified index element (>= 0)
 
 ```fsharp
 let seqOfSquares = Seq.initInfinite (fun i -> i * i)
@@ -262,8 +258,8 @@ squares |> Seq.take 10 |> List.ofSeq;;
 
 ## Type `Set`
 
-- Self-ordering collection of unique elements _(without duplicates)_
-- Implemented as a binary tree
+* Self-ordering collection of unique elements _(without duplicates)_
+* Implemented as a binary tree
 
 ```fsharp
 // Construct
@@ -298,11 +294,7 @@ let max = oneToFive |> Set.maxElement   // 5
 
 ### Operations
 
-|   | Operation    | Operator | Function for 2 sets  | Function for N sets  |
-|---|--------------|----------|----------------------|----------------------|
-| ⊖ | Difference   | `-`      | `Set.difference`     | `Set.differenceMany` |
-| ∪ | Union        | `+`      | `Set.union`          | `Set.unionMany`      |
-| ∩ | Intersection | ×        | `Set.intersect`      | `Set.intersectMany`  |
+<table><thead><tr><th width="57" align="center"></th><th width="136">Operation</th><th width="90" align="center">Operator</th><th width="213">Function for 2 sets</th><th>Function for N sets</th></tr></thead><tbody><tr><td align="center">⊖</td><td>Difference</td><td align="center"><code>-</code></td><td><code>Set.difference</code></td><td><code>Set.differenceMany</code></td></tr><tr><td align="center">∪</td><td>Union</td><td align="center"><code>+</code></td><td><code>Set.union</code></td><td><code>Set.unionMany</code></td></tr><tr><td align="center">∩</td><td>Intersection</td><td align="center">×</td><td><code>Set.intersect</code></td><td><code>Set.intersectMany</code></td></tr></tbody></table>
 
 **Examples:**
 
@@ -352,12 +344,12 @@ table |> Map.tryFind "Z";;  // val it: string option = Some "Zzz"
 table |> Map.tryFind "-";;  // val it: string option = None
 ```
 
-## Dictionnaires
+## Dictionaries
 
 ### `dict` function
 
-- Builds an `IDictionary<'k, 'v>` from a sequence of key/value pairs
-- The interface is error prone: the dictionary is **immutable** ❗
+* Builds an `IDictionary<'k, 'v>` from a sequence of key/value pairs
+* The interface is error prone: the dictionary is **immutable** ❗
 
 ```fsharp
 let table = dict [ (1, 100); (2, 200) ]
@@ -373,8 +365,8 @@ table.Add(3, 300);; // 💣 NotSupportedException: This value cannot be mutated
 
 ### `readOnlyDict` function
 
-- Builds an `IReadOnlyDictionary<'k, 'v>` from a sequence of key/value pairs
-- The interface is honest: the dictionary is **immutable**
+* Builds an `IReadOnlyDictionary<'k, 'v>` from a sequence of key/value pairs
+* The interface is honest: the dictionary is **immutable**
 
 ```fsharp
 let table = readOnlyDict [ (1, 100); (2, 200) ]
@@ -394,7 +386,7 @@ do table.Add(3, 300);;
 
 ### Recommendation
 
-`dict` returns an object that does not implement fully `IDictionary<'k, 'v>` \
+`dict` returns an object that does not implement fully `IDictionary<'k, 'v>`\
 → Violate the Liskov's substitution principle❗
 
 `readOnlyDict` returns an object that respects `IReadOnlyDictionary<'k, 'v>`
@@ -416,31 +408,34 @@ let table =
           (2, 200)
           (3, 300) ]
 
-// Parcourt du dictionnaire
+// Iterate through the dictionary
 for kv in table do // kv: KeyValuePair<int,int>
     printfn $"{kv.Key}, {kv.Value}"
 
-// De manière + élégante avec l'active pattern
+// Same with the active pattern
 for KeyValue (key, value) in table do
     printfn $"{key}, {value}"
 ```
 
 ## Lookup performance
 
-🔗 [High Performance Collections in F♯](https://www.compositional-it.com/news-blog/high-performance-hash-tables-for-f/), Compositional IT, Jan 2021
+🔗 [High Performance Collections in F♯](https://www.compositional-it.com/news-blog/high-performance-hash-tables-for-f/) • _Compositional IT_ (2021)
 
-### `Map` vs `Dictionary`
+### `Dictionary` _vs_ `Map`
 
-Fonction `readOnlyDict` permet de créer rapidement un `IReadOnlyDictionary` → à partir d'une séquence de tuples `key, item` → très performant : 10x plus rapide que `Map` pour le _lookup_
+`readOnlyDict` creates **high-performance** dictionaries\
+→ 10x faster than `Map` for lookups
 
-### `Dictionary` vs `Array`
+### `Dictionary` _vs_ `Array`
 
-→ `Array` suffit si peu de lookups (< 100) et peu d'éléments (< 100) \
-→ `Dictionary` sinon
+\~ Rough heuristics
+
+→ The `Array` type is OK for few lookups (< 100) and few elements (< 100)\
+→ Use a `Dictionary` otherwise
 
 ## `Map` and `Set` _vs_ `IComparable`
 
-Only work if elements (of a `Set`) or keys (of a `Map`) are **comparable**!
+Only works if elements (of a `Set`) or keys (of a `Map`) are **comparable**!
 
 Examples:
 
@@ -453,18 +448,25 @@ let namesClass = set [NameClass("Alice"); NameClass("Bob")]
 //                    ~~~~~~~~~~~~~~~~~~
 // 💥 Error FS0193: The type 'NameClass' does not support the 'comparison' constraint.
 //     For example, it does not support the 'System.IComparable' interface
+```
 
-// We can use a struct instead
-[<Struct>]
-type NameStruct(name: string) =
-    member this.Name = name
+F# functional type: tuple, record, union
 
-let namesStruct = set [NameStruct("Alice"); NameStruct("Bob")]
-
-// or a F# functional type: tuple, record, union
+```fsharp
+// Example: single-case union
 type Name = Name of string
 
 let names = set [Name "Alice"; Name "Bob"]
 ```
 
-Last option for classes: we implement `IComparable` _(but not `IComparable<'T>`)_
+Structs:
+
+```fsharp
+[<Struct>]
+type NameStruct(name: string) =
+    member this.Name = name
+
+let namesStruct = set [NameStruct("Alice"); NameStruct("Bob")]
+```
+
+Classes implementing `IComparable`... _but not `IComparable<'T>`_ 🤷

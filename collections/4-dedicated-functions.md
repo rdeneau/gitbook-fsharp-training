@@ -1,34 +1,30 @@
 # Dedicated functions
 
-## `List` module
+## List module
 
 _Cons_ `1 :: [2; 3]`
 
-- Item added to top of list
-- List appears in reverse order 😕
-- But operation efficient: in **O(1)** _(`Tail` preserved)_ 👍
+* Item added to top of list
+* List appears in reverse order 😕
+* But operation efficient: in **O(1)** _(`Tail` preserved)_ 👍
 
 _Append_ `[1] @ [2; 3]`
 
-- List in normal order
-- But operation in **O(n)** ❗ _(New `Tail` at each iteration)_
+* List in normal order
+* But operation in **O(n)** ❗ _(New `Tail` at each iteration)_
 
-## `Map` module
+## Map module
 
-### `change`
+### `Map.change`
 
 Signature : `Map.change key (f: 'T option -> 'T option) table`
 
-Depending on the `f` function passed as an argument, we can:
+Depending on the `f` function passed as an argument, we can:\
 → Add, modify or delete the element of a given key
 
-| Key       | Input        | `f` returns `None`       | `f` returns `Some newVal`    |
-|-----------|--------------|--------------------------|------------------------------|
-| -         | -            | ≡ `Map.remove key table` | ≡ `Map.add key newVal table` |
-| Found     | `Some value` | Remove the entry         | Change the value to _newVal_ |
-| Not found | `None`       | Ignore this key          | Add the item _(key, newVal)_ |
+<table data-header-hidden><thead><tr><th width="100"></th><th width="121"></th><th></th><th></th></tr></thead><tbody><tr><td>Key</td><td>Input</td><td><code>f</code> returns <code>None</code></td><td><code>f</code> returns <code>Some newVal</code></td></tr><tr><td>-</td><td>-</td><td>≡ <code>Map.remove key table</code></td><td>≡ <code>Map.add key newVal table</code></td></tr><tr><td>Found</td><td><code>Some value</code></td><td>Remove the entry</td><td>Change the value to <em>newVal</em></td></tr><tr><td>Not found</td><td><code>None</code></td><td>Ignore this key</td><td>Add the item <em>(key, newVal)</em></td></tr></tbody></table>
 
-### `containsKey` _vs_ `exists` _vs_ `filter`
+### `Map.containsKey` _vs_ `Map.exists` _vs_ `Map.filter`
 
 ```txt
 Function      Signature                        Comment                                                   
@@ -53,31 +49,49 @@ table |> Map.exists (fun k v -> (isEven k) && (isFigure v))  // true
 table |> Map.filter (fun k v -> (isEven k) && (isFigure v))  // map [(2, "A")]
 ```
 
-## `Seq` Module
+## Seq Module
 
 ### `Seq.cache`
 
-As a sequence is lazy, it's reconstructed each time it's iterated. This reconstruction can be costly. An algorithm that iterates (even partially) an invariant sequence several times can be optimized by caching the sequence using the `Seq.cache` function.
+As a sequence is lazy, it's reconstructed each time it's iterated. This reconstruction can be **costly**. An algorithm that iterates (even partially) an invariant sequence several times can be optimized by caching the sequence using the `Seq.cache` function.
 
 Signature : `Seq.cache: source: 'T seq -> 'T seq`
 
 Caching is optimized by being deferred and performed only on the elements iterated.
 
-## `string` type
+{% hint style="warning" %}
+#### Misleading type
+
+`Seq.cache` does not change the visible type: it's still `seq`.
+
+**Pros👍**
+
+* We can use directly `Seq` module functions.
+
+**Cons** ⚠️
+
+* We don't know that the sequence has been cached.
+
+**Recommendation ☝️**
+
+* Limit the scope of such cached sequences.
+{% endhint %}
+
+## String type
 
 To manipulate the characters in a string, several options are available.
 
-### `Seq` module
+### Seq module
 
-The `string` type implements `Seq<char>`. \
+The `string` type implements `Seq<char>`.\
 → We can therefore use the functions of the `Seq` module.
 
-### `Array` module
+### Array module
 
-`ToCharArray()` method returns the characters of a string as a `char array`.
+`ToCharArray()` method returns the characters of a string as a `char array`.\
 → We can therefore use the functions of the `Array` module.
 
-### `String` module
+### String module
 
 There is also a `String` module (from `FSharp.Core`) offering a number of interesting functions that are individually more powerful than those of `Seq` and `Array`:
 
@@ -114,13 +128,15 @@ let h = "abcd" |> String.map (fun c -> (int c) + 1 |> char)  // "bcde"
 
 ☝️ **Note:** after `open System`, `String` stands for 3 things that the compiler is able to figure them out:
 
-- `(new) String(...)` constructors
-- `String.` gives access to all functions of the `String` module (in _camelCase_)...
-- ... and static methods of `System.String` (in _PascalCase_)
+* `(new) String(...)` constructors
+* `String.` gives access to all functions of the `String` module (in _camelCase_)...
+* ... and static methods of `System.String` (in _PascalCase_)
 
 ## Array2D
 
-Instead of working with N-level nested collections, F# offers multidimensional arrays (also called matrixes). However, to create them, there's no specific syntax: you have to use a create function. Let's take a look at 2-dimensional arrays.
+Instead of working with N-level nested collections, F# offers multidimensional arrays (also called matrixes). However, to create them, there's no specific syntax: you have to use a create function.
+
+Let's take a look at 2-dimensional arrays.
 
 ### Type
 
@@ -130,8 +146,8 @@ The type of a 2-dimensional array is `'t[,]` but IntelliSense sometimes just giv
 
 `array2D` creates a 2-dimensional array from a collection of collections all of the same length.
 
-`Array2D.init` generates an array by specifying: \
-→ Its length according to the 2 dimensions N and P \
+`Array2D.init` generates an array by specifying:\
+→ Its length according to the 2 dimensions N and P\
 → A function generating the element at the two specified indexes.
 
 ```fsharp
@@ -204,5 +220,5 @@ let doubleNotations =
 
 ```
 
-Other functions: \
+Other functions:\
 🔗 [https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-array2dmodule.html](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-array2dmodule.html)
