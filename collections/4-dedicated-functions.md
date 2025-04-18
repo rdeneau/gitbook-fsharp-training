@@ -1,3 +1,7 @@
+---
+description: Functions available only for their dedicated type
+---
+
 # Dedicated functions
 
 ## List module
@@ -17,11 +21,11 @@ _Append_ `[1] @ [2; 3]`
 
 ### `Map.add`, `Map.remove`
 
-`Map.add key value`
-→ **Safe add:** replace existing value of existing key
+`Map.add key value`\
+→ **Safe add:** replace existing value of existing key\
 → Parameters `key value` curried, not a pair `(key, value)`
 
-`Map.remove key`
+`Map.remove key`\
 → **Safe remove:** just return the given `Map` if key not found
 
 ```fsharp
@@ -40,16 +44,9 @@ input
 * All-in-one function to add, modify or remove the element of a given key
 * Depends on the `f` function passed as an argument
 
-<table data-header-hidden>
-<thead><tr><th width="100"></th><th width="121"></th><th></th><th></th></tr></thead>
-<tbody>
-<tr><td>Key</td><td>Input</td><td><code>f</code> returns <code>None</code></td><td><code>f</code> returns <code>Some newVal</code></td></tr>
-<tr><td>-</td><td>-</td><td>≡ <code>Map.remove key</code></td><td>≡ <code>Map.add key newVal</code></td></tr>
-<tr><td>Found</td><td><code>Some value</code></td><td>Remove the entry</td><td>Change the value to <em>newVal</em></td></tr>
-<tr><td>Not found</td><td><code>None</code></td><td>Ignore this key</td><td>Add the item <em>(key, newVal)</em></td></tr>
-</tbody></table>
+<table data-header-hidden><thead><tr><th width="100"></th><th width="121"></th><th></th><th></th></tr></thead><tbody><tr><td>Key</td><td>Input</td><td><code>f</code> returns <code>None</code></td><td><code>f</code> returns <code>Some newVal</code></td></tr><tr><td>-</td><td>-</td><td>≡ <code>Map.remove key</code></td><td>≡ <code>Map.add key newVal</code></td></tr><tr><td>Found</td><td><code>Some value</code></td><td>Remove the entry</td><td>Change the value to <em>newVal</em></td></tr><tr><td>Not found</td><td><code>None</code></td><td>Ignore this key</td><td>Add the item <em>(key, newVal)</em></td></tr></tbody></table>
 
-**Example: Lexicon** \
+**Example: Lexicon**\
 → Build a Map to classify words by their first letter capitalized
 
 ```fsharp
@@ -71,7 +68,7 @@ let t = classifyWordsByLetter ["apple"; "blueberry"; "banana"; "apricot"; "cherr
 //       'C', set ["cherry"] ]
 ```
 
-☝️ Previous example for demonstration purpose only. \
+☝️ Previous example for demonstration purpose only.\
 → Better implementation:
 
 ```fsharp
@@ -86,11 +83,11 @@ let classifyWordsByLetter words =
 
 ### `Map.containsKey` _vs_ `Map.exists`
 
-`Map.containsKey (key: 'K)`
+`Map.containsKey (key: 'K)`\
 → Indicates whether the key is present
 
-`Map.exists (predicate: 'K -> 'V -> bool)`
-→ Indicates whether an entry (as `key value` parameters) satisfies the predicate
+`Map.exists (predicate: 'K -> 'V -> bool)`\
+→ Indicates whether an entry (as `key value` parameters) satisfies the predicate\
 → Parameters `key value` curried, not a pair `(key, value)`
 
 ```fsharp
@@ -109,22 +106,21 @@ table |> Map.exists (fun k v -> (isEven k) && (isVowel v));;  // true
 
 ### `Seq.cache`
 
-
 `Seq.cache (source: 'T seq) -> 'T seq`
 
-Sequences are **lazy**: elements (re)evaluated at each time iteration \
+Sequences are **lazy**: elements (re)evaluated at each time iteration\
 → Can be costly 💸
 
-**Invariant sequences iterated multiple times** \
-→ Iterations can be optimized by caching the sequence using `Seq.cache` \
+**Invariant sequences iterated multiple times**\
+→ Iterations can be optimized by caching the sequence using `Seq.cache`\
 → Caching is optimized by being deferred and performed only on first iteration
 
-⚠️ **Recommendation:** Caching is hidden, not reflected on the type (`'T seq`) \
-→ Only apply caching on a sequence used in a very small scope \
+⚠️ **Recommendation:** Caching is hidden, not reflected on the type (`'T seq`)\
+→ Only apply caching on a sequence used in a very small scope\
 → Prefer another collection type otherwise
 
 {% hint style="warning" %}
-#### Misleading type
+**Misleading type**
 
 `Seq.cache` does not change the visible type: it's still `seq`.
 
