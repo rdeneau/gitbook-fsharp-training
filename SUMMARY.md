@@ -61,3 +61,9 @@
 * [Dedicated functions](collections/4-dedicated-functions.md)
 * [🍔 Quiz](collections/5-quiz.md)
 * [📜 Recap](collections/6-recap.md)
+
+## Asynchronous programming
+
+* [Asynchronous workflow](async-programming/1-async-workflow.md)
+* [Interop with .NET TPL](async-programming/2-interop-tpl.md)
+* [📜 Recap](async-programming/3-recap.md)
