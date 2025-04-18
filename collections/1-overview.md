@@ -2,7 +2,18 @@
 
 ## Common F♯ collections
 
-<table><thead><tr><th width="85">Module</th><th width="146">Type</th><th width="44" align="center">-</th><th width="227">BCL Equivalent</th><th width="105">Immutable</th><th>Structural comparison</th></tr></thead><tbody><tr><td><code>Array</code></td><td><code>'T array</code></td><td align="center">≡</td><td><code>Array&#x3C;T></code></td><td>❌</td><td>✅</td></tr><tr><td><code>List</code></td><td><code>'T list</code></td><td align="center">≃</td><td><code>ImmutableList&#x3C;T></code></td><td>✅</td><td>✅</td></tr><tr><td><code>Seq</code></td><td><code>seq&#x3C;'T></code></td><td align="center">≡</td><td><code>IEnumerable&#x3C;T></code></td><td>✅</td><td>✅</td></tr><tr><td><code>Set</code></td><td><code>Set&#x3C;'T></code></td><td align="center">≃</td><td><code>ImmutableHashSet&#x3C;T></code></td><td>✅</td><td>✅</td></tr><tr><td><code>Map</code></td><td><code>Map&#x3C;'K, 'V></code></td><td align="center">≃</td><td><code>ImmutableDictionary&#x3C;K,V></code></td><td>✅</td><td>✅</td></tr><tr><td>❌</td><td><code>dict</code></td><td align="center">≡</td><td><code>IDictionary&#x3C;K,V></code></td><td>☑️ ❗</td><td>❌</td></tr><tr><td>❌</td><td><code>readOnlyDict</code></td><td align="center">≡</td><td><code>IReadOnlyDictionary&#x3C;K,V></code></td><td>☑️</td><td>❌</td></tr><tr><td>❌</td><td><code>ResizeArray</code></td><td align="center">≡</td><td><code>List&#x3C;T></code></td><td>❌</td><td>❌</td></tr></tbody></table>
+<table>
+<thead><tr><th width="85">Module</th><th width="146">Type</th><th width="44" align="center">-</th><th width="227">BCL Equivalent</th><th width="105">Immutable</th><th>Structural comparison</th></tr></thead>
+<tbody>
+<tr><td><code>Array</code></td><td><code>'T array</code></td><td align="center">≡</td><td><code>Array&#x3C;T></code></td><td>❌</td><td>✅</td></tr>
+<tr><td><code>List</code></td><td><code>'T list</code></td><td align="center">≃</td><td><code>ImmutableList&#x3C;T></code></td><td>✅</td><td>✅</td></tr>
+<tr><td><code>Seq</code></td><td><code>seq&#x3C;'T></code></td><td align="center">≡</td><td><code>IEnumerable&#x3C;T></code></td><td>✅</td><td>✅</td></tr>
+<tr><td><code>Set</code></td><td><code>Set&#x3C;'T></code></td><td align="center">≃</td><td><code>ImmutableHashSet&#x3C;T></code></td><td>✅</td><td>✅</td></tr>
+<tr><td><code>Map</code></td><td><code>Map&#x3C;'K, 'V></code></td><td align="center">≃</td><td><code>ImmutableDictionary&#x3C;K,V></code></td><td>✅</td><td>✅</td></tr>
+<tr><td>❌</td><td><code>dict</code></td><td align="center">≡</td><td><code>IDictionary&#x3C;K,V></code></td><td>☑️ ❗</td><td>❌</td></tr>
+<tr><td>❌</td><td><code>readOnlyDict</code></td><td align="center">≡</td><td><code>IReadOnlyDictionary&#x3C;K,V></code></td><td>☑️</td><td>❌</td></tr>
+<tr><td>❌</td><td><code>ResizeArray</code></td><td align="center">≡</td><td><code>List&#x3C;T></code></td><td>❌</td><td>❌</td></tr>
+</tbody></table>
 
 ## Functions consistency 👍
 

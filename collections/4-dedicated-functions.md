@@ -15,49 +15,113 @@ _Append_ `[1] @ [2; 3]`
 
 ## Map module
 
+### `Map.add`, `Map.remove`
+
+`Map.add key value`
+→ **Safe add:** replace existing value of existing key
+→ Parameters `key value` curried, not a pair `(key, value)`
+
+`Map.remove key`
+→ **Safe remove:** just return the given `Map` if key not found
+
+```fsharp
+let input = Map [ (1, "a"); (2, "b") ]
+
+input
+|> Map.add 3 "c"  // → `map [(1, "a"); (2, "b"); (3, "c")]`
+|> Map.add 1 "@"  // → `map [(1, "@"); (2, "b"); (3, "c")]`
+|> Map.remove 2   // → `map [(1, "@"); (3, "c")]`
+```
+
 ### `Map.change`
 
-Signature : `Map.change key (f: 'T option -> 'T option) table`
+`Map.change key (f: 'T option -> 'T option)`
 
-Depending on the `f` function passed as an argument, we can:\
-→ Add, modify or delete the element of a given key
+* All-in-one function to add, modify or remove the element of a given key
+* Depends on the `f` function passed as an argument
 
-<table data-header-hidden><thead><tr><th width="100"></th><th width="121"></th><th></th><th></th></tr></thead><tbody><tr><td>Key</td><td>Input</td><td><code>f</code> returns <code>None</code></td><td><code>f</code> returns <code>Some newVal</code></td></tr><tr><td>-</td><td>-</td><td>≡ <code>Map.remove key table</code></td><td>≡ <code>Map.add key newVal table</code></td></tr><tr><td>Found</td><td><code>Some value</code></td><td>Remove the entry</td><td>Change the value to <em>newVal</em></td></tr><tr><td>Not found</td><td><code>None</code></td><td>Ignore this key</td><td>Add the item <em>(key, newVal)</em></td></tr></tbody></table>
+<table data-header-hidden>
+<thead><tr><th width="100"></th><th width="121"></th><th></th><th></th></tr></thead>
+<tbody>
+<tr><td>Key</td><td>Input</td><td><code>f</code> returns <code>None</code></td><td><code>f</code> returns <code>Some newVal</code></td></tr>
+<tr><td>-</td><td>-</td><td>≡ <code>Map.remove key</code></td><td>≡ <code>Map.add key newVal</code></td></tr>
+<tr><td>Found</td><td><code>Some value</code></td><td>Remove the entry</td><td>Change the value to <em>newVal</em></td></tr>
+<tr><td>Not found</td><td><code>None</code></td><td>Ignore this key</td><td>Add the item <em>(key, newVal)</em></td></tr>
+</tbody></table>
 
-### `Map.containsKey` _vs_ `Map.exists` _vs_ `Map.filter`
+**Example: Lexicon** \
+→ Build a Map to classify words by their first letter capitalized
 
-```txt
-Function      Signature                        Comment                                                   
-------------+--------------------------------+-----------------------------------------------------------
-containsKey   'K -> Map<'K,'V> -> bool         Indicates whether the key is present                      
-exists         f -> Map<'K,'V> -> bool         Indicates whether a key/value pair satisfies the predicate
-filter         f -> Map<'K,'V> -> Map<'K,'V>   Keeps key/value pairs satisfying the predicate            
+```fsharp
+let firstLetter (word: string) = System.Char.ToUpperInvariant(word[0])
 
-With predicate f: 'K -> 'V -> bool
+let classifyWordsByLetter words =
+    (Map.empty, words)
+    ||> Seq.fold (fun map word ->
+        map |> Map.change (word |> firstLetter) (fun wordsWithThisLetter ->
+            wordsWithThisLetter
+            |> Option.defaultValue Set.empty
+            |> Set.add word
+            |> Some)
+        )
+
+let t = classifyWordsByLetter ["apple"; "blueberry"; "banana"; "apricot"; "cherry"; "avocado"]
+// map [ 'A', set ["apple"; "apricot"; "avocado"]
+//       'B', set ["banana"; "blueberry"]
+//       'C', set ["cherry"] ]
 ```
+
+☝️ Previous example for demonstration purpose only. \
+→ Better implementation:
+
+```fsharp
+let firstLetter (word: string) = System.Char.ToUpperInvariant(word[0])
+
+let classifyWordsByLetter words =
+    words
+    |> Seq.groupBy firstLetter
+    |> Seq.map (fun (letter, wordsWithThisLetter) -> letter, set wordsWithThisLetter)
+    |> Map.ofSeq
+```
+
+### `Map.containsKey` _vs_ `Map.exists`
+
+`Map.containsKey (key: 'K)`
+→ Indicates whether the key is present
+
+`Map.exists (predicate: 'K -> 'V -> bool)`
+→ Indicates whether an entry (as `key value` parameters) satisfies the predicate
+→ Parameters `key value` curried, not a pair `(key, value)`
 
 ```fsharp
 let table = Map [ (2, "A"); (1, "B"); (3, "D") ]
 
-table |> Map.containsKey 0  // false
-table |> Map.containsKey 2  // true
+table |> Map.containsKey 0;;  // false
+table |> Map.containsKey 2;;  // true
 
 let isEven i = i % 2 = 0
-let isFigure (s: string) = "AEIOUY".Contains(s)
+let isVowel (s: string) = "AEIOUY".Contains(s)
 
-table |> Map.exists (fun k v -> (isEven k) && (isFigure v))  // true
-table |> Map.filter (fun k v -> (isEven k) && (isFigure v))  // map [(2, "A")]
+table |> Map.exists (fun k v -> (isEven k) && (isVowel v));;  // true
 ```
 
 ## Seq Module
 
 ### `Seq.cache`
 
-As a sequence is lazy, it's reconstructed each time it's iterated. This reconstruction can be **costly**. An algorithm that iterates (even partially) an invariant sequence several times can be optimized by caching the sequence using the `Seq.cache` function.
 
-Signature : `Seq.cache: source: 'T seq -> 'T seq`
+`Seq.cache (source: 'T seq) -> 'T seq`
 
-Caching is optimized by being deferred and performed only on the elements iterated.
+Sequences are **lazy**: elements (re)evaluated at each time iteration \
+→ Can be costly 💸
+
+**Invariant sequences iterated multiple times** \
+→ Iterations can be optimized by caching the sequence using `Seq.cache` \
+→ Caching is optimized by being deferred and performed only on first iteration
+
+⚠️ **Recommendation:** Caching is hidden, not reflected on the type (`'T seq`) \
+→ Only apply caching on a sequence used in a very small scope \
+→ Prefer another collection type otherwise
 
 {% hint style="warning" %}
 #### Misleading type
@@ -107,7 +171,6 @@ String.filter (predicate: char -> bool) (s: string) : string
 String.collect (mapping:        char -> string) (s: string) : string
 String.map     (mapping:        char -> char)   (s: string) : string
 String.mapi    (mapping: int -> char -> char)   (s: string) : string
-// Idem iter/iteri which returns unit
 ```
 
 **Examples:**

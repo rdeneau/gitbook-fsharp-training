@@ -18,7 +18,7 @@ Operations: access, construct, find, select, aggregate...
 
 | ↓ Access \ Return → | `'T` or 💣    | `'T option`     |
 | ------------------- | ------------- | --------------- |
-| By index            | `list[index]` |                 |
+| By index            | `x[index]`    |                 |
 | By index            | `item index`  | `tryItem index` |
 | First element       | `head`        | `tryHead`       |
 | Last element        | `last`        | `tryLast`       |
@@ -102,9 +102,19 @@ Using a predicate `f : 'T -> bool`:
 Functions taking as input:
 
 * A mapping function `f` (a.k.a. _mapper_)
-* A collection of elements of type `'T`
+* A collection of type `~~~~ 'T`
+  * with `~~~~` meaning `Array`, `List`, or `Seq`
 
-<table data-header-hidden><thead><tr><th width="111"></th><th></th><th width="113"></th><th></th></tr></thead><tbody><tr><td>Function</td><td>Mapping <code>f</code></td><td>Returns</td><td>How many elements?</td></tr><tr><td><code>map</code></td><td>       <code>'T -> 'U</code></td><td><code>'U list</code></td><td>As many in than out</td></tr><tr><td><code>mapi</code></td><td><code>int -> 'T -> 'U</code></td><td><code>'U list</code></td><td>As many in than out</td></tr><tr><td><code>collect</code></td><td>       <code>'T -> 'U list</code></td><td><code>'U list</code></td><td><em>flatMap</em></td></tr><tr><td><code>choose</code></td><td>       <code>'T -> 'U option</code></td><td><code>'U list</code></td><td>Less</td></tr><tr><td><code>pick</code></td><td>       <code>'T -> 'U option</code></td><td><code>'U</code></td><td>1 (the first matching) or 💣</td></tr><tr><td><code>tryPick</code></td><td>       <code>'T -> 'U option</code></td><td><code>'U option</code></td><td>1 (the first matching)</td></tr></tbody></table>
+<table data-header-hidden>
+<thead><tr><th width="111"></th><th></th><th width="113"></th><th></th></tr></thead>
+<tbody>
+<tr><td>Function</td><td>Mapping <code>f</code></td><td>Returns</td><td>How many elements?</td></tr>
+<tr><td><code>map</code></td><td><code>       'T -> 'U</code></td><td><code>'U ~~~~</code></td><td>As many in than out</td></tr>
+<tr><td><code>mapi</code></td><td><code>int -> 'T -> 'U</code></td><td><code>'U ~~~~</code></td><td>As many in than out</td></tr>
+<tr><td><code>collect</code></td><td><code>       'T -> 'U ~~~~</code></td><td><code>'U ~~~~</code></td><td><em>flatMap</em></td></tr>
+<tr><td><code>choose</code></td><td><code>       'T -> 'U option</code></td><td><code>'U ~~~~</code></td><td>Less</td></tr>
+<tr><td><code>pick</code></td><td><code>       'T -> 'U option</code></td><td><code>'U</code></td><td>1 (the first matching) or 💣</td></tr><tr><td><code>tryPick</code></td><td>       <code>'T -> 'U option</code></td><td><code>'U option</code></td><td>1 (the first matching)</td></tr>
+</tbody></table>
 
 ### `map` _vs_ `mapi`
 
