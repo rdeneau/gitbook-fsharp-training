@@ -75,3 +75,13 @@
 * [Module](module-and-namespace/3-module.md)
 * [🍔 Quiz](module-and-namespace/4-quiz.md)
 * [📜 Recap](module-and-namespace/5-recap.md)
+
+## Object-oriented
+
+* [Introduction](object-oriented/1-intro.md)
+* [Members](object-oriented/2-members.md)
+* [Type extensions](object-oriented/3-type-extensions.md)
+* [Class, Struct](object-oriented/4-class-struct.md)
+* [Interface](object-oriented/5-interface.md)
+* [Object expression](object-oriented/6-object-expression.md)
+* [Recommendations](object-oriented/7-recommendations.md)
