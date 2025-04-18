@@ -84,8 +84,8 @@ Behaviors/operations implementation:
 
 **How we reason about the code** _(at both design and reading time)_
 
-* **FP:&#x20;**_**by functions**_ → how an operation is performed for the different cases
-* **OO:&#x20;**_**by objects**_ → how all operations are performed for a single case
+* **FP: _by functions_** → how an operation is performed for the different cases
+* **OO: _by objects_** → how all operations are performed for a single case
 
 **Abstraction**
 
