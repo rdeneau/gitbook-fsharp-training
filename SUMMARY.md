@@ -67,3 +67,11 @@
 * [Asynchronous workflow](async-programming/1-async-workflow.md)
 * [Interop with .NET TPL](async-programming/2-interop-tpl.md)
 * [📜 Recap](async-programming/3-recap.md)
+
+## Module and Namespace
+
+* [Overview](module-and-namespace/1-overview.md)
+* [Namespace](module-and-namespace/2-namespace.md)
+* [Module](module-and-namespace/3-module.md)
+* [🍔 Quiz](module-and-namespace/4-quiz.md)
+* [📜 Recap](module-and-namespace/5-recap.md)
