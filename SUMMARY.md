@@ -75,3 +75,8 @@
 * [Module](module-and-namespace/3-module.md)
 * [🍔 Quiz](module-and-namespace/4-quiz.md)
 * [📜 Recap](module-and-namespace/5-recap.md)
+
+## Object-oriented
+
+* [Introduction](object-oriented/1-intro.md)
+* [Members](object-oriented/2-members.md)
