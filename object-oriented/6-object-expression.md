@@ -12,11 +12,13 @@ let makeResource (resourceName: string) =
             printfn $"dispose {resourceName}" }
 ```
 
-☝ Notice the signature of `makeResource`: `string -> System.IDisposable`. The backing class is totally hidden at the F♯ level. The advantage is that *upcasting* is not required, compared to interface implementation in a type.
+☝ Notice the signature of `makeResource`: `string -> System.IDisposable`. \
+→ The backing class is hidden/transparent at the F♯ level.\
+→ Advantage: _Upcasting_ is not required, compared to interface implementation in a type.
 
 ## Interface singleton
 
-We can implement a *Singleton* using an object expression:
+We can implement a _Singleton_ using an object expression:
 
 ```fsharp
 [<Interface>]
@@ -30,9 +32,9 @@ let console =
         member this.WriteLine line = printfn "%s" line }
 ```
 
-## Implement 2 interfaces
+## Implementing several interfaces
 
-It's possible to implement several interfaces in an object expression but only the first interface is visible. To use the members of the other interfaces, we need to perform a downcast, which is unsafe by nature.
+Implementing several interfaces in an object expression is possible, but only the first interface is visible. To use the members of the other interfaces, we need to perform a downcast, which is unsafe by nature❗
 
 ```fsharp
 let makeDelimiter (delim1: string, delim2: string, value: string) =

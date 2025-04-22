@@ -8,24 +8,24 @@ Each of these members is called **augmentation** or **extension**.
 
 3 categories of extension :
 
-- Intrinsic extension
-- Optional extension
-- Extension methods
+* Intrinsic extension
+* Optional extension
+* Extension methods
 
 ## Intrinsic extension
 
 > Declared in the same file and namespace as the type
 
-**Use case:** Features available in both companion module and type \
+**Use case:** Features available in both companion module and type\
 → E.g. `List.length list` function and `list.Length` member
 
-*How to implement it following top-down declarations?*
+_How to implement it following top-down declarations?_
 
-**1. Implement in type**, Redirect module functions to type members \
+**1. Implement in type**, Redirect module functions to type members\
 → More straightforward
 
-**2. Intrinsic extensions:** \
-→ Declare type "naked", Implement in module, Augment type after \
+**2. Intrinsic extensions:**\
+→ Declare type "naked", Implement in module, Augment type after\
 → Favor FP style, Transparent for Interop
 
 **Example:**
@@ -77,7 +77,7 @@ let x = [1..3].RepeatElements(2) |> List.ofSeq
 // [1; 1; 2; 2; 3; 3]
 ```
 
-**Compilation:** into static methods \
+**Compilation:** into static methods\
 → Simplified version of the previous example:
 
 ```csharp
@@ -107,17 +107,17 @@ let s = joe.FullName  // "DALTON Joe"
 
 ### Limits
 
-- Must be declared in a module
-- Not compiled into the type, not visible to Reflection
-- Usage as pseudo-instance members only in F♯
-  - ≠ in C♯: as static methods
+* Must be declared in a module
+* Not compiled into the type, not visible to Reflection
+* Usage as pseudo-instance members only in F♯\
+  ≠ in C♯: as static methods
 
-## Type extension *vs* virtual methods
+## Type extension _vs_ virtual methods
 
 ☝ Override virtual methods:
 
-- in the initial type declaration ✅
-- not in a ~~type extension~~ ⛔
+* in the initial type declaration ✅
+* not in a ~~type extension~~ ⛔
 
 ```fsharp
 type Variant = Num of int | Str of string with
@@ -130,7 +130,7 @@ type Variant with
     // Warning FS0060: Override implementations in augmentations are now deprecated...
 ```
 
-## Type extension *vs* type alias
+## Type extension _vs_ type alias
 
 Incompatible❗
 
@@ -151,7 +151,7 @@ type System.Int32 with
 
 ☝ **Corollary:** F♯ tuples such as `int * int` cannot be augmented, but they can be extended using C♯-style extension methods 📍
 
-## Type extension *vs* Generic type constraints
+## Type extension _vs_ Generic type constraints
 
 Extension allowed on generic type except when constraints differ:
 
@@ -173,9 +173,9 @@ type IEnumerable<'T> with
 
 Static method:
 
-- Decorated with `[<Extension>]`
-- In F♯ < 8.0: Defined in class decorated with `[<Extension>]`
-- Type of 1st argument = extended type *(`IEnumerable<'T>` below)*
+* Decorated with `[<Extension>]`
+* In F♯ < 8.0: Defined in class decorated with `[<Extension>]`
+* Type of 1st argument = extended type _(`IEnumerable<'T>` below)_
 
 **Example:**
 
@@ -214,8 +214,8 @@ namespace Extensions
 }
 ```
 
-☝ **Note:** The actual implementations of `Sum()` in LINQ are different,
-one per type: `int`, `float`... → [*Source code*](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Linq/src/System/Linq/Sum.cs)
+☝ **Note:** The actual implementations of `Sum()` in LINQ are different,\
+one per type: `int`, `float`... → [_Source code_](https://github.com/dotnet/runtime/blob/main/src/libraries/System.Linq/src/System/Linq/Sum.cs)
 
 ### Tuples
 
@@ -237,25 +237,25 @@ let b2 = ("a", "b").IsDuplicate()  // false
 
 ## Comparison
 
-| Feature            | Type extension            | Extension method        |
-|--------------------|---------------------------|-------------------------|
+| Feature            | Type extension          | Extension method     |
+| ------------------ | ----------------------- | -------------------- |
 | Methods            | ✅ instance, ✅ static    | ✅ instance, ❌ static |
-| Properties         | ✅ instance, ✅ static    | ❌ *Not supported*     |
-| Constructors       | ✅ intrinsic, ❌ optional | ❌ *Not supported*     |
-| Extend constraints | ❌ *Not supported*        | ✅ *Support SRTP*      |
+| Properties         | ✅ instance, ✅ static    | ❌ _Not supported_    |
+| Constructors       | ✅ intrinsic, ❌ optional | ❌ _Not supported_    |
+| Extend constraints | ❌ _Not supported_       | ✅ _Support SRTP_     |
 
 ## Limits
 
-Do not support (sub-typing) polymorphism:
+Type extensions do not support (sub-typing) polymorphism:
 
-- Not in the virtual table
-- No `virtual`, `abstract` member
-- No `override` member *(but overloads 👌)*
+* Not in the virtual table
+* No `virtual`, `abstract` member
+* No `override` member _(but overloads 👌)_
 
-## Extensions *vs* C♯ partial class
+## Extensions _vs_ C♯ partial class
 
-| Feature             | Multi-files | Compiled into type | Any type             |
-|---------------------|-------------|--------------------|----------------------|
-| C♯ partial class    | ✅ Yes      | ✅ Yes             | Only `partial class` |
-| Extension intrinsic | ❌ No       | ✅ Yes             | ✅ Yes               |
-| Extension optional  | ✅ Yes      | ❌ No              | ✅ Yes               |
+| Feature             | Multi-files | Compiled into the type | Any type             |
+| ------------------- | ----------- | ---------------------- | -------------------- |
+| C♯ partial class    | ✅ Yes       | ✅ Yes                  | Only `partial class` |
+| Extension intrinsic | ❌ No        | ✅ Yes                  | ✅ Yes                |
+| Extension optional  | ✅ Yes       | ❌ No                   | ✅ Yes                |

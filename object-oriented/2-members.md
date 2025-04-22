@@ -1,12 +1,12 @@
 # Members
 
-Additional elements in type definition *(class, record, union)*
+Additional elements in type definition _(class, record, union)_
 
-- *(Event)*
-- Method
-- Property
-- Indexed property
-- Operator overload
+* _(Event)_
+* Method
+* Property
+* Indexed property
+* Operator overload
 
 ## Static and instance members
 
@@ -14,39 +14,39 @@ Static member: `static member member-name ...`.
 
 Instance member:
 
-- Concrete member: `member self-identifier.member-name ...`
-- Abstract member: `abstract member member-name: type-signature`
-- Virtual member = requires 2 declarations
+* Concrete member: `member self-identifier.member-name ...`
+* Abstract member: `abstract member member-name: type-signature`
+* Virtual member = requires 2 declarations
   1. Abstract member
   2. Default implementation: `default self-identifier.member-name ...`
-- Override virtual member: `override self-identifier.member-name ...`
+* Override virtual member: `override self-identifier.member-name ...`
 
-☝ `member-name` in PascalCase *(.NET convention)*
+☝ `member-name` in PascalCase _(.NET convention)_
 
 ☝ No `protected` member !
 
-## *Self-identifier*
+## _Self-identifier_
 
-- In C♯, Java, TypeScript : `this`
-- In VB : `Me`
-- In F♯ : we can choose → `this`, `self`, `me`, any valid *identifier*...
+* In C♯, Java, TypeScript : `this`
+* In VB : `Me`
+* In F♯ : we can choose → `this`, `self`, `me`, any valid _identifier_...
 
 **Declaration:**
 
 1. For the primary constructor❗: with `as` → `type MyClass() as self = ...`
-   - ⚠️ Can be costly
+   * ⚠️ Can be costly
 2. For a member: `member me.Introduce() = printfn $"Hi, I'm {me.Name}"`
-3. For a member not using it: with `_` *(since F♯ 6)* → `member _.Hi() = printfn "Hi!"`
+3. For a member not using it: with `_` _(since F♯ 6)_ → `member _.Hi() = printfn "Hi!"`
 
 ## Call a member
 
-Calling a static member \
+Calling a static member\
 → Prefix with the type name: `type-name.static-member-name`
 
-Calling an instance member inside the type \
-→ Prefix with *self-identifier*: `self-identifier.instance-member-name`
+Calling an instance member inside the type\
+→ Prefix with _self-identifier_: `self-identifier.instance-member-name`
 
-Call an instance member from outside the type \
+Call an instance member from outside the type\
 → Prefix with instance-name: `instance-name.instance-member-name`
 
 ## Method
@@ -57,10 +57,10 @@ Call an instance member from outside the type \
 
 1. Curried parameters = FP style
 2. Parameters in tuple = OOP style
-   - Better interop with C♯
-   - Only mode allowed for constructors
-   - Support named, optional, arrayed parameters
-   - Support overloads
+   * Better interop with C♯
+   * Only mode allowed for constructors
+   * Support named, optional, arrayed parameters
+   * Support overloads
 
 ```fsharp
 // (1) Tuple form (the most classic)
@@ -75,11 +75,11 @@ type Product' =
         (me.Price * float qty) - discount  // (B)
 ```
 
-☝ `with` required in ① but not in ② because of indentation
-    → `end` can end the block started with `with` *(not recommended)*
+☝ `with` required in ① but not in ② because of indentation\
+&#x20;   → `end` can end the block started with `with` _(not recommended)_
 
-☝ `this.Price` Ⓐ and `me.Price` Ⓑ
-    → Access to instance via *self-identifier* defined by member
+☝ `this.Price` Ⓐ and `me.Price` Ⓑ\
+&#x20;   → Access to instance via _self-identifier_ defined by member
 
 ## Named arguments
 
@@ -96,11 +96,11 @@ type SpeedingTicket() =
 
 Useful for :
 
-- Clarify a usage for the reader or compiler (in case of overloads)
-- Choose the order of arguments
-- specify only certain arguments, the others being optional
+* Clarify a usage for the reader or compiler (in case of overloads)
+* Choose the order of arguments
+* specify only certain arguments, the others being optional
 
-☝ Arguments *after a named argument* are necessarily named too.
+☝ Arguments _after a named argument_ are necessarily named too.
 
 ## Optional parameters
 
@@ -108,15 +108,15 @@ Allows you to call a tuplified method (including constructors) without specifyin
 
 Optional parameter:
 
-- Declared with `?` in front of its name → `?arg1: int`
-- In the body of the method, wrapped in an `Option` → `arg1: int option`
-  - You can use `defaultArg` to specify the **default value**
-  - But the default value does not appear in the signature!
+* Declared with `?` in front of its name → `?arg1: int`
+* In the body of the method, wrapped in an `Option` → `arg1: int option`
+  * You can use `defaultArg` to specify the **default value**
+  * But the default value does not appear in the signature!
 
 When the method is called, the argument can be specified either:
 
-- Directly in its type → `Method(arg1 = 1)`
-- Wrapped in an `Option` if named with prefix `?` → `Method(?arg1 = Some 1)`
+* Directly in its type → `Method(arg1 = 1)`
+* Wrapped in an `Option` if named with prefix `?` → `Method(?arg1 = Some 1)`
 
 ☝ Other syntax for interop .NET: `[<Optional; DefaultParameterValue(...)>] arg`
 
@@ -137,7 +137,7 @@ let conn2 = Connection(?duplex = Some Half)
 let conn3 = Connection(300, Half, true)
 ```
 
-☝ Notice the *shadowing* of parameters by variables of the same name \
+☝ Notice the _shadowing_ of parameters by variables of the same name\
 `let parity (* bool *) = defaultArg parity (* bool option *) Full`
 
 ### .NET optional parameters
@@ -182,8 +182,8 @@ main();;
 
 You can use `|>` with a method with:
 
-- 1 parameter
-- 2 parameters, the last of which is .NET optional
+* 1 parameter
+* 2 parameters, the last of which is .NET optional
 
 ```fsharp
 open System.Runtime.InteropServices
@@ -219,7 +219,7 @@ let logger = Logger()
 
 ## Parameter array
 
-Allows you to specify a variable number of parameters of the same type \
+Allows you to specify a variable number of parameters of the same type\
 → Via `System.ParamArray` attribute on **last** method argument
 
 ```fsharp
@@ -234,15 +234,15 @@ let x = MathHelper.Max(1, 2, 4, 5)  // 5
 
 💡 Equivalent of C♯ `public static T Max<T>(params T[] items)`
 
-## Call C♯ method *TryXxx()*
+## Call C♯ method _TryXxx()_
 
-❓ How to call in F♯ a C♯ method `bool TryXxx(args, out T outputArg)`? \
-*(Example: `int.TryParse`, `IDictionnary::TryGetValue`)*
+❓ How to call in F♯ a C♯ method `bool TryXxx(args, out T outputArg)`?\
+&#xNAN;_(Example: `int.TryParse`, `IDictionnary::TryGetValue`)_
 
-- 👎 Use F♯ equivalent of `out outputArg` but use mutation 😵
-- ✅ Do not specify `outputArg` argument
-  - Change return type to tuple `bool * T`
-  - `outputArg` becomes the 2nd element of this tuple
+* 👎 Use F♯ equivalent of `out outputArg` but use mutation 😵
+* ✅ Do not specify `outputArg` argument
+  * Change return type to tuple `bool * T`
+  * `outputArg` becomes the 2nd element of this tuple
 
 ```fsharp
   match System.Int32.TryParse text with
@@ -250,7 +250,7 @@ let x = MathHelper.Max(1, 2, 4, 5)  // 5
   | false, _ -> printf $"{text} is not a number."
 ```
 
-## Call method *Xxx(tuple)*
+## Call method _Xxx(tuple)_
 
 ❓ How do you call a method whose 1st parameter is itself a tuple?!
 
@@ -263,28 +263,28 @@ let peter = friendsLocation.TryGetValue (0,0)
 // 💥 Error FS0001: expression supposed to have type `int * int`, not `int`.
 ```
 
-💡 **Explanations:** `TryGetValue(0,0)` = method call in tuplified mode \
-→ Specifies 2 parameters, `0` and `0`. \
+💡 **Explanations:** `TryGetValue(0,0)` = method call in tuplified mode\
+→ Specifies 2 parameters, `0` and `0`.\
 → `0` is an `int` whereas we expect an `int * int` tuple!
 
 ### Solutions
 
-1. 😕 *Backward pipe*, but also confusing
-   - `friendsLocation.TryGetValue <| (0,0)`
+1. 😕 _Backward pipe_, but also confusing
+   * `friendsLocation.TryGetValue <| (0,0)`
 2. 👌 Double parentheses, but confusing syntax
-   - `friendsLocation.TryGetValue((0,0))`
+   * `friendsLocation.TryGetValue((0,0))`
 3. ✅ Use a function rather than a method
-   - `friendsLocation |> Map.tryFind (0,0)`
+   * `friendsLocation |> Map.tryFind (0,0)`
 
-## Method *vs* Function
+## Method _vs_ Function
 
 | Feature             | Function | Curried method | Tuplified method |
-|---------------------|----------|----------------|------------------|
-| Partial application | ✅ yes   | ✅ yes         | ❌ no            |
-| Named arguments     | ❌ no    | ❌ no          | ✅ yes           |
-| Optional parameters | ❌ no    | ❌ no          | ✅ yes           |
-| Params array        | ❌ no    | ❌ no          | ✅ yes           |
-| Overload            | ❌ no    | ❌ no          | ✅ yes 1️⃣        |
+| ------------------- | -------- | -------------- | ---------------- |
+| Partial application | ✅ yes    | ✅ yes          | ❌ no             |
+| Named arguments     | ❌ no     | ❌ no           | ✅ yes            |
+| Optional parameters | ❌ no     | ❌ no           | ✅ yes            |
+| Params array        | ❌ no     | ❌ no           | ✅ yes            |
+| Overload            | ❌ no     | ❌ no           | ✅ yes 1️⃣        |
 
 **Notes**
 
@@ -292,39 +292,39 @@ let peter = friendsLocation.TryGetValue (0,0)
 
 2️⃣ Declaration order:
 
-- Methods generally don't need to follow the top-down compilation rule.
-- But it's required in the case of generic members \
+* Methods generally don't need to follow the top-down compilation rule.
+* But it's required in the case of generic members\
   → See [https://stackoverflow.com/q/66358718/8634147](https://stackoverflow.com/q/66358718/8634147)
-- We recommend declaring members from top to bottom, to ensure consistency with the rest of the code.
+* We recommend declaring members from top to bottom, to ensure consistency with the rest of the code.
 
-## Method *vs* Function (2)
+## Method _vs_ Function (2)
 
-| Feature                   | Function       | Static method    | Instance method    |
-|---------------------------|----------------|------------------|--------------------|
-| Naming                    | camelCase      | PascalCase       | PascalCase         |
-| Support of `inline`       | ✅ yes         | ✅ yes           | ✅ yes             |
-| Recursive                 | ✅ if `rec`    | ✅ yes           | ✅ yes             |
-| Inference of `x` in       | `f x` → ✅ yes | `K.M x` → ✅ yes | `x.M()` → ❌ no    |
+| Feature                   | Function      | Static method   | Instance method    |
+| ------------------------- | ------------- | --------------- | ------------------ |
+| Naming                    | camelCase     | PascalCase      | PascalCase         |
+| Support of `inline`       | ✅ yes         | ✅ yes           | ✅ yes              |
+| Recursive                 | ✅ if `rec`    | ✅ yes           | ✅ yes              |
+| Inference of `x` in       | `f x` → ✅ yes | `K.M x` → ✅ yes | `x.M()` → ❌ no     |
 | Can be passed as argument | ✅ yes : `g f` | ✅ yes : `g T.M` | ❌ no : `g x.M` 1️⃣ |
 
-1️⃣ Alternatives:
-  → F♯ 8: shorthand members → `g _.M()`
-  → Wrap in lambda → `g (fun x -> x.M())`
+1️⃣ Alternatives:\
+&#x20; → F♯ 8: shorthand members → `g _.M()`\
+&#x20; → Wrap in lambda → `g (fun x -> x.M())`
 
-### Static methods *vs* companion module
+### Static methods _vs_ companion module
 
 Companion module is more idiomatic → default choice.
 
 Static methods are interesting in some use cases:
 
-- Usage easier due to optional parameters 1️⃣
-- Usage more readable due to named arguments 3️⃣
-- Usage terser to instanciate record with several fields:
-  - Depending on your use of Fantomas and its configuration, multi-line record expression can be verbose
-  - A factory method call is usually formatted in a single line, hence terser. 2️⃣
-  - When field labels are necessary for code clarity, we can use named arguments.
-- Record expressions can be ambiguous: we are not sure of which type it is.
-  - A factory method can help resolve ambiguity: we force to use it qualified, hence the type is explicit.
+* Usage easier due to optional parameters 1️⃣
+* Usage more readable due to named arguments 3️⃣
+* Usage terser to instanciate record with several fields:
+  * Depending on your use of Fantomas and its configuration, multi-line record expression can be verbose
+  * A factory method call is usually formatted in a single line, hence terser. 2️⃣
+  * When field labels are necessary for code clarity, we can use named arguments.
+* Record expressions can be ambiguous: we are not sure of which type it is.
+  * A factory method can help resolve ambiguity: we force to use it qualified, hence the type is explicit.
 
 ```fsharp
 type PersonName =
@@ -354,7 +354,7 @@ let pierreLaurent = PersonName.Create(firstName = "Pierre", lastName = "Laurent"
 
 ## Properties
 
-≃ Syntactic sugar hiding a *getter* and/or a *setter* \
+≃ Syntactic sugar hiding a _getter_ and/or a _setter_\
 → Allows the property to be used as if it were a field
 
 There are 2 base ways to declare a property:
@@ -390,14 +390,14 @@ type Generator() =
 
 ### Automatic property
 
-Automatic because a *backing field* is generated by the compiler.
+Automatic because a _backing field_ is generated by the compiler.
 
 | Use case   | Syntax                                      | Equivalent in C♯                     |
-|------------|---------------------------------------------|--------------------------------------|
+| ---------- | ------------------------------------------- | ------------------------------------ |
 | Read-only  | `member val Property = value`               | `public Type Property { get; }`      |
 | Read/write | `member val Property = value with get, set` | `public Type Property { get; set; }` |
 
-☝ The property returns the same value on each call, mutation with the *setter* aside.
+☝ The property returns the same value on each call, mutation with the _setter_ aside.
 
 Example:
 
@@ -412,16 +412,16 @@ let joe = PersonName(first = "Joe", last = "Dalton")
 let s = joe.Full  // "DALTON Joe"
 ```
 
-☝️ `PersonName` is immutable and, as a *struct*📍, has structural equality. It's the OO alternative to *records.*
+☝️ `PersonName` is immutable and, as a _struc&#x74;_&#xD83D;�, has structural equality. It's the OO alternative to _records._
 
 ### Other cases
 
-In other cases, the syntax is verbose: ([*details*](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/members/properties)). \
+In other cases, the syntax is verbose: ([_details_](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/members/properties)).\
 👉 When possible, prefer methods as they are more explicit.
 
 ### Properties and pattern matching
 
-⚠️ Properties cannot be deconstructed
+⚠️ Properties cannot be deconstructed\
 → Can only participate in pattern matching in `when` part
 
 ```fsharp
@@ -441,9 +441,9 @@ let salut =
 // val salut : string = "Salut, Joe !"
 ```
 
-## PIndexed properties
+## Indexed properties
 
-Allows access by index, as if the class were an array: `instance[index]` \
+Allows access by index, as if the class were an array: `instance[index]`\
 → Interesting for an ordered collection, to hide the implementation
 
 Set up by declaring member `Item`
@@ -456,9 +456,9 @@ member self-identifier.Item
         set-member-body
 ```
 
-💡 Property *read-only* (*write-only*) → declare only the *getter* (*setter*)
+💡 Property _read-only_ (_write-only_) → declare only the _getter_ (_setter_)
 
-☝ Notice the *setter* parameters are curried
+☝ Notice the _setter_ parameters are curried
 
 **Example :**
 
@@ -484,7 +484,7 @@ let v2 = digitLabel[2]     // "deux"
 
 > Same as indexed property, but with multiple indexes
 
-**Declaration:** `GetSlice(?start, ?end)` method *(regular or extension)*
+**Declaration:** `GetSlice(?start, ?end)` method _(regular or extension)_
 
 **Usage:** `..` operator
 
@@ -504,12 +504,14 @@ let slice2 = range[2..]  // { Min = 2; Max = 5 }
 
 Operator overloaded possible at 2 levels:
 
-1. In a module, as a function <br/> `let [inline] (operator-symbols) parameter-list = ...`
-   - 👉 See session on functions
-   - ☝ Limited: only 1 definition possible
-2. In a type, as a member <br/> `static member (operator-symbols) (parameter-list) =`
-   - Same rules as for function form
-   - 👍 Multiple overloads possible (N types × P *overloads*)
+1. In a module, as a function\
+   `let [inline] (operator-symbols) parameter-list = ...`
+   * 👉 See session on functions
+   * ☝ Limited: only 1 definition possible
+2. In a type, as a member\
+   `static member (operator-symbols) (parameter-list) =`
+   * Same rules as for function form
+   * 👍 Multiple overloads possible (N types × P _overloads_)
 
 **Example:**
 

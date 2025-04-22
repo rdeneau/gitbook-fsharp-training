@@ -1,12 +1,12 @@
-# Class & Structure
+# Class, Struct
 
 ## Class
 
 Class in F♯ ≡ class in C♯
 
-- Object-oriented building block
-- Constructor of objects containing data of defined type and methods
-- Can be static too
+* Object-oriented building block
+* Constructor of objects containing data of defined type and methods
+* Can be static too
 
 **Keyword:** we use the `type` keyword to define a class, like any other type in F♯.
 
@@ -33,7 +33,7 @@ type CustomerName(firstName: string, lastName: string) =
 
 ### Secondary constructor
 
-Syntax for defining another constructor: \
+Syntax for defining another constructor:\
 `new(argument-list) = constructor-body`
 
 ☝ In `constructor-body`, there must be a call the primary constructor.
@@ -50,7 +50,7 @@ type Point(x: float, y: float) =
 
 ### let bindings
 
-We can use `let` bindings in the class definition to define variables (in fact class fields) and inner functions.
+We can use `let` bindings in the class definition to define variables (in fact, class fields, called implicit fields) and inner functions.
 
 **Syntax:**
 
@@ -64,10 +64,10 @@ We can use `let` bindings in the class definition to define variables (in fact c
 
 ☝ **Notes**
 
-- Declared before class members
-- Initial value mandatory
-- Private
-- Direct access: no need to qualify them with the `self-identifier`
+* Declared before the class members
+* Initial value mandatory
+* Private
+* Direct access: no need to qualify them with the `self-identifier`
 
 **Example:**
 
@@ -82,7 +82,7 @@ p.Hi()  // Hi, I'm John Doe!
 
 ### do bindings
 
-We can use `do` bindings in the class definition to trigger side-effects *(like logging)* during the construction of the object or of the type, before the members.
+We can use `do` bindings in the class definition to trigger side-effects _(like logging)_ during the construction of the object or of the type, before the members.
 
 **Syntax:**
 
@@ -92,7 +92,9 @@ We can use `do` bindings in the class definition to trigger side-effects *(like 
 
 ### Static constructor
 
-There are no explicit static constructor in F♯ but we can use `static let` and `static do` bindings to perform "type initialization". They will be executed the fist time the type is used.
+* There are no explicit static constructors in F♯.
+* We can use `static let` and `static do` bindings to perform "type initialization".
+* They will be executed the first time the type is used.
 
 **Example:**
 
@@ -114,7 +116,7 @@ let count2 = k2.CreatedCount  // 2
 
 ## Singleton
 
-You can define a *Singleton* class by making the primary constructor private:
+You can define a _Singleton_ class by making the primary constructor private:
 
 ```fsharp
 type S private() =
@@ -129,7 +131,7 @@ let s = S.Instance  // val s : S
 It's not thread-safe!
 {% endhint %}
 
-💡 **Alternative:** *single-case union*
+💡 **Alternative:** _single-case union_ perfectly fits this use case with no overhead.
 
 ```fsharp
 type S = S
@@ -147,7 +149,7 @@ let k = K()
 
 ## Generic class
 
-There is no automatic generalization on type \
+There is no automatic generalization on type\
 → Generic parameters need to be specified:
 
 ```fsharp
@@ -164,19 +166,19 @@ Call one of the constructors, with tuple arguments
 
 ☝️ Don't forget `()` if no arguments, otherwise you get a function!
 
-In a `let` binding: `new` is optional and not recommended \
-→ `let v = Vector(1.0, 2.0)` 👌 \
+In a `let` binding: `new` is optional and not recommended\
+→ `let v = Vector(1.0, 2.0)` 👌\
 → `let v = new Vector(1.0, 2.0)` ❌
 
-In a `use` binding: `new` mandatory \
+In a `use` binding: `new` mandatory\
 → `use d = new Disposable()`
 
 ## Property initialization
 
-Properties can be initialized with setter at instantiation 👍
+Properties can be initialized with setters at instantiation 👍
 
-- Specify them as **named arguments** in the call to the constructor
-- Place them after any constructor arguments
+* Specify them as **named arguments** in the call to the constructor
+* Place them after any constructor arguments
 
 ```fsharp
 type PersonName(first: string) =
@@ -197,10 +199,10 @@ Annotated with `[<AbstractClass>]`
 One of the members is **abstract**:
 
 1. Declared with the `abstract` keyword
-2. No default implementation (with `default` keyword)
-   *(Otherwise member is virtual)*
+2. No default implementation (with `default` keyword) \
+   &#xNAN;_(Otherwise the member is virtual)_
 
-Inheritance with `inherit` keyword \
+Inheritance with `inherit` keyword\
 → Followed by a call to the base class constructor
 
 **Example:**
@@ -240,14 +242,13 @@ As we've already seen, `let` bindings implicitly define fields in the class...
 
 **Syntax:** `val [ mutable ] [ access-modify ] field-name : type-name`
 
-**Notes:**
+* No initial value
+* `public` by default
+* can be compiled using a backing field:
+  * `val mutable a: int` → public field
+  * `val a: int` → internal field `a@` + property `a => a@`
 
-- Their declaration cannot contain an initial value
-- They are `public` by default, but can be compiled using a backing field:
-  - `val mutable a: int` → public field
-  - `val a: int` → internal field `a@` + property `a => a@`
-
-### Field *vs* property
+### Field _vs_ property
 
 ```fsharp
 // Explicit fields readonly
@@ -270,31 +271,31 @@ type C3(a: int, b: int) =
     member val C = 0 with get, set
 ```
 
-## Explicit field *vs* implicit field *vs* property
+### Explicit field _vs_ implicit field _vs_ property
 
 Explicit fields are **not often used**:
 
-- Only for classes and structures
-- Useful with native function manipulating memory directly
-    *(Because fields order is preserved - see [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA9MgBAYQBYEMC2ADhGgKYAeBwAlgMZUAuJxATiTjAPYB2wAngLAAoerwIlMARjQBeIWnloAbjmBocINFS705C5aoBGGrTsEK0XEgHcAFDihoDAShloA3mtc4A3I9cHfAF80VDRAXg3AQp3Mbgh6ZgBXGkZ45jQAJi4YHCpWNAAiGg5CHCSSPKEhUIA1AGU0AmYOBqoAS/oWljZOHgFhUXEMNLtjbQcjTW0XWTMFPBI8AxJUgH0AOgBBL115OYWltDWAIX8hIA===))*
-- Need a `[<ThreadStatic>]` variable
-- Interaction with F♯ class of code generated without primary constructor
+* Only for classes and structures
+* Useful with native functions manipulating memory directly\
+  &#x20;   _(Because fields order is preserved - see_ [_SharpLab_](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA9MgBAYQBYEMC2ADhGgKYAeBwAlgMZUAuJxATiTjAPYB2wAngLAAoerwIlMARjQBeIWnloAbjmBocINFS705C5aoBGGrTsEK0XEgHcAFDihoDAShloA3mtc4A3I9cHfAF80VDRAXg3AQp3Mbgh6ZgBXGkZ45jQAJi4YHCpWNAAiGg5CHCSSPKEhUIA1AGU0AmYOBqoAS/oWljZOHgFhUXEMNLtjbQcjTW0XWTMFPBI8AxJUgH0AOgBBL115OYWltDWAIX8hIA===)_)_
+* Need a `[<ThreadStatic>]` variable
+* Interaction with F♯ class of code generated without primary constructor
 
 Implicit fields / `let` bindings are quite common, to define intermediate variable during construction.
 
 Other use cases match auto-implemented properties:
 
-- Expose a value → `member val`
-- Expose a mutable "field" → `member val ... with get, set`
+* Expose a value → `member val`
+* Expose a mutable "field" → `member val ... with get, set`
 
 ## Structures
 
-Alternatives to classes, but more limited inheritance and recursion features
+Alternatives to classes, but with more limited inheritance and recursion features
 
 Same syntax as for classes, but with the addition of:
 
-- `[<Struct>]` attribute
-- Or `struct...end` block *(more frequent)*
+* `[<Struct>]` attribute
+* Or `struct...end` block _(more frequent)_
 
 ```fsharp
 type Point =

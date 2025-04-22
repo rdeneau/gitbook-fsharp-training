@@ -1,35 +1,37 @@
 ---
-description: "Recommendations for object-oriented programming"
+description: Recommendations for object-oriented programming
 ---
 
 # Recommendations
 
 ## No object orientation where F♯ is good
 
-Inference works better with `function (object)` than `object.member`
+Inference works better with `function (object)` than `object.Member`
 
 ### Simple object hierarchy
 
-- ❌ Avoid inheritance
-- ✅ Prefer type *Union* and exhaustive *pattern matching*
-- → Particularly recursive types such as trees, for their `fold` function
-- → https://fsharpforfunandprofit.com/series/recursive-types-and-folds/
+❌ Avoid inheritance
+
+✅ Prefer type _Union_ and exhaustive _pattern matching_
 
 {% hint style="info" %}
-### Recursive types
+#### Recursive types
 
 This is particularly true for recursive types. You can define a `fold` function for them.
 
-🔗 [The "Recursive types and folds" series](https://fsharpforfunandprofit.com/series/recursive-types-and-folds/), *F# for fun and profit*
+🔗 [The "Recursive types and folds" series](https://fsharpforfunandprofit.com/series/recursive-types-and-folds/), _F# for fun and profit_
 {% endhint %}
 
 ### Structural equality
 
-- ❌ Avoid class *(reference equality by default)*
-- ✅ Prefer a *Record* or a *Union*
-- 👌 Alternatively, consider *Struct* for performance purpose
-- ❓ Consider custom / performance structural equality
-  → 🔗 [Custom Equality and Comparison in F#](https://www.compositional-it.com/news-blog/custom-equality-and-comparison-in-f/), *Compositional IT*
+❌ Avoid class _(reference equality by default)_
+
+✅ Prefer a _Record_ or a _Union_
+
+👌 Alternatively, consider _Struct_ for performance purposes
+
+❓ Consider custom structural equality for performance purposes\
+&#x20;     🔗 [Custom Equality and Comparison in F#](https://www.compositional-it.com/news-blog/custom-equality-and-comparison-in-f/), _Compositional IT_
 
 ## Object-oriented recommended use-cases
 
@@ -37,7 +39,7 @@ This is particularly true for recursive types. You can define a `fold` function 
 2. Group features → in an interface
 3. Expressive, user-friendly API → tuplified methods
 4. API F♯ consumed in C♯ → member extensions
-5. Dependency management → injection into constructor
+5. Dependency management → injection into the constructor
 6. Tackle higher-order functions limits
 
 ### Class to encapsulate mutable state
@@ -71,7 +73,7 @@ let checkRoundTrip serialize deserialize value =
 //     when 'a : equality
 ```
 
-`serialize` and `deserialize` form a consistent group
+`serialize` and `deserialize` form a consistent group\
 → Grouping them in an object makes sense
 
 ```fsharp
@@ -79,7 +81,7 @@ let checkRoundTrip serializer data =
     data = (data |> serializer.Serialize |> serializer.Deserialize)
 ```
 
-💡 Prefer an interface to a *Record* *(not possible with `Fable.Remoting`)*
+💡 Prefer an interface to a _Record_ _(not possible with `Fable.Remoting`)_
 
 ```fsharp
 // ❌ Avoid: not a good use of a Record: unnamed parameters, structural comparison lost...
@@ -94,13 +96,13 @@ type Serializer =
     abstract Deserialize<'T> : data: string -> 'T
 ```
 
-- Parameters are named in the methods
-- Object easily instantiated with an object expression
+* Parameters are named in the methods
+* Object easily instantiated with an object expression
 
 ### User-friendly API
 
 ```fsharp
-// ❌ Avoid                         // ✅ Favor
+// ✖️ Avoid                         // ✅ Favor
 module Utilities =                  type Utilities =
     let add2 x y = x + y                static member Add(x,y) = x + y
     let add3 x y z = x + y + z          static member Add(x,y,z) = x + y + z
@@ -110,12 +112,12 @@ module Utilities =                  type Utilities =
 
 Advantages of OO implementation:
 
-- `Add` method overloaded *vs* `add2`, `add3` functions *(`2` and `3` = args count)*
-- Single `Log` method with `retryPolicy` optional parameter
+* `Add` method overloaded _vs_ `add2`, `add3` functions _(`2` and `3` = args count)_
+* Single `Log` method with `retryPolicy` optional parameter
 
 🔗 [F♯ component design guidelines - Libraries used in C♯](https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#guidelines-for-libraries-for-use-from-other-net-languages)
 
-### API F♯ consumed in C♯ - Type
+### F♯ API consumed in C♯
 
 Do not expose this type as is:
 
@@ -132,8 +134,8 @@ module RadialPoint =
 
 💡 To make it easier to discover the type and use its features in C♯
 
-- Put everything in a namespace
-- Augment type with the functionalities implemented in the companion module
+* Put everything in a namespace
+* Augment type with the functionalities implemented in the companion module
 
 ```fsharp
 namespace Fabrikam
@@ -147,7 +149,7 @@ type RadialPoint with
     member this.Stretch(factor) = RadialPoint.stretch factor this
 ```
 
-👉 The API consumed in C♯ is ~equivalent to:
+👉 The API consumed in C♯ is \~equivalent to:
 
 ```csharp
 namespace Fabrikam
@@ -173,8 +175,8 @@ namespace Fabrikam
 
 > **Parametrization of dependencies + partial application**
 
-- Small-dose approach: few dependencies, few functions involved
-- Otherwise, quickly tedious to implement and to use
+* Small-dose approach: few dependencies, few functions involved
+* Otherwise, quickly tedious to implement and to use
 
 ```fsharp
 module MyApi =
@@ -186,8 +188,8 @@ module MyApi =
 
 > **Dependency injection**
 
-- Inject dependencies into the class constructor
-- Use these dependencies in methods
+* Inject dependencies into the class constructor
+* Use these dependencies in methods
 
 👉 Offers a user-friendly API 👍
 
@@ -197,28 +199,34 @@ type MyParametricApi(dep1, dep2, dep3) =
     member _.Function2 arg2 = doStuffWith' dep1 dep2 dep3 arg2
 ```
 
-✅ Particularly recommended for encapsulating **side-effects** : \
+✅ Particularly recommended for encapsulating **side-effects** :\
 → Connecting to a DB, reading settings...
 
-⚠️ **Trap:** dependencies injected in the constructor make sense only if they are used throughout the class. A dependency used in a single method indicates a design smell.
+{% hint style="warning" %}
+#### Trap
+
+Dependencies injected in the constructor make sense only if they are used throughout the class.
+
+A dependency used in a single method indicates a design smell.
+{% endhint %}
 
 ### Advanced FP techniques
 
-*Dependency rejection* = sandwich pattern
+_Dependency rejection_ = sandwich pattern
 
-- Reject dependencies in Application layer, out of Domain layer
-- Powerful and simple 👍
-- ... when suitable ❗
+* Reject dependencies in Application layer, out of Domain layer
+* Powerful and simple 👍
+* ... when suitable ❗
 
-*Free* monad + interpreter patter
+_Free_ monad + interpreter patter
 
-- Pure domain
-- More complex than the sandwich pattern but working in any case
-- User-friendly through a dedicated computation expression
+* Pure domain
+* More complex than the sandwich pattern but working in any case
+* User-friendly through a dedicated computation expression
 
-*Reader* monad
+_Reader_ monad
 
-- Only if hidden inside a computation expression
+* Only if hidden inside a computation expression
 
 ...
 
@@ -232,15 +240,15 @@ type MyParametricApi(dep1, dep2, dep3) =
 
 ❌ `let test (f: float -> float -> string) =...`
 
-✅ Solution 1: type wrapping the 2 args `float` \
+✅ Solution 1: type wrapping the 2 args `float`\
 → `f: Point -> string` with `type Point = { X: float; Y: float }`
 
-✅ Solution 2: interface + method for named parameters \
+✅ Solution 2: interface + method for named parameters\
 → `type IPointFormatter = abstract Execute : x:float -> y:float -> string`
 
 ### 2. Lambda is a **command** `'T -> unit`
 
-✅ Prefer to trigger an side-effect via an object \
+✅ Prefer to trigger an side-effect via an object\
 → `type ICommand = abstract Execute : 'T -> unit`
 
 ### 3. Lambda: "really" generic!?

@@ -6,16 +6,16 @@ Similar to an abstract class but with only abstract members.
 
 **Atttribute:**
 
-- `[<AbstractClass>]` attribute can not be used to declare an interface
-- `[<Interface>]` attribute is optional but recommended in most cases
+* `[<AbstractClass>]` attribute can not be used to declare an interface
+* `[<Interface>]` attribute is optional but recommended in most cases
 
 ```fsharp
 type [accessibility-modifier] interface-name =
     abstract memberN : [ argument-typesN -> ] return-typeN
 ```
 
-- Interface name begins with `I` to follow .NET convention
-- Arguments can be named *(without parentheses otherwise 💥)*
+* Interface name begins with `I` to follow .NET convention
+* Arguments can be named _(without parentheses otherwise 💥)_
 
 ```fsharp
 [<Interface>]
@@ -23,8 +23,8 @@ type IPrintable =
     abstract member Print : format: string -> unit
 ```
 
-You can also use verbose syntax with an `interface ... end` block. \
-→ Not idiomatic except in the case of a member-less interface a.k.a *marker interface*.
+You can also use verbose syntax with an `interface ... end` block.\
+→ Not idiomatic except in the case of a member-less interface a.k.a _marker interface_.
 
 ```fsharp
 type IMarker = interface end
@@ -35,7 +35,7 @@ type IMarker = interface end
 2 ways of implementing an interface:
 
 1. In an object expression 📍
-2. In a type *(as in C♯)*
+2. In a type _(as in C♯)_
 
 ```fsharp
 type IPrintable =
@@ -56,14 +56,18 @@ This `interface` F♯ keyword matches the `implements` keyword in Java and TypeS
 
 F♯ 5.0 supports interfaces defining methods with default implementations written in C♯ 8+ but does not allow them to be defined directly in F♯.
 
-⚠️ Don't confuse with `default` keyword: supported only in classes!
+{% hint style="warning" %}
+#### Keyword
+
+Don't confuse with `default` keyword: it's supported only in classes!
+{% endhint %}
 
 ## F♯ interface is explicit
 
-F♯ interface implementation
+F♯ interface implementation\
 ≡ Explicit implementation of an interface in C♯
 
-→ Interface methods are accessible only by *upcasting*:
+→ Interface methods are accessible only by _upcasting_:
 
 ```fsharp
 [<Interface>]
@@ -75,7 +79,7 @@ type Range = { Min: int; Max: int } with
         member this.Print() = printfn $"[{this.Min}..{this.Max}]"
 
 let range = { Min = 1; Max = 5 }
-(range :> IPrintable).Print()  // upcast operator 📍
+(range :> IPrintable).Print()  // upcast operator
 // [1..5]
 ```
 
