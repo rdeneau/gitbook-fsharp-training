@@ -4,6 +4,16 @@ description: F♯ Training, covering versions 5.0 to 9.0 (2021-2024)
 
 # Presentation
 
+## Slides
+
+This git-book is here to supplement training sessions I've conducted using slides located in this repository:
+
+{% embed url="https://github.com/rdeneau/formation-fsharp/tree/main/en" %}
+
+* Written in markdown with marp / marpit
+* Outputs available in HTML and PDF files
+* The theme can be customized: it's "just" CSS and PNG files.
+
 ## Author
 
 Romain DENEAU
@@ -47,14 +57,22 @@ In detail :
 
 🚀 → more advanced chapters
 
-🍔 ou 🎲 → Quiz
+🍔 or 🎲 → Quiz
 
 📜 → Summary
 
 ## Target audience
 
 C# Developers - .NET SDK installed on your machine\
-Notions in JavaScript/TypeScript can be helpful when we will compare the languages
+Notions in JavaScript/TypeScript can be helpful when we compare the languages
+
+{% hint style="success" %}
+#### Perform the training yourself
+
+As a F# developer in a .NET team using only C#, feel free to use these materials (both git-book and slides) to train your team.
+
+💡 The theme can be customized: it's "just" CSS and PNG files.
+{% endhint %}
 
 ## Changelog
 
