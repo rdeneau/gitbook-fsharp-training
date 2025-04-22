@@ -1,7 +1,3 @@
----
-description: Orienté-objet, polymorphisme
----
-
 # Introduction
 
 In F♯, object-oriented is sometimes more practical than functional style.
