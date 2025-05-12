@@ -12,56 +12,56 @@ Represents an asynchronous calculation
 
 📆 Similar to the `async/await` pattern way before C♯ and JS
 
-- 2007: `Async<'T>` F♯
-- 2012: `Task<T>` .NET and pattern `async`/`await`
-- 2017: `Promise` JavaScript and pattern `async`/`await`
+* 2007: `Async<'T>` F♯
+* 2012: `Task<T>` .NET and pattern `async`/`await`
+* 2017: `Promise` JavaScript and pattern `async`/`await`
 
 ## Methods returning an `Async` object
 
-`Async.AwaitTask(task : Task or Task<'T>) : Async<'T>` \
+`Async.AwaitTask(task : Task or Task<'T>) : Async<'T>`\
 → Convert a `Task` (.NET) to `Async` (F♯)
 
-`Async.Sleep(milliseconds or TimeSpan) : Async<unit>` \
+`Async.Sleep(milliseconds or TimeSpan) : Async<unit>`\
 ≃ `await Task.Delay()` ≠ `Thread.Sleep` → does not block current thread
 
-FSharp.Control `CommonExtensions` module: extends the `System.IO.Stream` type ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-commonextensions.html)) \
-→ `AsyncRead(buffer: byte[], ?offset: int, ?count: int) : Async<int>`
+FSharp.Control `CommonExtensions` module: extends the `System.IO.Stream` type ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-commonextensions.html))\
+→ `AsyncRead(buffer: byte[], ?offset: int, ?count: int) : Async<int>`\
 → `AsyncWrite(buffer: byte[], ?offset: int, ?count: int) : Async<unit>`
 
-FSharp.Control `WebExtensions` module: extends type `System.Net.WebClient` ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-webextensions.html)) \
-→ `AsyncDownloadData(address : Uri) : Async<byte[]>` \
+FSharp.Control `WebExtensions` module: extends type `System.Net.WebClient` ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-webextensions.html))\
+→ `AsyncDownloadData(address : Uri) : Async<byte[]>`\
 → `AsyncDownloadString(address : Uri) : Async<string`
 
 ## Run an async calculation
 
-`Async.RunSynchronously(calc: Async<'T>, ?timeoutMs: int, ?cancellationToken) : 'T` \
+`Async.RunSynchronously(calc: Async<'T>, ?timeoutMs: int, ?cancellationToken) : 'T`\
 → Waits for the calculation to end, blocking the calling thread! (≠ `await` C♯) ⚠️
 
-`Async.Start(operation: Async<unit>, ?cancellationToken) : unit` \
-→ Perform the operation in background _(without blocking calling thread)_ \
+`Async.Start(operation: Async<unit>, ?cancellationToken) : unit`\
+→ Perform the operation in background _(without blocking calling thread)_\
 ⚠️ If an exception occurs, it is "swallowed"!
 
-`Async.StartImmediate(calc: Async<'T>, ?cancellationToken) : unit` \
-→ Perform the calculation in the calling thread! \
+`Async.StartImmediate(calc: Async<'T>, ?cancellationToken) : unit`\
+→ Perform the calculation in the calling thread!\
 💡 Useful in a GUI to update it: progress bar...
 
-`Async.StartWithContinuations(calc, continuations..., ?cancellationToken)` \
-→ Ditto `Async.RunSynchronously` ⚠️ ... with 3 _callbacks_ of continuation: \
+`Async.StartWithContinuations(calc, continuations..., ?cancellationToken)`\
+→ Ditto `Async.RunSynchronously` ⚠️ ... with 3 _callbacks_ of continuation:\
 → on success ✅, exception 💥 and cancellation 🛑
 
 ## `async { expression }` block
 
 _A.k.a. Async workflow_
 
-Syntax for sequentially writing an asynchronous calculation
+Syntax for sequentially writing an asynchronous calculation\
 → The result of the calculation is wrapped in an `Async` object
 
 **Key words**
 
-- `return` → final value of calculation • `unit` if omitted
-- `let!` → access to the result of an async sub-calculation _(≃ `await` in C♯)_
-- `use!` → ditto `use` _(management of an `IDisposable`)_ + `let!`
-- `do!` → ditto `let!` for async calculation without return (`Async<unit>`)
+* `return` → final value of calculation • `unit` if omitted
+* `let!` → access to the result of an async sub-calculation _(≃ `await` in C♯)_
+* `use!` → ditto `use` _(management of an `IDisposable`)_ + `let!`
+* `do!` → ditto `let!` for async calculation without return (`Async<unit>`)
 
 ```fsharp
 let repeat (computeAsync: int -> Async<string>) times = async {
@@ -108,14 +108,15 @@ async {
 
 ### Async.Parallel
 
-`Async.Parallel(computations: seq<Async<'T>>, ?maxBranches) : Async<'T[]>`
+`Async.Parallel(computations: Async<'T> seq, ?maxDegreeOfParallelism) : Async<'T array>`
 
 ≃ `Task.WhenAll` : [Fork-Join model](https://en.wikipedia.org/wiki/Fork%E2%80%93join_model)
 
-- _Fork_: calculations run in parallel
-- Wait for all calculations to finish
-- _Join_: aggregation of results _(which are of the same type)_
-  - in the same order as calculations
+* _Fork_: calculations run in parallel
+  * Use the optional `maxDegreeOfParallelism` to throttle/limit the number of concurrently executing tasks ; it's like `WithDegreeOfParallelism(throttle)` in LINQ and `ParallelEnumerable`.
+* Wait for all calculations to finish
+* _Join_: aggregation of results
+  * In the same order as calculations
 
 ⚠️ All calculations must return the same type!
 
@@ -142,20 +143,20 @@ let downloadSite (site: string) = async {
 
 `Async.StartChild(calc: Async<'T>, ?timeoutMs: int) : Async<Async<'T>>`
 
-Allows several calculations to be run in parallel \
+Allows several calculations to be run in parallel\
 → ... whose results are of different types _(≠ `Async.Parallel`)_
 
 Used in `async` block with 2 `let!` per child calculation _(cf. `Async<Async<'T>>`)_
 
-**Shared cancellation** 📍
+**Shared cancellation** 📍\
 → Child calculation shares cancellation token with its parent calculation
 
 **Example:**
 
-We will test the following script in the console FSI, using the `#time` FSI directive _([doc](https://docs.microsoft.com/en-us/dotnet/fsharp/tools/fsharp-interactive/#f-interactive-directive-reference))_.
+We will test the following script in the console FSI, using the `#time` FSI directive _(_[_doc_](https://docs.microsoft.com/en-us/dotnet/fsharp/tools/fsharp-interactive/#f-interactive-directive-reference)_)_.
 
-Let's first define a function `delay` \
-→ which returns the specified value `x` \
+Let's first define a function `delay`\
+→ which returns the specified value `x`\
 → after `ms` milliseconds
 
 ```fsharp
@@ -208,31 +209,31 @@ inParallel |> Async.RunSynchronously  // Real: 00:00:00.205, ...
 **Timing results:**
 
 | Operation    | Real           | CPU            |
-|--------------|----------------|----------------|
+| ------------ | -------------- | -------------- |
 | `inSeries`   | `00:00:00.323` | `00:00:00.015` |
 | `inParallel` | `00:00:00.218` | `00:00:00.031` |
 
-→ `inParallel` is working, longing ~200ms vs ~300ms for `inSeries`.
+→ `inParallel` is working, longing \~200ms vs \~300ms for `inSeries`.\
 → `inParallel` uses 2 times more CPU than `inSeries`.
 
 ## Cancelling a task
 
 Based on a default or explicit `CancellationToken/Source`:
 
-- `Async.RunSynchronously(computation, ?timeout, ?cancellationToken)`
-- `Async.Start(computation, ?cancellationToken)`
+* `Async.RunSynchronously(computation, ?timeout, ?cancellationToken)`
+* `Async.Start(computation, ?cancellationToken)`
 
 Trigger cancellation
 
-- Explicit token + `cancellationTokenSource.Cancel()`
-- Explicit token with timeout `new CancellationTokenSource(timeout)`
-- Default token: `Async.CancelDefaultToken()` → `OperationCanceledException` 💣
+* Explicit token + `cancellationTokenSource.Cancel()`
+* Explicit token with timeout `new CancellationTokenSource(timeout)`
+* Default token: `Async.CancelDefaultToken()` → `OperationCanceledException` 💣
 
 Check cancellation
 
-- Implicit: at each keyword in async block: `let`, `let!`, `for`...
-- Explicit local: `let! ct = Async.CancellationToken` then `ct.IsCancellationRequested`.
-- Explicit global: `Async.OnCancel(callback)`
+* Implicit: at each keyword in async block: `let`, `let!`, `for`...
+* Explicit local: `let! ct = Async.CancellationToken` then `ct.IsCancellationRequested`.
+* Explicit global: `Async.OnCancel(callback)`
 
 **Example:**
 
@@ -291,3 +292,4 @@ Outputs:
 3. Start with CancellationTokenSource with timeout
 ... idem 2.
 ```
+

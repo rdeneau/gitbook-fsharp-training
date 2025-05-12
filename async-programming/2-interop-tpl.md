@@ -163,6 +163,8 @@ F♯ _warning FS0020_ message:
 
 ☝ **Recommendation:** be sure to **always** handle this type of _warnings_! _This is even more crucial in F♯ where compilation can be tricky._
 
+## Async.Parallel
+
 ## Thread-safety
 
 Impure functions can be not thread-safe, for instance if they mutate a shared object like the `Console`.
