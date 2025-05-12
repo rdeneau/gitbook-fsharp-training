@@ -103,6 +103,24 @@ type Product =
 | `inline` supported                | ✅ yes            | ✅ yes                                                 |
 | Recursive                         | ✅ yes with `rec` | ✅ yes                                                 |
 
+## Function _vs_ Delegate
+
+We can define a delegate in F# with the syntax:\
+`type Fn = delegate of args: Args -> Return`&#x20;
+
+&#x20;👉 A delegate adds a thin layer on top of a function signature, like an object with a single method `Invoke`:
+
+* Pros: we can use named arguments when invoking the delegate
+* Cons:&#x20;
+  * extra work to wrap the function (or the method) in the delegate and to execute the function by calling the `Invoke(...)` method
+  * cumbersome syntax when there are several parameters, to differentiate between tuple and curried parameters:
+    * Tuple: `type MyFn = delegate of (int * int) -> int`
+    * Curried: `type MyFn = delegate of int * int -> int`
+
+{% hint style="warning" %}
+It's not a very common use case in F#.
+{% endhint %}
+
 ## Interop with the BCL[^1]
 
 ### void method
