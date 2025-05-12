@@ -63,9 +63,29 @@ let result = collector.Close()
 // result it: int array = [|1; 2|]
 ```
 
+### Dispose pattern
+
+There are 2 ways to deal with an `IDisposable` object in a logical block and automatically call its `Dispose` method at the end of the block:
+
+* Replace `let` by `use` to bind the `IDisposable` object to a variable name
+  * Ex #1: `use stream = new MemoryStream()`
+  * Ex #2: `use _ = logger.BeginScope(...)`
+* Call the `using` function with the `IDisposable` object and an action on it
+  * E.g. `using (new MemoryStream()) (fun stream -> ...)`&#x20;
+
+Pros/Cons:
+
+* `use` helps reduce the nesting/indentation level, but it's less explicit when the object is disposed.
+* `using` is more verbose, but also explicit.
+
+Additional resources:
+
+🔗 [Resource Management: the `use` keyword](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/resource-management-the-use-keyword)\
+🔗 [`using` function documentation](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-operators.html#using)
+
 ## Names
 
-* Same constraints on variable naming than in C♯
+* Same constraints on variable naming as in C♯
 * ... except the apostrophe `'` _(tick)_
   * allowed in the middle or at the end of the name, but not at the beginning!
   * at the end of the name → indicates a variant _(code convention)_
