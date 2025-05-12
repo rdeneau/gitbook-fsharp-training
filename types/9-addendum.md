@@ -42,7 +42,7 @@ let pike = Pike
 ```
 
 {% hint style="warning" %}
-#### Warnings
+**Warnings**
 
 * Can create confusion: `Pike` refers to `Color.Pike` or `Black.Pike`?
 * Need to write mappers between the 2 models: `(Black, Red) <-> Color`
@@ -55,13 +55,13 @@ type Color = Black of Black | Red of Red
 let pike = Black Pike
 ```
 
-→  The new union `Color` is composed based on the 2 previous types:
+→ The new union `Color` is composed based on the 2 previous types:
 
 * `Black` union is used as data for the `Color.Black` case
 * `Red` union is used as data for the `Color.Red` case
 
 {% hint style="info" %}
-### Note
+#### Note
 
 It's common in F♯ to write union cases like `Black of Black` where the case name matches the case field type.
 {% endhint %}
@@ -84,8 +84,8 @@ Behaviors/operations implementation:
 
 **How we reason about the code** _(at both design and reading time)_
 
-* **FP: _by functions_** → how an operation is performed for the different cases
-* **OO: _by objects_** → how all operations are performed for a single case
+* **FP:&#x20;**_**by functions**_ → how an operation is performed for the different cases
+* **OO:&#x20;**_**by objects**_ → how all operations are performed for a single case
 
 **Abstraction**
 

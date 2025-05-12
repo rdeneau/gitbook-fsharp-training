@@ -6,20 +6,20 @@ description: 'TPL : Task Parallel Library'
 
 ## Interaction with .NET libraries
 
-Asynchronous libraries in .NET and the `async`/`await` C♯ pattern: \
+Asynchronous libraries in .NET and the `async`/`await` C♯ pattern:\
 → Based on **TPL** and the `Task` type
 
 Gateways with asynchronous worflow F♯ :
 
-- `Async.AwaitTask` and `Async.StartAsTask` functions
-- `task {}` block
+* `Async.AwaitTask` and `Async.StartAsTask` functions
+* `task {}` block
 
 ## Gateway functions
 
-`Async.AwaitTask: Task<'T> -> Async<'T>` \
+`Async.AwaitTask: Task<'T> -> Async<'T>`\
 → Consume an asynchronous .NET library in `async` block
 
-`Async.StartAsTask: Async<'T> -> Task<'T>` \
+`Async.StartAsTask: Async<'T> -> Task<'T>`\
 → Launch an async calculation as a `Task`
 
 ```fsharp
@@ -40,7 +40,7 @@ let computationForCaller param =
 
 > Allows to consume an asynchronous .NET library directly, using a single `Async.AwaitTask` rather than 1 for each async method called.
 
-💡 Available since F♯ 6 _(before, we need [Ply](https://github.com/crowded/ply) package nuget)_
+💡 Available since F♯ 6 _(before, we need_ [_Ply_](https://github.com/crowded/ply) _package nuget)_
 
 ```fsharp
 task {
@@ -58,23 +58,23 @@ task {
 
 `Task` = _hot tasks_ → calculations started immediately❗
 
-`Async` = _task generators_ = calculation specification, independent of startup \
-→ Functional approach: no side-effects or mutations, composability \
+`Async` = _task generators_ = calculation specification, independent of startup\
+→ Functional approach: no side-effects or mutations, composability\
 → Control of startup mode: when and how 👍
 
 #### 2. Cancellation support
 
-`Task`: by adding a `CancellationToken` parameter to async methods \
+`Task`: by adding a `CancellationToken` parameter to async methods\
 → Forces manual testing if token is canceled = tedious + _error prone❗_
 
 `Async`: automatic support in calculations - token to be provided at startup 👍
 
 ## Recommendation for async function in F♯
 
-C♯ `async` applied at a method level
+C♯ `async` applied at a method level\
 ≠ F♯ `async` defines an async block, not an async function
 
-☝ **Recommendation:**
+☝ **Recommendation:**\
 » Put the entire body of the async function in an `async` block.
 
 ```fsharp
@@ -95,7 +95,7 @@ let workThenWait () = async {
 
 ### Pitfall 1 - Really asynchronous?
 
-In C♯: method `async` remains on the calling thread until the 1st `await`
+In C♯: method `async` remains on the calling thread until the 1st `await`\
 → Misleading feeling of being asynchronous throughout the method
 
 ```csharp
@@ -153,12 +153,47 @@ The previous examples compile but with big _warnings_!
 
 C♯ [_warning CS4014_](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs4014) message:
 
-> _Because this call is not awaited, execution of the current method continues before the call is completed._ \
-> _Consider applying the `await` operator..._
+> _Because this call is not awaited, execution of the current method continues before the call is completed._\
+> &#xNAN;_&#x43;onsider applying the `await` operator..._
 
 F♯ _warning FS0020_ message:
 
-> _The result of this expression has type `Async<unit>` and is implicitly ignored._ \
-> _Consider using `ignore` to discard this value explicitly..._
+> _The result of this expression has type `Async<unit>` and is implicitly ignored._\
+> &#xNAN;_&#x43;onsider using `ignore` to discard this value explicitly..._
 
 ☝ **Recommendation:** be sure to **always** handle this type of _warnings_! _This is even more crucial in F♯ where compilation can be tricky._
+
+## Thread-safety
+
+Impure functions can be not thread-safe, for instance if they mutate a shared object like the `Console`.
+
+It's possible to make them thread-safe using the `lock` function:
+
+```fsharp
+open System
+open System.Threading
+
+let printColoredMessage =
+    let lockObject = obj ()
+
+    fun (color: ConsoleColor) (message: string) ->
+        lock lockObject (fun () ->
+            Console.ForegroundColor <- color
+            printfn $"%s{message} (thread ID: %i{Thread.CurrentThread.ManagedThreadId})"
+            Console.ResetColor())
+
+[ ConsoleColor.Red
+  ConsoleColor.Green
+  ConsoleColor.Blue ]
+|> List.randomShuffle
+|> List.indexed
+|> List.map (fun (i, color) -> async { printColoredMessage color $"Message {i}" })
+|> Async.Parallel
+|> Async.RunSynchronously
+```
+
+Results in the console (example):
+
+<div align="left"><figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure></div>
+
+🔗 [Lock function documentation](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-operators.html#lock)

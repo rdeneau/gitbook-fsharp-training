@@ -1,28 +1,28 @@
 # Patterns
 
 {% hint style="info" %}
-### Definition
+#### Definition
 
 Patterns are rules for detecting input data structure.
 {% endhint %}
 
 Used extensively in F♯
 
-- *match expression*, *let binding*, parameters deconstruction...
-- Very practical for manipulating F♯ algebraic types (tuple, record, union)
-- Composable: supports multiple nesting levels
-- Composed by logical AND/OR
-- Supports literals: `1.0`, `"test"`...
+* _match expression_, _let binding_, parameters deconstruction...
+* Very practical for manipulating F♯ algebraic types (tuple, record, union)
+* Composable: supports multiple nesting levels
+* Composed by logical AND/OR
+* Supports literals: `1.0`, `"test"`...
 
 ## Wildcard Pattern
 
-Represented by `_`, alone or combined with another *pattern*.
+Represented by `_`, alone or combined with another _pattern_.
 
-Always true \
-→ To be placed last in a *match expression*.
+Always true\
+→ To be placed last in a _match expression_.
 
-⚠️ Always seek 1st to handle all cases exhaustively/explicitly
-     When impossible, then use `_`
+⚠️ Always seek 1st to handle all cases exhaustively/explicitly\
+&#x20;    When impossible, then use `_`
 
 ```fsharp
 match option with
@@ -35,12 +35,11 @@ match option with
 ```
 
 {% hint style="warning" %}
-### Recommendation
+#### Recommendation
 
-- Always seek first to handle all cases exhaustively/explicitly
-- When it's impossible (by combination explosion), too ugly to read or too boring to write
-- Then use `_` to discard all other cases
-
+* Always seek first to handle all cases exhaustively/explicitly
+* When it's impossible (by combination explosion), too ugly to read or too boring to write
+* Then use `_` to discard all other cases
 {% endhint %}
 
 ## Constant Pattern
@@ -59,8 +58,8 @@ let is123 num = // int -> bool
 
 ☝ **Notes :**
 
-- The `Three` pattern is also classified as an *Identifier Pattern* 📍
-- For `null` matching, we also talk about *Null Pattern*.
+* The `Three` pattern is also classified as an _Identifier Pattern_ 📍
+* For `null` matching, we also talk about _Null Pattern_.
 
 ## Variable Pattern
 
@@ -98,7 +97,7 @@ let elementsAreEqual' (x, y) =
 
 ## Identifier Pattern
 
-Detects *cases* of a union type and their possible contents
+Detects _cases_ of a union type and their possible contents
 
 ```fsharp
 type PersonName =
@@ -139,10 +138,10 @@ let describe shape =
 
 ## OR / AND Patterns
 
-Combine two patterns *(named `P1` and `P2` below)*:
+Combine two patterns _(named `P1` and `P2` below)_:
 
-- `P1 | P2` → P1 or P2 - E.g. `Rectangle (0, _) | Rectangle (_, 0)`
-- `P1 & P2` → P1 and P2 - used especially with *active patterns* 📍
+* `P1 | P2` → P1 or P2 - E.g. `Rectangle (0, _) | Rectangle (_, 0)`
+* `P1 & P2` → P1 and P2 - used especially with _active patterns_ 📍
 
 ```fsharp
 type Upload = { Filename: string; Title: string option }
@@ -155,11 +154,11 @@ titleOrFile { Filename = "Report.docx"; Title = Some "Report+" }  // "Report+"
 
 ☝️ **Explanations:**
 
-- The `Title` is optional. The first pattern `{ Title = Some name }` will match only if the `Title` is specified.
-- The second pattern `{ Filename = name }` will always works. It's written to extract the `Filename` into the same variable `name` as the first pattern.
+* The `Title` is optional. The first pattern `{ Title = Some name }` will match only if the `Title` is specified.
+* The second pattern `{ Filename = name }` will always works. It's written to extract the `Filename` into the same variable `name` as the first pattern.
 
 {% hint style="warning" %}
-### Warning
+#### Warning
 
 This code is a bit convoluted, meant for demo purpose, too "smart" for maintenable code.
 {% endhint %}
@@ -182,7 +181,7 @@ let acceptMajorOnly ({ Age = age } as person) = // person: Person -> Person opti
     if age < 18 then None else Some person
 ```
 
-💡 The AND pattern can be used as an alternative to the alias pattern. \
+💡 The AND pattern can be used as an alternative to the alias pattern.\
 ☝️ However, it won't work to get the parameter name:
 
 ```fsharp
@@ -210,8 +209,8 @@ let countFlatShapes shapes =
     loop shapes 0
 ```
 
-☝ Line ① would compile without doing `() :: tail` \
-⚠️ Parentheses complicate reading \
+☝ Line ① would compile without doing `() :: tail`\
+⚠️ Parentheses complicate reading\
 💡 Try to do without when possible:
 
 ```fsharp
@@ -241,34 +240,34 @@ let countFlatShapes shapes =
 
 Use type construction syntax to deconstruct a type
 
-- Cons and List Patterns
-- Array Pattern
-- Tuple Pattern
-- Record Pattern
+* Cons and List Patterns
+* Array Pattern
+* Tuple Pattern
+* Record Pattern
 
 ### Cons and List Patterns
 
 ≃ Inverses of the 2 ways to construct a list
 
-*Cons Pattern* : `head :: tail` → decomposes a list *(with >= 1 element)* into:
+_Cons Pattern_ : `head :: tail` → decomposes a list _(with >= 1 element)_ into:
 
-- *Head*: 1st element
-- *Tail*: another list with the remaining elements - can be empty
+* _Head_: 1st element
+* _Tail_: another list with the remaining elements - can be empty
 
-*List Pattern* : `[items]` → decompose a list into 0..N items
+_List Pattern_ : `[items]` → decompose a list into 0..N items
 
-- `[]` : empty list
-- `[x]` : list with 1 element set in the `x` variable
-- `[x; y]` : list with 2 elements set in variables `x` and `y`
-- `[_; _]`: list with 2 elements ignored
+* `[]` : empty list
+* `[x]` : list with 1 element set in the `x` variable
+* `[x; y]` : list with 2 elements set in variables `x` and `y`
+* `[_; _]`: list with 2 elements ignored
 
 💡 `x :: []` ≡ `[x]`, `x :: y :: []` ≡ `[x; y]`...
 
-The default *match expression* combines the 2 patterns: \
+The default _match expression_ combines the 2 patterns:\
 → A list is either empty `[]`, or composed of an item and the rest: `head :: tail`
 
-**Example:** \
-→ Recursive functions traversing a list \
+**Example:**\
+→ Recursive functions traversing a list\
 → The `[]` pattern is used to stop recursion:
 
 ```fsharp
@@ -294,7 +293,7 @@ let length vector =
     | _ -> invalidArg (nameof vector) $"Vector with more than 4 dimensions not supported"
 ```
 
-☝ There is no pattern for sequences, as they are *"lazy "*.
+☝ There is no pattern for sequences, as they are _"lazy "_.
 
 ### Tuple Pattern
 
@@ -318,8 +317,8 @@ let css color style =
 
 Syntax: `{ Field1 = var1; ... }`
 
-- It's not required to specify all fields in the record
-- In case of ambiguity on the record type, qualify the field: `Record.Field`
+* It's not required to specify all fields in the record
+* In case of ambiguity on the record type, qualify the field: `Record.Field`
 
 💡 Also works for function parameters:
 
@@ -335,7 +334,7 @@ let john = { Name = "John"; Age = 25 }
 displayMajority john // John is major
 ```
 
-⚠️ **Reminder:** there is no pattern for anonymous *Records*!
+⚠️ **Reminder:** there is no pattern for anonymous _Records_!
 
 ```fsharp
 type Person = { Name: string; Age: int }
@@ -349,7 +348,7 @@ let {| Name = name' |} = john'  // 💥
 
 ## Type Test Pattern
 
-Syntax: `my-object :? sub-type` and returns a `bool` \
+Syntax: `my-object :? sub-type` and returns a `bool`\
 → ≃ `my-object is sub-type` in C♯
 
 Usage: with a type hierarchy
@@ -365,8 +364,8 @@ let RegisterControl (control: Control) =
     | _ -> ()
 ```
 
-☝️ **Note:** the `:?` operator is not designed to check evidence, which can be confusing. \
-→ Example: *(from [stackoverflow](https://stackoverflow.com/q/70845434/8634147))*
+☝️ **Note:** the `:?` operator is not designed to check evidence, which can be confusing.\
+→ Example: _(from_ [_stackoverflow_](https://stackoverflow.com/q/70845434/8634147)_)_
 
 ```fsharp
 type Car = interface end
@@ -404,7 +403,7 @@ with
 
 ### Boxing
 
-The *Type Test Pattern* only works with reference types. \
+The _Type Test Pattern_ only works with reference types.\
 → For a value type or unknown type, it must be boxed.
 
 ```fsharp

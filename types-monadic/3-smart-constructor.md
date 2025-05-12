@@ -2,33 +2,33 @@
 
 ## Purpose
 
-🔗 [Making illegal states unrepresentable](https://kutt.it/MksmkG), *F♯ for fun and profit*
+🔗 [Making illegal states unrepresentable](https://kutt.it/MksmkG), _F♯ for fun and profit_
 
-- Design to prevent invalid states
-  - Encapsulate state *(all primitives)* in an object
-- *Smart constructor* guarantees a valid initial state
-  - Validates input data
-  - If Ko, returns "nothing" (`Option`) or an error (`Result`)
-  - If Ok, returns the created object wrapped in an `Option` / a `Result`
+* Design to prevent invalid states
+  * Encapsulate state _(all primitives)_ in an object
+* _Smart constructor_ guarantees a valid initial state
+  * Validates input data
+  * If Ko, returns "nothing" (`Option`) or an error (`Result`)
+  * If Ok, returns the created object wrapped in an `Option` / a `Result`
 
 ## Encapsulate the state in a type
 
-→ *Single-case (discriminated) union*: `Type X = private X of a: 'a...` \
-🔗 [Designing with types: Single case union types](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/), *F♯ for fun and profit*
+→ _Single-case (discriminated) union_: `Type X = private X of a: 'a...`\
+🔗 [Designing with types: Single case union types](https://fsharpforfunandprofit.com/posts/designing-with-types-single-case-dus/), _F♯ for fun and profit_
 
-→ *Record*: `Type X = private { a: 'a... }` \
-🔗 [You Really Wanna Put a Union There? You Sure?](https://kutt.it/cYP4gY), by *Paul Blasucci*
+→ _Record_: `Type X = private { a: 'a... }`\
+🔗 [You Really Wanna Put a Union There? You Sure?](https://kutt.it/cYP4gY), by _Paul Blasucci_
 
 ☝ `private` keyword:
 
-- Hide object content
-- Fields and constructor no longer visible from outside
-- Smart constructor defined in companion module or static method
+* Hide object content
+* Fields and constructor no longer visible from outside
+* Smart constructor defined in companion module or static method
 
 ## Example #1
 
-Smart constructor :
-→ `tryCreate` function in companion module
+Smart constructor :\
+→ `tryCreate` function in companion module\
 → Returns an `Option`
 
 ```fsharp
@@ -58,23 +58,23 @@ let lat_ko = Latitude.tryCreate 115. // None
 ```
 
 {% hint style="warning" %}
-### Access control
+#### Access control
 
 `private` keyword has not exactly the same meaning in F♯ as in C♯!
 
-- In F♯, `private` indicates that the entity can be accessed only from the enclosing type or module.
-- In our example, `private` is applied on the `Latitude` definition that is on the `Xxx.Types` module.
-- `{ Latitude = ... }` and `latitude.Latitude` are accessible in `Xxx.Types` module as if there were no `private` keyword.
-- In the 2nd code block, we are in another module. The `Latitude` definition is not accessible.
-- We can use only `Latitude.tryCreate` and `latitude.Value`.
+* In F♯, `private` indicates that the entity can be accessed only from the enclosing type or module.
+* In our example, `private` is applied on the `Latitude` definition that is on the `Xxx.Types` module.
+* `{ Latitude = ... }` and `latitude.Latitude` are accessible in `Xxx.Types` module as if there were no `private` keyword.
+* In the 2nd code block, we are in another module. The `Latitude` definition is not accessible.
+* We can use only `Latitude.tryCreate` and `latitude.Value`.
 {% endhint %}
 
 ## Example #2
 
 Smart constructor with:
 
-- Static method `Of`
-- Returns a `Result` with a `string` in the `Error` track.
+* Static method `Of`
+* Returns a `Result` with a `string` in the `Error` track.
 
 ```fsharp
 type Tweet =
