@@ -15,6 +15,8 @@
 
 * Reduce _boilerplate_
 * Improve interop with external systems (JavaScript, SQL...)
+* Compatible with C♯ anonymous types: \
+  → When a C♯ API requires an anonymous type, we can give it an anonymous record instance.
 
 Examples _(more on this later)_ :
 
