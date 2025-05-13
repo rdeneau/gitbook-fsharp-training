@@ -38,12 +38,11 @@ FSharp.Control `WebExtensions` module: extends type `System.Net.WebClient` ([doc
 → Waits for the calculation to end, blocking the calling thread! (≠ `await` C♯) ⚠️
 
 `Async.Start(operation: Async<unit>, ?cancellationToken) : unit`\
-→ Perform the operation in background _(without blocking calling thread)_\
+→ Perform the operation in the background _(without blocking the calling thread)_\
 ⚠️ If an exception occurs, it is "swallowed"!
 
 `Async.StartImmediate(calc: Async<'T>, ?cancellationToken) : unit`\
-→ Perform the calculation in the calling thread!\
-💡 Useful in a GUI to update it: progress bar...
+→ Perform the calculation in the calling thread!
 
 `Async.StartWithContinuations(calc, continuations..., ?cancellationToken)`\
 → Ditto `Async.RunSynchronously` ⚠️ ... with 3 _callbacks_ of continuation:\
@@ -56,7 +55,7 @@ _A.k.a. Async workflow_
 Syntax for sequentially writing an asynchronous calculation\
 → The result of the calculation is wrapped in an `Async` object
 
-**Key words**
+**Keywords**
 
 * `return` → final value of calculation • `unit` if omitted
 * `let!` → access to the result of an async sub-calculation _(≃ `await` in C♯)_
@@ -104,7 +103,7 @@ async {
 |> Async.RunSynchronously
 ```
 
-## Parallel calculations
+## Parallel calculations/operations
 
 ### Async.Parallel
 
@@ -143,7 +142,7 @@ let downloadSite (site: string) = async {
 
 `Async.StartChild(calc: Async<'T>, ?timeoutMs: int) : Async<Async<'T>>`
 
-Allows several calculations to be run in parallel\
+Allows several operations to be run in parallel\
 → ... whose results are of different types _(≠ `Async.Parallel`)_
 
 Used in `async` block with 2 `let!` per child calculation _(cf. `Async<Async<'T>>`)_
@@ -268,7 +267,9 @@ use cancellationByTimeoutSource = new CancellationTokenSource(1200)
 Async.Start(sleepLoop, cancellationByTimeoutSource.Token)
 ```
 
-Outputs:
+<details>
+
+<summary>Outputs</summary>
 
 ```txt
 1. RunSynchronously:
@@ -293,3 +294,13 @@ Outputs:
 ... idem 2.
 ```
 
+</details>
+
+## Summary
+
+Adapted from 🔗 [Cancellation Tokens in F#](https://dev.to/askpt/cancellation-tokens-in-f-28gh), _by André Silva_
+
+CT = Cancellation Token\
+CTS = Cancellation Token Source
+
+<table><thead><tr><th width="240">Keyword/Function</th><th width="100" data-type="checkbox">Shared CT</th><th width="100" data-type="checkbox">CT param</th><th width="100" data-type="checkbox">Linked CTS</th><th width="118" data-type="checkbox">Current thread</th><th width="211">Use case</th></tr></thead><tbody><tr><td><code>do!</code>, <code>let!</code>... in <code>async {}</code></td><td>true</td><td>false</td><td>false</td><td>false</td><td>Any?</td></tr><tr><td><code>Async.StartChild</code></td><td>false</td><td>false</td><td>true</td><td>false</td><td>Parallel operations</td></tr><tr><td><code>Async.Start</code></td><td>false</td><td>true</td><td>false</td><td>false</td><td>Fire &#x26; forget: send a message to a bus...</td></tr><tr><td><code>Async.StartImmediately</code></td><td>false</td><td>true</td><td>false</td><td>true</td><td>?</td></tr><tr><td><code>Async.RunSynchronously</code></td><td>false</td><td>true</td><td>false</td><td>true</td><td>Program root, scripting...</td></tr></tbody></table>
