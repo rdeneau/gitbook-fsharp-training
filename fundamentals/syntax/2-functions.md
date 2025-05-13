@@ -216,38 +216,3 @@ public static string TranslateInFrench(string civility) =>
         _        => ""
     }
 ```
-
-## Exception
-
-### Handling Exception
-
-→ `try/with` expression
-
-```fsharp
-let tryDivide x y =
-   try
-       Some (x / y)
-   with :? System.DivideByZeroException ->
-       None
-```
-
-⚠️ **Trap**: the keyword used is `with`, not `catch`, contrary to C#.
-
-💡 There is no `try/with/finally` expression, only `try/finally` that we can nest in another `try/with`.
-
-### Throwing Exception
-
-→ Helpers `failwith`, `invalidArg` and `nullArg`
-
-```fsharp
-let fn arg =
-    if arg = null then nullArg (nameof arg)
-    failwith "Not implemented"
-
-let divide x y =
-    if y = 0
-    then invalidArg (nameof y) "Divisor cannot be zero"
-    else x / y
-```
-
-🔗 Handling Errors Elegantly [https://devonburriss.me/how-to-fsharp-pt-8/](https://devonburriss.me/how-to-fsharp-pt-8/)

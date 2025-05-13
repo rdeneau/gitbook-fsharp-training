@@ -9,6 +9,7 @@
   * [Bases](fundamentals/syntax/1-bases.md)
   * [Functions](fundamentals/syntax/2-functions.md)
   * [Rules](fundamentals/syntax/3-rules.md)
+  * [Exceptions](fundamentals/2-syntax/exceptions.md)
 * [First concepts](fundamentals/3-first-concepts.md)
 * [🍔 Quiz](fundamentals/4-quiz.md)
 

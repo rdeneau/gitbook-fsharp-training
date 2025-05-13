@@ -76,6 +76,11 @@ As a F# developer in a .NET team using only C#, feel free to use these materials
 
 ## Changelog
 
+### 2025-05-13
+
+* Dedicated page to cover everything regarding [exceptions.md](fundamentals/2-syntax/exceptions.md "mention")
+* Misc precisions regarding [Broken link](broken-reference "mention")
+
 ### 2025-04-02
 
 * Translation from [French](https://rdeneau.gitbook.io/formation-fsharp-fr)
