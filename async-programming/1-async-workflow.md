@@ -84,6 +84,40 @@ repeat basicOp 5 |> Async.RunSynchronously
 // Start operation #5... Result: 5 * (5 - 1) = 20
 ```
 
+### F♯ async function _vs_ C♯ async method
+
+Let's compare an F♯ async function...
+
+```fsharp
+// string -> Async<int>
+let getLength url = async {
+    let! html = fetchAsync url
+    do! Async.Sleep 1000
+    return html.Length
+}
+```
+
+... with its equivalent C♯ async method:
+
+```csharp
+public async Task<int> GetLength(string url) {
+    var html = await FetchAsync(url);
+    await Task.Delay(1000);
+    return html.Length;
+}
+```
+
+We can see the following equivalence regarding keywords and types:
+
+<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+
+| F♯                  | C♯                         |
+| ------------------- | -------------------------- |
+| `Async<int>` type   | `Task<int>` type           |
+| `async {...}` block | `async` method keyword     |
+| `let!` keyword      | `var` and `await` keywords |
+| `do!` keyword       | `await` keyword            |
+
 ## Inappropriate use of `Async.RunSynchronously`
 
 `Async.RunSynchronously` runs the calculation and returns the result BUT blocks the calling thread! Use it only at the "end of the chain" and not to _unwrap_ intermediate asynchronous calculations! Use an `async` block instead.
