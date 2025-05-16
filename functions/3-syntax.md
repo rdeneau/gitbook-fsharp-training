@@ -207,7 +207,7 @@ let f (x, y, z) = ...
   * Loss of partial application of each element of the tuple.
 
 {% hint style="success" %}
-#### ☝ **Conclusion**
+#### **Conclusion**
 
 * Resist the temptation to use a tuple all the time _(because it's familiar, a habit from C♯)_
 * Use it only when it makes sense to group parameters together.
@@ -233,38 +233,79 @@ let rec steps (n: int) : int =
 
 ## Tail recursion
 
-* Type of recursion where the recursive call is the last instruction
-* Detected by the compiler
-* Rewritten into a simple loop\
-  → Prevents stack overflow 👍
+* Type of recursion where the recursive call is the last instruction\
+  🔗 [Tail recursion | Wikipedia](https://en.wikipedia.org/wiki/Tail_call)
+* Detected by the compiler and rewritten into a simple loop\
+  → ✅ Better performance\
+  → ✅ Prevents stack overflow
 
-💡 Tips: in general, we can transform a non-tail-recursive function into a tail-recursive one by adding an additional parameter, playing the role of "accumulator" like with `fold`/`reduce` functions. 📍
+### 💡 Accumulator argument
+
+In general, we can transform a non-tail-recursive function into a tail-recursive one by adding an additional parameter, playing the role of "**accumulator**" like with `fold`/`reduce` functions - see [#versatile-aggregate-functions](../collections/3-common-functions.md#versatile-aggregate-functions "mention") 📍
 
 **→ Example:** previous steps function rewritten as tail-recursive
 
 {% code lineNumbers="true" %}
 ```fsharp
 let steps (number: int) : int =
-    [<TailCall>] // (1)
-    let rec loop count n = // (2)
+    [<TailCall>]
+    let rec loop count n =
         if n = 1       then count
         elif n % 2 = 0 then loop (count + 1) (n / 2)
         else                loop (count + 1) (3 * n + 1)
 
-    loop 0 number // 👈 Start the loop with 0 as the initial value for `count`
+    loop 0 number
 ```
 {% endcode %}
 
 {% hint style="info" %}
-Notes
+### Notes
 
-1. `TailCall` attribute was added in F♯ 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
-2. `loop` is a name idiomatic for this type of recursive sub-function.
-3. At lines 5 and 6, we see that now the recursive calls to `loop` are really the last call, hence the tail recursion.
-4. We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
+1. Line 2: `TailCall` attribute was added in F♯ 8 to indicate (to the compiler and to the reader) that the function should be tail recursive.
+2. Line 3: `loop` is a name idiomatic for this type of recursive inner-function. It's "accumulator" parameter is usually named `acc`, unless there is an obvious better name like `count` here.
+3. Line 8: we start the "loop" with `count = 0`.
+4. Lines 5 and 6: the recursive calls to `loop` are really the last call, hence the tail recursion.
+5. We can verify that the function is compiled as a `while` loop in [SharpLab](https://sharplab.io/#v2:DYLgZgzgNAJiDUAfA2gHgCoEMCWwDCmwwAfALoCwAUMAKYAuABAE40DGDY2TEdA8kwxg0wmAK7A6ANUKiaDAA4sY2Vpjpzg2HgwC8VBgYYBbNawAWDTdoDu2Omf2HEDZKQYBaYoOFiJ04LKGQcEhoaEA9OEMgLwbgBI7DADKAPZMdNg0jgbOAB4MICAMAPoM1mY0AHYKSipqcrmeDLlhzUGRMfHJqemZDM7F+cw02g2c3HwCQiLiUjJyijTKquqD2gxtcQwAgvLyNMDMAJesotzYYAyASYQMrEnlaeWyVEA=).
 {% endhint %}
 
-🔗 [Tail recursion | Wikipedia](https://en.wikipedia.org/wiki/Tail_call)
+### 🚀 Continuation-passing style
+
+Another common trick to write a tail-recursive function, although more advanced, is to accumulate values inside a series of continuation function calls.
+
+**→ Example:** we can write `List.append` using this style:
+
+{% code lineNumbers="true" %}
+```fsharp
+let append list1 list2 =
+    let rec loop list cont =
+        match list with
+        | [] -> cont list2
+        | head :: tail -> loop tail (fun rest -> cont (head :: rest))
+
+    loop list1 id
+```
+{% endcode %}
+
+{% hint style="info" %}
+### Notes
+
+* The `loop` inner function is recursively reading the `list1`, accessing the current item as the `head` and passing the `tail` to the next iteration of the loop.
+* Line 4: when we reach the end of `list1`, we call the continuation function, called here `cont`.\
+  &#xNAN;_&#x41;nother usual name for the continuation function parameter is `next`._
+* Line 5: the `head` is captured/accumulated in the continuation function built with a lambda that takes a list called `rest`, put the `head` on top of it, and pass the resulting list to the previous version of the continuation function.
+* Let's unwrap the continuation functions:\
+  `0 ┬ fun rest0 -> id (list1[0] :: rest0)`\
+  &#x20;  `└ fun rest0 -> list1[0] :: rest0`\
+  &#x20;`1 ┬ fun rest1 -> (fun rest0 -> list1[0] :: rest0)(list1[1] :: rest1)`\
+  &#x20;  `└ fun rest1 -> list1[0] :: list1[1] :: rest1`\
+  &#x20;`...`\
+  &#x20;`N ┬ fun restN -> list1[0] :: list1[1] :: ... :: list1[N] :: restN`\
+  &#x20;  `└ list1[0] :: list1[1] :: ... :: list1[N] :: list2`
+* The real implementation of `List.append` is different and is optimized using other techniques including mutation.
+{% endhint %}
+
+🔗 [Continuation-passing style | Wikipedia](https://en.wikipedia.org/wiki/Continuation-passing_style)\
+🔗 [Understanding continuations | fsharp for fun and profit](https://fsharpforfunandprofit.com/posts/computation-expressions-continuations/#continuation-passing-style)&#x20;
 
 ## Mutually recursive functions
 
@@ -287,18 +328,25 @@ and Odd x =             // 👈 Keyword `and`
 ## Function overload
 
 {% hint style="warning" %}
+### Warning
+
 * A function cannot be overloaded!
-* Each version should have a dedicated name.
+* Each version of the functions should have a dedicated and unique name.
 {% endhint %}
 
-Example:
+**Example:**
 
-* `List.map (mapping: 'T -> 'U) (items: 'T list) : 'U list`
-* `List.mapi (mapping: (index: int) -> 'T -> 'U) (items: 'T list) : 'U list`
+* LINQ `Select` method has an overload taking the current index as additional parameter
+* The equivalent in the `List` module are the 2 functions `map` and `mapi`:\
+  `List.map  (mapping:                 'T -> 'U) (items: 'T list) : 'U list`\
+  &#x20;`List.mapi (mapping: (index: int) -> 'T -> 'U) (items: 'T list) : 'U list`\
+  → See  [#map-vs-mapi](../collections/3-common-functions.md#map-vs-mapi "mention") 📍
 
 ## Template function
 
-Create specialized "overloads" • Example: wrap `String.Compare`:
+Create specialized "overloads"
+
+→ **Example:** helper wrapping `String.Compare`:
 
 ```fsharp
 type ComparisonResult = Bigger | Smaller | Equal // Union type 📍
