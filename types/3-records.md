@@ -135,7 +135,7 @@ type PostalAddress = {
     member x.CityAndZip = $"%s{x.City}, %s{x.Zip}"
 ```
 
-## Conostruction: _record expression_
+## Construction: _record expression_
 
 * Same syntax as an anonymous C♯ object without the `new` keyword
 * All fields must be populated, but in any order (but can be confusing)
