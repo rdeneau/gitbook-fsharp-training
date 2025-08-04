@@ -81,10 +81,10 @@ Etymology (Greek): `monos` _(single, unique)_ • `eidos` _(form, appearance)_
 
 ### Monoid examples
 
-<table data-header-hidden><thead><tr><th width="116">Type</th><th width="165">Operator</th><th width="213">Identity</th><th>Law 2</th></tr></thead><tbody><tr><td><code>int</code></td><td><code>+</code> <em>(add)</em></td><td><code>0</code></td><td><code>i +  0  = 0  +  i = i</code></td></tr><tr><td><code>int</code></td><td><code>*</code> <em>(multiply)</em></td><td><code>1</code></td><td><code>i *  1  = 1  *  i = i</code></td></tr><tr><td><code>string</code></td><td><code>+</code> <em>(concat)</em></td><td><code>""</code> <em>(empty string)</em></td><td><code>s +  "" = "" +  s = s</code></td></tr><tr><td><code>'a list</code></td><td><code>@</code> (<code>List.append</code>)</td><td><code>[]</code> <em>(empty list)</em></td><td><code>l @  [] = [] @  l = l</code></td></tr><tr><td>Functions</td><td><code>>></code> <em>(compose)</em></td><td><code>id</code> (<code>fun x -> x</code>)</td><td><code>f >> id = id >> f = f</code></td></tr></tbody></table>
+<table><thead><tr><th width="116">Type</th><th width="165">Operator</th><th width="213">Identity</th><th>Law 2</th></tr></thead><tbody><tr><td><code>int</code></td><td><code>+</code> <em>(add)</em></td><td><code>0</code></td><td><code>i + 0 = 0 + i = i</code></td></tr><tr><td><code>int</code></td><td><code>*</code> <em>(multiply)</em></td><td><code>1</code></td><td><code>i * 1 = 1 * i = i</code></td></tr><tr><td><code>string</code></td><td><code>+</code> <em>(concat)</em></td><td><code>""</code> <em>(empty string)</em></td><td><code>s + "" = "" + s = s</code></td></tr><tr><td><code>'a list</code></td><td><code>@</code> (<code>List.append</code>)</td><td><code>[]</code> <em>(empty list)</em></td><td><code>l @ [] = [] @ l = l</code></td></tr><tr><td>Functions</td><td><code>>></code> <em>(compose)</em></td><td><code>id</code> (<code>fun x -> x</code>)</td><td><code>f >> id = id >> f = f</code></td></tr></tbody></table>
 
 {% hint style="info" %}
-### Note
+#### Note
 
 The monoid is a generalization of the **Composite** _OO design pattern_\
 🔗 [Composite as a monoid](https://blog.ploeh.dk/2018/03/12/composite-as-a-monoid/) _(by Mark Seemann)_
@@ -133,7 +133,7 @@ mapping `f` and then mapping `g` over the result.\
 
 * Construction function `return`
   * Signature : `(value: 'T) -> M<'T>`
-  * ≃ Wrap *(lift/elevate)* a value
+  * ≃ Wrap _(lift/elevate)_ a value
 * Chaining function `bind`
   * Noted `>>=` (`>` `>` `=`) as an infix operator
   * Signature : `(f: 'T -> M<'U>) -> M<'T> -> M<'U>`
@@ -145,12 +145,12 @@ mapping `f` and then mapping `g` over the result.\
 
 #### 1. **Left Identity**
 
-`return` then `bind` are neutral. \
+`return` then `bind` are neutral.\
 → `return >> bind f` ≡ `f`
 
 #### 2. **Right Identity**
 
-`bind return` is neutral, equivalent to the `id` function: \
+`bind return` is neutral, equivalent to the `id` function:\
 → `m |> bind return` ≡ `m |> id` ≡ `m`
 
 ☝️ It's possible because `return` has the signature of a monadic function.
@@ -159,7 +159,7 @@ mapping `f` and then mapping `g` over the result.\
 
 `bind` is associative.
 
-Given 2 monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>` \
+Given 2 monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>`\
 → `(m |> bind f) |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
 
 💡 `bind` allows us to chain monadic functions, like the `|>` for regular functions
@@ -196,7 +196,7 @@ Then, the `bind` function can be expressed in terms of `map` and `flatten`:\
 
 ### Regular functions _vs_ monadic functions
 
-<table><thead><tr><th width="126">Function</th><th width="103">Op</th><th>Signature</th></tr></thead><tbody><tr><td><strong>Pipeline</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>▷</code> <em>pipe</em></td><td><code>(f: 'a -> 'b)    -> (x: 'a)    -> 'b</code></td></tr><tr><td>Monadic</td><td><code>>>=</code> <em>bind</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (x: M&#x3C;'a>) -> M&#x3C;'b></code></td></tr><tr><td><strong>Composition</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>>></code> <em>comp.</em></td><td><code>(f: 'a -> 'b)    -> (g: 'b -> 'c)    -> ('a -> 'c)</code></td></tr><tr><td>Monadic</td><td><code>>=></code> <em>fish</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (g: 'b -> M&#x3C;'c>) -> ('a -> M&#x3C;'c>)</code></td></tr></tbody></table>
+<table><thead><tr><th width="126">Function</th><th width="103">Op</th><th>Signature</th></tr></thead><tbody><tr><td><strong>Pipeline</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>▷</code> <em>pipe</em></td><td><code>(f: 'a -> 'b) -> (x: 'a) -> 'b</code></td></tr><tr><td>Monadic</td><td><code>>>=</code> <em>bind</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (x: M&#x3C;'a>) -> M&#x3C;'b></code></td></tr><tr><td><strong>Composition</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>>></code> <em>comp.</em></td><td><code>(f: 'a -> 'b) -> (g: 'b -> 'c) -> ('a -> 'c)</code></td></tr><tr><td>Monadic</td><td><code>>=></code> <em>fish</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (g: 'b -> M&#x3C;'c>) -> ('a -> M&#x3C;'c>)</code></td></tr></tbody></table>
 
 * Fish operator definition: `let (>=>) f g = fun x -> f x |> bind g` ≡ `f >> (bind g)`
 * Composition of monadic functions is called _Kleisli composition_
@@ -279,7 +279,7 @@ Same as the functor identity law applied to applicative:
 
 | Pattern     | Equation                  |
 | ----------- | ------------------------- |
-| Functor     | `map   id        F` ≡ `F` |
+| Functor     | `map id F` ≡ `F`          |
 | Applicative | `apply (pure id) F` ≡ `F` |
 
 #### Law 2 - **Homomorphism**
@@ -345,7 +345,7 @@ Every monad is also an applicative
 `apply` _vs_ `bind` 💡
 
 * Where `apply` unwraps both `f` and `x`, 2 nested `bind`s are required.
-* `bind` extra power comes from its ability to let its 2nd parameter — the function `'a -> M<'b>` — create a whole new computational path.
+* `bind` extra power comes from its ability to let its first parameter — the function `'a -> M<'b>` — create a whole new computational path.
 
 ### Applicative: multi-param curried function
 
@@ -384,16 +384,14 @@ let optionalZ = Some 3
 let res = pure f |> apply optionalX |> apply optionalY |> apply optionalZ
 ```
 
-We can "simplify" the syntax by:
+Alternative syntax:
 
-* Replacing the 1st combination of `pure` and `apply` with `map`
 * Using the operators for map `<!>` and apply `<*>`
+* Given we can replace the 1st combination of `pure` and `apply` with `map`
 
 ```fsharp
 // ...
-let res = pure f |> apply optionalX |> apply optionalY |> apply optionalZ
-
-let res' = f <!> optionalX <*> optionalY <*> optionalZ
+let res = f <!> optionalX <*> optionalY <*> optionalZ
 ```
 
 Still, it's not ideal!
@@ -444,21 +442,23 @@ let bind (f: 'a -> Result<'b, _>) result =
 
 Given the `Result<'ok, 'error list>` type, `apply` can accumulate errors:
 
+{% code lineNumbers="true" %}
 ```fsharp
-(* 1 *) let apply (rf: Result<'a -> 'b, 'err list>) (result: Result<'a, 'err list>) : Result<'b, 'err list> =
-(* 2 *)     match rf, result with
-(* 3 *)     | Ok f, Ok x -> Ok(f x)
-(* 4 *)     | Error fErrors, Ok _ -> Error fErrors
-(* 5 *)     | Ok _, Error xErrors -> Error xErrors
-(* 6 *)     | Error fErrors, Error xErrors -> Error(xErrors @ fErrors)
+let apply (rf: Result<'a -> 'b, 'err list>) (result: Result<'a, 'err list>) : Result<'b, 'err list> =
+    match rf, result with
+    | Ok f, Ok x -> Ok(f x)
+    | Error fErrors, Ok _ -> Error fErrors
+    | Ok _, Error xErrors -> Error xErrors
+    | Error fErrors, Error xErrors -> Error(xErrors @ fErrors)
 ```
+{% endcode %}
 
 ☝️ **Notes:**
 
 * Errors are either accumulated _(L6)_ or propagated _(L4, L5)_.
 * At lines L4, L6, `rf` is no longer a wrapped function but an `Error`. It happens after a first `apply` when there is an `Error` instead of a wrapped value _(L5, L6)_.
 
-💡 Handy for validating inputs and reporting all errors to the user. \
+💡 Handy for validating inputs and reporting all errors to the user.\
 🔗 [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/), Compositional IT
 
 ## Wrap up
@@ -486,8 +486,8 @@ Meaning: what about F♯ codebases full of `monad`, `Reader`, `State`...?
   * Albeit, libraries such as _FSharpPlus_ offer such extensions to F♯. 📍
 * To be evaluated for each team: idiomatic _vs_ consistency ⚖️\
   → Examples:
-  * **Idiomatic F♯** in .NET teams: using both C♯ and F♯ code
-  * **Functional F♯** in FP team: using F♯, Haskell and/or OCaml
+  * **Idiomatic F♯** recommended in .NET teams using both C♯ and F♯ code
+  * **Functional F♯** can be considered in FP teams using several functional languages: F♯, Haskell, OCaml...
 
 ### Additional resources 🔗
 
