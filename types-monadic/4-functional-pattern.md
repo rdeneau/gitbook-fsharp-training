@@ -133,7 +133,7 @@ mapping `f` and then mapping `g` over the result.\
 
 * Construction function `return`
   * Signature : `(value: 'T) -> M<'T>`
-  * ≃ Wrap a value
+  * ≃ Wrap *(lift/elevate)* a value
 * Chaining function `bind`
   * Noted `>>=` (`>` `>` `=`) as an infix operator
   * Signature : `(f: 'T -> M<'U>) -> M<'T> -> M<'U>`
@@ -145,23 +145,22 @@ mapping `f` and then mapping `g` over the result.\
 
 #### 1. **Left Identity**
 
-`return` is a neutral starting point.
-
-`return x |> bind f` ≡ `f x`
+`return` then `bind` are neutral. \
+→ `return >> bind f` ≡ `f`
 
 #### 2. **Right Identity**
 
-`return` is a neutral element for the `bind` operation.
+`bind return` is neutral, equivalent to the `id` function: \
+→ `m |> bind return` ≡ `m |> id` ≡ `m`
 
-`m |> bind return` ≡ `m`
+☝️ It's possible because `return` has the signature of a monadic function.
 
 #### 3. **Associativity**
 
-`bind` is associative\
-→ Given 2 monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>`
+`bind` is associative.
 
-* `(m >>= f) >>= g` ≡ `m >>= (fun x -> f x >>= g)`
-* `(m |> bind f) |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
+Given 2 monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>` \
+→ `(m |> bind f) |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
 
 💡 `bind` allows us to chain monadic functions, like the `|>` for regular functions
 
@@ -197,7 +196,7 @@ Then, the `bind` function can be expressed in terms of `map` and `flatten`:\
 
 ### Regular functions _vs_ monadic functions
 
-<table><thead><tr><th width="126">Function</th><th width="103">Op</th><th>Signature</th></tr></thead><tbody><tr><td><strong>Pipeline</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>▷</code> <em>pipe</em></td><td><code>(f: 'a -> 'b)    -> (x: 'a)    -> 'b</code></td></tr><tr><td>Monadic</td><td><code>>>=</code> <em>bind</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (x: M&#x3C;'a>) -> M&#x3C;'b></code></td></tr><tr><td><strong>Composition</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>>></code> <em>comp.</em></td><td><code>(f: 'a -> 'b)    -> (g: 'b -> 'c)    -> ('a -> 'c)</code></td></tr><tr><td>Monadic</td><td><code>>=></code> <em>fish</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (g: 'b -> M&#x3C;'c>) -> (M&#x3C;'a> -> M&#x3C;'c>)</code></td></tr></tbody></table>
+<table><thead><tr><th width="126">Function</th><th width="103">Op</th><th>Signature</th></tr></thead><tbody><tr><td><strong>Pipeline</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>▷</code> <em>pipe</em></td><td><code>(f: 'a -> 'b)    -> (x: 'a)    -> 'b</code></td></tr><tr><td>Monadic</td><td><code>>>=</code> <em>bind</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (x: M&#x3C;'a>) -> M&#x3C;'b></code></td></tr><tr><td><strong>Composition</strong></td><td></td><td></td></tr><tr><td>Regular</td><td><code>>></code> <em>comp.</em></td><td><code>(f: 'a -> 'b)    -> (g: 'b -> 'c)    -> ('a -> 'c)</code></td></tr><tr><td>Monadic</td><td><code>>=></code> <em>fish</em></td><td><code>(f: 'a -> M&#x3C;'b>) -> (g: 'b -> M&#x3C;'c>) -> ('a -> M&#x3C;'c>)</code></td></tr></tbody></table>
 
 * Fish operator definition: `let (>=>) f g = fun x -> f x |> bind g` ≡ `f >> (bind g)`
 * Composition of monadic functions is called _Kleisli composition_
@@ -446,16 +445,20 @@ let bind (f: 'a -> Result<'b, _>) result =
 Given the `Result<'ok, 'error list>` type, `apply` can accumulate errors:
 
 ```fsharp
-let apply (f: Result<'a -> 'b, _>) result =
-    match f, result with
-    | Ok f, Ok x -> Ok(f x)
-    | Error error, Ok _ -> Error [ error ]
-    | Ok _, Error errors -> Error errors
-    | Error error, Error errors -> Error(error :: errors) // 👈
+(* 1 *) let apply (rf: Result<'a -> 'b, 'err list>) (result: Result<'a, 'err list>) : Result<'b, 'err list> =
+(* 2 *)     match rf, result with
+(* 3 *)     | Ok f, Ok x -> Ok(f x)
+(* 4 *)     | Error fErrors, Ok _ -> Error fErrors
+(* 5 *)     | Ok _, Error xErrors -> Error xErrors
+(* 6 *)     | Error fErrors, Error xErrors -> Error(xErrors @ fErrors)
 ```
 
-💡 Handy for validating user input and reporting all errors.
+☝️ **Notes:**
 
+* Errors are either accumulated _(L6)_ or propagated _(L4, L5)_.
+* At lines L4, L6, `rf` is no longer a wrapped function but an `Error`. It happens after a first `apply` when there is an `Error` instead of a wrapped value _(L5, L6)_.
+
+💡 Handy for validating inputs and reporting all errors to the user. \
 🔗 [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/), Compositional IT
 
 ## Wrap up
