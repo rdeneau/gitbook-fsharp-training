@@ -42,8 +42,8 @@
 * [Option type](types-monadic/1-option.md)
 * [Result type](types-monadic/2-result.md)
 * [Smart constructor](types-monadic/3-smart-constructor.md)
+* [🚀 Functional patterns](types-monadic/5-ce-basements.md)
 * [🚀 Computation expression (CE)](types-monadic/4-computation-expression.md)
-* [🚀 CE theoretical basements](types-monadic/5-ce-basements.md)
 * [📜 Recap](types-monadic/6-recap.md)
 
 ## Pattern matching

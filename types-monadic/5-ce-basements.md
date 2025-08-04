@@ -1,88 +1,88 @@
-# 🚀 Computation expression - Theoretical foundations
+# 🚀 Functional patterns
 
 ## CE: the Swiss army knife ✨
 
-The *computation expressions* serve different purposes:
+The _computation expressions_ serve different purposes:
 
-- C♯ `yield return` → F♯ `seq {}`
-- C♯ `async/await` → F♯ `async {}`
-- C♯ LINQ expressions `from... select` → F♯ `query {}`
-- ...
+* C♯ `yield return` → F♯ `seq {}`
+* C♯ `async/await` → F♯ `async {}`
+* C♯ LINQ expressions `from... select` → F♯ `query {}`
+* ...
 
 Underlying theoretical foundations :
 
-- Monoid
-- Monad
-- Applicative
+* Monoid
+* Monad
+* Applicative
 
 ## Monoid
 
 ≃ Type `T` defining a set with:
 
 1. Operation `(+): T -> T -> T`
-   - To combine sets and keep the same "type"
-   - Associative: `a + (b + c)` ≡ `(a + b) + c`
-2. Neutral element *(aka identity)* ≃ empty set
-   - Combinable with any set without effect
-   - `a + e` ≡ `e + a` ≡ `a`
+   * To combine sets and keep the same "type"
+   * Associative: `a + (b + c)` ≡ `(a + b) + c`
+2. Neutral element _(aka identity)_ ≃ empty set
+   * Combinable with any set without effect
+   * `a + e` ≡ `e + a` ≡ `a`
 
 ### CE monoidal
 
-The builder of a monoidal CE *(such as `seq`)* has *at least* :
+The builder of a monoidal CE _(such as `seq`)_ has _at least_ :
 
-- `Yield` to build the set element by element
-- `Combine` ≡ `(+)` (`Seq.append`)
-- Zero` ≡ neutral element (`Seq.empty`)
+* `Yield` to build the set element by element
+* `Combine` ≡ `(+)` (`Seq.append`)
+* Zero `≡ neutral element (`Seq.empty\`)
 
 Generally added (among others):
 
-- `For` to support `for x in xs do ...`
-- `YieldFrom` to support `yield!`
+* `For` to support `for x in xs do ...`
+* `YieldFrom` to support `yield!`
 
 ## Monad
 
 ≃ Generic type `M<'T>` with:
 
 1. `return` construction function
-   - Signature : `(value: 'T) -> M<'T>`
-   - ≃ Wrap a value
-2. Link function `bind` *(aka `>>=` operator)*
-   - Signature : `(f: 'T -> M<'U>) -> M<'T> -> M<'U>`
-   - Use wrapped value, map with `f` function to a value of another type and re-wrap the result
+   * Signature : `(value: 'T) -> M<'T>`
+   * ≃ Wrap a value
+2. Link function `bind` _(aka `>>=` operator)_
+   * Signature : `(f: 'T -> M<'U>) -> M<'T> -> M<'U>`
+   * Use wrapped value, map with `f` function to a value of another type and re-wrap the result
 
 ### Monad laws
 
 `return` ≡ neutral element for `bind`
 
-- Left: `return x |> bind f` ≡ `f x`
-- Right: `m |> bind return` ≡ `m`
+* Left: `return x |> bind f` ≡ `f x`
+* Right: `m |> bind return` ≡ `m`
 
 `bind` is associative
 
-- `m |> bind f |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
+* `m |> bind f |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
 
 ### Monads and languages
 
 **Haskell**
 
-- Monads used a lot. Common ones: `IO`, `Maybe`, `State`, `Reader`.
-- `Monad` is a *type class* for easily creating your own monads.
+* Monads used a lot. Common ones: `IO`, `Maybe`, `State`, `Reader`.
+* `Monad` is a _type class_ for easily creating your own monads.
 
 **F♯**
 
-- Some CEs allow monadic operations.
-- More rarely used directly _(except by Haskellers, OCamlers...)_
+* Some CEs allow monadic operations.
+* More rarely used directly _(except by Haskellers, OCamlers...)_
 
 **C♯**
 
-- Monad implicit in LINQ
-- [LanguageExt](https://github.com/louthy/language-ext) library for functional programming
+* Monad implicit in LINQ
+* [LanguageExt](https://github.com/louthy/language-ext) library for functional programming
 
 ### Monadic CE
 
 The builder of a monadic CE has `Return` and `Bind` methods.
 
-The `Option` and `Result` types are monadic.
+The `Option` and `Result` types are monadic.\
 → We can create their own CE :
 
 ```fsharp
@@ -97,7 +97,7 @@ type ResultBuilder() =
 
 ### Monadic and generic CE
 
-[FSharpPlus](http://fsprojects.github.io/FSharpPlus//computation-expressions.html) provides a `monad` CE \
+[FSharpPlus](http://fsprojects.github.io/FSharpPlus/computation-expressions.html) provides a `monad` CE\
 → Works for all monadic types: `Option`, `Result`, ... and even `Lazy`!
 
 ```fsharp
@@ -155,8 +155,8 @@ let v2 = monad {
 
 ### Specific monadic CE
 
-[FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling/) library provides:
-• CE `option {}` specific to type `Option<'T>` _(example below)_
+[FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling/) library provides:\
+• CE `option {}` specific to type `Option<'T>` _(example below)_\
 • CE `result {}` specific to type `Result<'Ok, 'Err>`
 
 ☝ Recommended as it is more explicit than `monad` CE.
@@ -179,16 +179,16 @@ let v2 = addOptions (Some 1) None     // None
 
 ≃ Generic type `M<'T>` -- 3 styles:
 
-**Style A:** Applicative with `apply`/`<*>` and `pure`/`return`
-• ❌ Not easy to understand
+**Style A:** Applicative with `apply`/`<*>` and `pure`/`return`\
+• ❌ Not easy to understand\
 • ☝ Not recommended by Don Syme in the [Nov. 2020 note](https://github.com/dsyme/fsharp-presentations/blob/master/design-notes/rethinking-applicatives.md)
 
-**Style B:** Applications with `mapN`
+**Style B:** Applications with `mapN`\
 • `map2`, `map3`... `map5` combines 2 to 5 wrapped values
 
-**Style C:** Applicatives with `let! ... and! ...` in a CE
-• Same principle: combine several wrapped values
-• Available from F♯ 5 _([announcement Nov. 2020](https://devblogs.microsoft.com/dotnet/announcing-f-5/#applicative-computation-expressions))_
+**Style C:** Applicatives with `let! ... and! ...` in a CE\
+• Same principle: combine several wrapped values\
+• Available from F♯ 5 _(_[_announcement Nov. 2020_](https://devblogs.microsoft.com/dotnet/announcing-f-5/#applicative-computation-expressions)_)_
 
 ☝ **Tip:** Styles B and C are equally recommended.
 
@@ -196,13 +196,13 @@ let v2 = addOptions (Some 1) None     // None
 
 Library [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling/) offers:
 
-- Type `Validation<'Ok, 'Err>` ≡ `Result<'Ok, 'Err list>`
-- CE `validation {}` supporting `let!...and!...` syntax.
+* Type `Validation<'Ok, 'Err>` ≡ `Result<'Ok, 'Err list>`
+* CE `validation {}` supporting `let!...and!...` syntax.
 
 Allows errors to be accumulated → Uses:
 
-- Parsing external inputs
-- *Smart constructor* *(Example code slide next...)*
+* Parsing external inputs
+* _Smart constructor_ _(Example code slide next...)_
 
 **Example:**
 
@@ -236,14 +236,14 @@ let c2 = Customer.tryCreate "Bob" 0<cm> // Error ["Height must me positive"]
 let c3 = Customer.tryCreate "" 0<cm>    // Error ["Name can't be empty"; "Height must me positive"]
 ```
 
-## Applicative *vs* Monad
+## Applicative _vs_ Monad
 
 The `Result` type is "monadic": on the 1st error, we "unplug".
 
 There is another type called `Validation` that is "applicative": it allows to accumulate errors.
 
-- ≃ `Result<'ok, 'error list>`\
-- Handy for validating user input and reporting all errors
+* ≃ `Result<'ok, 'error list>`\\
+* Handy for validating user input and reporting all errors
 
 Example: `Validation.map2` to combine 2 results and get the list of their eventual errors.
 
@@ -262,19 +262,19 @@ module Validation =
 
 🔗 **Ressources**
 
-- [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling)
-- [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/)
+* [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling)
+* [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/)
 
 ## Other CE
 
 We've seen 2 libraries that extend F♯ and offer their CEs:
 
-- FSharpPlus → `monad`
-- FsToolkit.ErrorHandling → `option`, `result`, `validation`
+* FSharpPlus → `monad`
+* FsToolkit.ErrorHandling → `option`, `result`, `validation`
 
-Many libraries have their own DSL *(Domain Specific Language.)* \
+Many libraries have their own DSL _(Domain Specific Language.)_\
 Some are based on CE:
 
-- [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
-- [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
-- [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
+* [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
+* [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
+* [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
