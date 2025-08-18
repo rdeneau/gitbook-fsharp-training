@@ -491,5 +491,6 @@ Meaning: what about F♯ codebases full of `monad`, `Reader`, `State`...?
 
 ### Additional resources 🔗
 
-* [_The "Map and Bind and Apply, Oh my!" series_](https://kutt.it/ebfGNA), F# for Fun and Profit
-* [Applicatives IRL](https://thinkbeforecoding.com/post/2020/10/03/applicatives-irl), Jeremie Chassaing
+* ["Understanding monoids" series](https://fsharpforfunandprofit.com/posts/monoids-without-tears/#series-toc) —F# for Fun and Profit
+* ["Map and Bind and Apply, Oh my!" series](https://kutt.it/ebfGNA) —F# for Fun and Profit
+* [Applicatives IRL](https://thinkbeforecoding.com/post/2020/10/03/applicatives-irl) —Jeremie Chassaing
