@@ -4,16 +4,23 @@
 
 ### Presentation
 
-1. Computation expressions in F# provide a convenient **syntax** for writing computations that can be sequenced and combined using control flow constructs and bindings.
-2. Depending on the kind of computation expression, they can be thought of as a way to express monads, monoids, monad transformers, and applicatives\
-   → **Functional patterns** seen previously, _except monad transformers_ 📍
+🔗 [Learn F# - Computation Expressions](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions), by Microsoft:
 
-🔗 [Learn F# - Computation Expressions](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions), by Microsoft
+> 1. Computation expressions in F# provide a convenient **syntax** for writing computations that can be sequenced and combined using control flow constructs and bindings.
+> 2. Depending on the kind of computation expression, they can be thought of as a way to express monads, monoids, monad transformers, and applicatives.
+
+{% hint style="info" %}
+## Note
+
+> monads, monoids, monad transformers, and applicatives
+
+These are [4-functional-pattern.md](4-functional-pattern.md "mention"), _except monad transformers_ 📍
+{% endhint %}
 
 Built-in CEs: `async` and `task`, `seq`, `query`\
 → Easy to use, once we know the syntax and its keywords
 
-We can write our own CE too\
+We can write our own CE too.\
 → More challenging!
 
 ### Syntax
@@ -593,6 +600,27 @@ let c1 = Customer.tryCreate "Bob" 180<cm>  // Ok { Name = "Bob"; Height = 180 }
 let c2 = Customer.tryCreate "Bob" 0<cm> // Error ["Height must be positive"]
 let c3 = Customer.tryCreate "" 0<cm>    // Error ["Name can't be empty"; "Height must be positive"]
 ```
+
+Desugared as:
+
+```fsharp
+// Simplified:
+validation.Run(
+    validation.Delay(fun () ->
+        validation.BindReturn(
+            validation.MergeSources(
+                validation.Source(validateName name),
+                validation.Source(validateHeight height)
+            ),
+            (fun (validName, validHeight) -> { Name = validName; Height = validHeight })
+        )
+    )
+)
+```
+
+* `Source` is used to convert from `Result<'ok, 'err>` to `Validation<'ok, 'err>` , alias of `Result<'ok, 'err list>` .
+* `MergeSource` creates the pair `(validName, validHeight)`...
+* ... passed to the lambda 2nd argument of `BindReturn`
 
 ## Creating CEs
 
