@@ -12,30 +12,28 @@ module [accessibility-modifier] module-name =
     declarations
 ```
 
-`accessibility-modifier`: restrict accessibility \
-→ `public` *(default)*, `internal` *(assembly)*, `private` *(parent)*
+`accessibility-modifier`: restrict accessibility\
+→ `public` _(default)_, `internal` _(assembly)_, `private` _(parent)_
 
-Full name (`[namespace.]module-name`) must be unique \
+Full name (`[namespace.]module-name`) must be unique\
 → 2 files cannot declare modules with the same name
 
 ## Top-level module
 
-- Only one top-level module per file \
+* Only one top-level module per file\
   → Declared on very top of the file
-
-- Can (should?) be qualified \
-  → Attached to a parent namespace *(already declared or not)*
-
-- Contains all the rest of the file \
+* Can (should?) be qualified\
+  → Attached to a parent namespace _(already declared or not)_
+* Contains all the rest of the file\
   → Unindented content 👍
 
 ## Implicit top-level module
 
-- For a file without top-level module/namespace
-- Module name = file name
-  - Without extension
-  - With 1st letter in uppercase
-  - E.g.: `program.fs` → `module Program`
+* For a file without top-level module/namespace
+* Module name = file name
+  * Without extension
+  * With 1st letter in uppercase
+  * E.g.: `program.fs` → `module Program`
 
 ☝️ Not recommended in `.fsproj`
 
@@ -43,21 +41,21 @@ Full name (`[namespace.]module-name`) must be unique \
 
 Syntax similar to `let`
 
-- The `=` sign after the local module name ❗
-- Indent the entire content
+* The `=` sign after the local module name ❗
+* Indent the entire content
 
 ## Content
 
-A module, *local as top-level*, can contain:
+A module, _local as top-level_, can contain:
 
-- local types and sub-modules
-- values, functions
+* local types and sub-modules
+* values, functions
 
-**Key difference:** \
+**Key difference:**\
 → content indentation
 
 | Module    | Indentation |
-|-----------|-------------|
+| --------- | ----------- |
 | top-level | No          |
 | local     | Yes         |
 
@@ -95,23 +93,23 @@ printfn "%A" Y.Z.z
 
 ☝ **Notes :**
 
-- Interesting with private nested module to isolate/group
-- Otherwise, prefer a *flat view*
-- F♯ classes cannot be nested
+* Interesting with private nested module to isolate/group
+* Otherwise, prefer a _flat view_
+* F♯ classes cannot be nested
 
-## Top-level *vs* local module
+## Top-level _vs_ local module
 
 | Property                    | Top-level | Local |
-|-----------------------------|-----------|-------|
-| Qualifiable                 | ✅        | ❌    |
-| `=` sign + indented content | ❌        | ✅ ❗ |
+| --------------------------- | --------- | ----- |
+| Qualifiable                 | ✅         | ❌     |
+| `=` sign + indented content | ❌         | ✅ ❗   |
 
-- *Top-level* module → 1st element declared in a file
-- Otherwise *(after a top-level module/namespace)* → local module
+* _Top-level_ module → 1st element declared in a file
+* Otherwise _(after a top-level module/namespace)_ → local module
 
 ## Recursive module
 
-Same principle as recursive namespace \
+Same principle as recursive namespace\
 → Convenient for a type and a related module to see each other
 
 ☝ **Recommendation:** limit the size of recursive zones as much as possible
@@ -122,21 +120,21 @@ Same principle as recursive namespace \
 
 ### `[<RequireQualifiedAccess>]`
 
-Prevents the module import hence any unqualified use of its elements \
-→ 💡 Useful for avoiding *shadowing* for common names: `add`, `parse`...
+Prevents the module import hence any unqualified use of its elements\
+→ 💡 Useful for avoiding _shadowing_ for common names: `add`, `parse`...
 
 ### `[<AutoOpen>]`
 
-Import module at same time as the parent namespace/module \
-→ 💡 Handy for "mounting" values/functions at namespace level \
-→ ⚠️ Pollutes the current *scope*
+Import module at same time as the parent namespace/module\
+→ 💡 Handy for "mounting" values/functions at namespace level\
+→ ⚠️ Pollutes the current _scope_
 
-⚠️ **Scope** \
-When the parent module/namespace has not been imported, `AutoOpen` has no effect: to access the contents of the child module, the qualification includes not only the parent module/namespace, but also the child module: \
-→ `Parent.childFunction` ❌ \
+⚠️ **Scope**\
+When the parent module/namespace has not been imported, `AutoOpen` has no effect: to access the contents of the child module, the qualification includes not only the parent module/namespace, but also the child module:\
+→ `Parent.childFunction` ❌\
 → `Parent.Child.childFunction` ✅
 
-💡 `AutoOpen` is commonly used to better organize a module, by grouping elements into child modules \
+💡 `AutoOpen` is commonly used to better organize a module, by grouping elements into child modules\
 → provided they remain of a reasonable size, otherwise it would be better to consider extracting them to different files.
 
 This can be combined with making some modules `private` to hide all their contents from the calling code, while keeping these contents directly accessible to the rest of the current module.
@@ -147,32 +145,32 @@ This can be combined with making some modules `private` to hide all their conten
 
 Let's consider a `Cart` type with its `Cart` companion module.
 
-**How do we call the function that adds an item to the cart?** \
+**How do we call the function that adds an item to the cart?**\
 → It depends on the function name.
 
-- `addItem item cart`: \
-  → `[<RequireQualifiedAccess>]` to consider \
+* `addItem item cart`:\
+  → `[<RequireQualifiedAccess>]` to consider\
   → to be compelled to use `Cart.addItem`
-- `addItemToCart item cart`: \
-  → function name is *self-explicit* \
-  → `[<AutoOpen>]` interesting to prevent `Cart.addItemToCart` \
-  → Works only if `Cart` parent *(if any)* is not `RequireQualifiedAccess` and opened
+* `addItemToCart item cart`:\
+  → function name is _self-explicit_\
+  → `[<AutoOpen>]` interesting to prevent `Cart.addItemToCart`\
+  → Works only if `Cart` parent _(if any)_ is not `RequireQualifiedAccess` and opened
 
 If the `Cart` module contains other functions like this, it's probably better to apply the same naming convention to all of them.
 
 ## Types-Modules main typologies
 
-*(Not exhaustive)*
+_(Not exhaustive)_
 
-- Type + Companion module containing function dedicated to this type
-- Multi-type module: several small types + related functions
-- Mapper modules: to map between 2 types sets
+* Type + Companion module containing function dedicated to this type
+* Multi-type module: several small types + related functions
+* Mapper modules: to map between 2 types sets
 
 ### Type + Companion module
 
 FSharp.Core style - see `List`, `Option`, `Result`...
 
-Module can have the same name as the type
+Module can have the same name as the type\
 → BCL interop: module compiled name = `{Module}Module`
 
 ```fsharp
@@ -187,7 +185,7 @@ person |> Person.fullName // "John Doe"
 
 ### Multi-type module
 
-Contains several small types + related functions *(eventually)*
+Contains several small types + related functions _(eventually)_
 
 ```fsharp
 module Common.Errors
@@ -229,14 +227,14 @@ module DomainToEntity =
     let mapXxx x : XxxDto = ...
 ```
 
-## Module *vs* namespace
+## Module _vs_ namespace
 
 If a file contains a single module
 
-- Prefer top-level module in general
-- Prefer namespace + local module for BCL interop
+* Prefer top-level module in general
+* Prefer namespace + local module for BCL interop
 
-## Open type *(Since F♯ 5)*
+## Open type _(Since F♯ 5)_
 
 Use cases:
 
@@ -247,7 +245,7 @@ open type System.Math
 let x = Max(123., 456.)
 ```
 
-*vs*
+_vs_
 
 ```fsharp
 open System

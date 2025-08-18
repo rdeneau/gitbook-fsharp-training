@@ -5,49 +5,49 @@
 ### Presentation
 
 1. Computation expressions in F# provide a convenient **syntax** for writing computations that can be sequenced and combined using control flow constructs and bindings.
-2. Depending on the kind of computation expression, they can be thought of as a way to express monads, monoids, monad transformers, and applicatives \
-   → **Functional patterns** seen previously, *except monad transformers* 📍
+2. Depending on the kind of computation expression, they can be thought of as a way to express monads, monoids, monad transformers, and applicatives\
+   → **Functional patterns** seen previously, _except monad transformers_ 📍
 
 🔗 [Learn F# - Computation Expressions](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions), by Microsoft
 
-Built-in CEs: `async` and `task`, `seq`, `query` \
+Built-in CEs: `async` and `task`, `seq`, `query`\
 → Easy to use, once we know the syntax and its keywords
 
-We can write our own CE too \
+We can write our own CE too\
 → More challenging!
 
 ### Syntax
 
 CE = block like `myCE { body }` where `body` looks like **imperative** F# code with:
 
-- regular keywords: `let`, `do`, `if`/`then`/`else`, `match`, `for`...
-- dedicated keywords: `yield`, `return`
-- "banged" keywords: `let!`, `do!`, `match!`, `yield!`, `return!`
+* regular keywords: `let`, `do`, `if`/`then`/`else`, `match`, `for`...
+* dedicated keywords: `yield`, `return`
+* "banged" keywords: `let!`, `do!`, `match!`, `yield!`, `return!`
 
 These keywords hide a ❝ **machinery** ❞ to perform background **specific** effects:
 
-- Asynchronous computations like with `async` and `task`
-- State management: e.g. a sequence with `seq`
-- Absence of value with `option` CE
-- ...
+* Asynchronous computations like with `async` and `task`
+* State management: e.g. a sequence with `seq`
+* Absence of value with `option` CE
+* ...
 
 ## Builder
 
-A *computation expression* relies on an object called *Builder*.
+A _computation expression_ relies on an object called _Builder_.
 
 {% hint style="warning" %}
-## Warning
+### Warning
 
-This is not exactly the *Builder* OO design pattern.
+This is not exactly the _Builder_ OO design pattern.
 {% endhint %}
 
-For each supported **keyword** (`let!`, `return`...), the *Builder* implements one or more related **methods**.
+For each supported **keyword** (`let!`, `return`...), the _Builder_ implements one or more related **methods**.
 
-☝️ Compiler accepts **flexibility** in the builder **method signature**, as long as the methods can be **chained together** properly when the compiler evaluates the CE on the **caller side.** \
-→ ✅ Versatile, ⚠️ Difficult to design and to test \
+☝️ Compiler accepts **flexibility** in the builder **method signature**, as long as the methods can be **chained together** properly when the compiler evaluates the CE on the **caller side.**\
+→ ✅ Versatile, ⚠️ Difficult to design and to test\
 → Given method signatures illustrate only typical situations.
 
-## Builder example: `logger {}`
+### Builder example: `logger {}`
 
 Need: log the intermediate values of a calculation
 
@@ -68,7 +68,7 @@ let loggedCalc =
 ⚠️ **Issues**
 
 1. Verbose: the `log x` interfere with reading
-2. *Error prone*: forget a `log`, log wrong value...
+2. _Error prone_: forget a `log`, log wrong value...
 
 💡 **Solutions**
 
@@ -94,8 +94,8 @@ let loggedCalc = logger {
 
 The 3 consecutive `let!` are desugared into 3 **nested** calls to `Bind` with:
 
-- 1st argument: the right side of the `let!` (e.g. `42` with `let! x = 42`)
-- 2nd argument: a lambda taking the variable defined at the left side of the `let!` (e.g. `x`) and returning the whole expression below the `let!` until the `}`
+* 1st argument: the right side of the `let!` (e.g. `42` with `let! x = 42`)
+* 2nd argument: a lambda taking the variable defined at the left side of the `let!` (e.g. `x`) and returning the whole expression below the `let!` until the `}`
 
 ```fsharp
 // let! x = 42
@@ -110,28 +110,28 @@ logger.Bind(42, (fun x ->
 )
 ```
 
-### `Bind` *vs* `let!`
+### `Bind` _vs_ `let!`
 
-`logger { let! var = expr in cexpr }` is desugared as: \
+`logger { let! var = expr in cexpr }` is desugared as:\
 `logger.Bind(expr, fun var -> cexpr)`
 
 👉 **Key points:**
 
-- `var` and `expr` appear in reverse order
-- `var` is used in the rest of the computation `cexpr` \
+* `var` and `expr` appear in reverse order
+* `var` is used in the rest of the computation `cexpr`\
   → highlighted using the `in` keyword of the verbose syntax
-- the lambda `fun var -> cexpr` is a **continuation** function
+* the lambda `fun var -> cexpr` is a **continuation** function
 
 ### CE desugaring: tips 💡
 
-I found a simple way to desugar a computation expression: \
+I found a simple way to desugar a computation expression:\
 → Write a failing unit test and use [Unquote](https://github.com/SwensenSoftware/unquote) - 🔗 [Example](https://github.com/rdeneau/formation-fsharp/blob/main/src/FSharpTraining/04-Monad/LoggerTests.fs#L42)
 
-![](../themes/d-edge/img/desugar-ce-with-unquote.png)
+<figure><img src="../.gitbook/assets/desugar-ce-with-unquote.png" alt=""><figcaption></figcaption></figure>
 
 ### Constructor parameters
 
-The builder can be constructed with additional parameters. \
+The builder can be constructed with additional parameters.\
 → The CE syntax allows us to pass these arguments when using the CE:
 
 ```fsharp
@@ -154,7 +154,7 @@ let loggedCalc = logger "[Debug] " {
 
 ### Builder example: `option {}`
 
-Need: successively try to find in maps by identifiers \
+Need: successively try to find in maps by identifiers\
 → Steps:
 
 1. `roomRateId` in `policyCodesByRoomRate` map → `policyCode`
@@ -198,11 +198,11 @@ option {
 
 ## CE monoidal
 
-A monoidal CE can be identified by the usage of `yield` and `yield!` keywords. \
+A monoidal CE can be identified by the usage of `yield` and `yield!` keywords.\
 → The relationship with the monoid is not visible here but in the builder methods:
 
-- `+` operation → `Combine` method
-- `e` neutral element → `Zero` method
+* `+` operation → `Combine` method
+* `e` neutral element → `Zero` method
 
 ### CE monoidal builder methods
 
@@ -226,21 +226,21 @@ A monoidal CE can be identified by the usage of `yield` and `yield!` keywords. \
 1. We use the generic type notation `M<T>`, like we did for functional patterns.
 2. Same for `Delayed<T>`, presented later 📍
 
-### CE monoidal *vs* comprehension
+### CE monoidal _vs_ comprehension
 
-- Similar syntax from caller perspective
-- Distinct overlapping concepts
+* Similar syntax from caller perspective
+* Distinct overlapping concepts
 
-**Comprehension** is the concise, declarative syntax to build collections with ranges `start..end` and control flow keywords `if`, `for`, `while`...
+**Comprehension** is the concise, declarative syntax to build collections with ranges `start..end` and control flow keywords `if`, `for`, `while`...
 
 Minimal set of methods expected for each:
 
-- Monoidal CE: `Yield`, `Combine`, `Zero`
-- Comprehension: `For`, `Yield`
+* Monoidal CE: `Yield`, `Combine`, `Zero`
+* Comprehension: `For`, `Yield`
 
 ### CE monoidal example: `multiplication {}`
 
-Let's build a CE that multiplies the integers yielded in the computation body: \
+Let's build a CE that multiplies the integers yielded in the computation body:\
 → CE type: `M<T> = int` • Monoid operation = `*` • Neutral element = `1`
 
 ```fsharp
@@ -302,8 +302,8 @@ let factorialOf5 =
 
 `Delayed<'t>` represents a delayed computation and is used in these methods:
 
-- `Delay` defines the CE `Delayed<'t>` as its return type
-- `Combine`, `Run`, `While` and `Tryfinally` used it as input parameter
+* `Delay` defines the CE `Delayed<'t>` as its return type
+* `Combine`, `Run`, `While` and `Tryfinally` used it as input parameter
 
 ```fsharp
  Delay      : thunk: (unit -> M<T>) -> Delayed<T>
@@ -313,8 +313,8 @@ let factorialOf5 =
  TryFinally : Delayed<T> * finalizer: (unit -> unit) -> M<T>
 ```
 
-- `Delay` is called with the current expression (of type `M<T>`) before each method taking a `Delayed<T>` argument
-- `Delayed<T>` is internal to the CE → given `Delayed<T>` ≠ `M<T>`, \
+* `Delay` is called with the current expression (of type `M<T>`) before each method taking a `Delayed<T>` argument
+* `Delayed<T>` is internal to the CE → given `Delayed<T>` ≠ `M<T>`,\
   `Run` is called at the end of the chain to get back the `M<T>`
 
 👉 Enables to implement **laziness and short-circuiting** at the CE level.
@@ -338,18 +338,18 @@ type MultiplicationBuilder() =
 ```
 
 | Difference              | Eager   | Lazy                          |
-|-------------------------|---------|-------------------------------|
+| ----------------------- | ------- | ----------------------------- |
 | `Delay` return type     | `int`   | `unit -> int`                 |
 | `Run`                   | Omitted | Required to get back an `int` |
 | `Combine` 2nd parameter | `int`   | `unit -> int`                 |
 | `For` calling `Delay`   | Omitted | Explicit but not required     |
 
-![](../themes/d-edge/img/diff-ce-multiplication-eager-vs-lazy.png)
+<figure><img src="../.gitbook/assets/diff-ce-multiplication-eager-vs-lazy.png" alt=""><figcaption></figcaption></figure>
 
 ### CE monoidal to generate a collection
 
-`multiplication {}` returns an `int` from possibility multiple yielded ints. \
-≠ `seq {}` returns a `'t seq` from any number of yielded value of type `t` \
+`multiplication {}` returns an `int` from possibility multiple yielded ints.\
+≠ `seq {}` returns a `'t seq` from any number of yielded value of type `t`\
 → It's a more common use case for a monoidal CE.
 
 💡 Let's build a `list {}` monoidal CE!
@@ -366,25 +366,25 @@ type ListBuilder() =
 let list = ListBuilder()
 ```
 
-Let's test the CE to generate the list `[begin; 16; 9; 4; 1; 2; 4; 6; 8; end]` \
-*(Desugared code simplified)*
+Let's test the CE to generate the list `[begin; 16; 9; 4; 1; 2; 4; 6; 8; end]`\
+&#xNAN;_(Desugared code simplified)_
 
-![w:1200](../themes/d-edge/img/list-ce-desugared.png)
+<figure><img src="../.gitbook/assets/list-ce-desugared.png" alt=""><figcaption></figcaption></figure>
 
 Comparison with the same expression in a regular list:
 
-![w:1200](../themes/d-edge/img/list-real-desugared.png)
+<figure><img src="../.gitbook/assets/list-real-desugared.png" alt=""><figcaption></figcaption></figure>
 
-`list { expr }` *vs* `[ expr ]`:
+`list { expr }` _vs_ `[ expr ]`:
 
-- `[ expr ]` uses a hidden `seq` all through the computation and ends with a `toList`
-- All methods are inlined:
+* `[ expr ]` uses a hidden `seq` all through the computation and ends with a `toList`
+* All methods are inlined:
 
 | Method    | `list { expr }`              | `[ expr ]`      |
-|-----------|------------------------------|-----------------|
+| --------- | ---------------------------- | --------------- |
 | `Combine` | `xs @ ys => List.append`     | `Seq.append`    |
-| `Yield`   | `[x]     => List.singleton`  | `Seq.singleton` |
-| `Zero`    | `[]      => List.empty`      | `Seq.empty`     |
+| `Yield`   | `[x]     => List.singleton`  | `Seq.singleton` |
+| `Zero`    | `[]      => List.empty`      | `Seq.empty`     |
 | `For`     | `Seq.collect` & `Seq.toList` | `Seq.collect`   |
 
 ## CE monadic
@@ -410,34 +410,29 @@ Behind the scene, builders of these CE should/can implement these methods:
     Using     : T * (T -> M<U>) -> M<U> when T :> IDisposable ; use! x = xs in ...
 ```
 
-### CE monadic *vs* CE monoidal
+### CE monadic _vs_ CE monoidal
 
-#### `Return` (monad) *vs* `Yield` (monoid)
+#### `Return` (monad) _vs_ `Yield` (monoid)
 
-- Same signature: `T -> M<T>`
-- A series of `return` is not expected \
+* Same signature: `T -> M<T>`
+* A series of `return` is not expected\
   → Monadic `Combine` takes only a monadic command `M<unit>` as 1st param
-- CE enforces appropriate syntax by implementing 1! of these methods:
-  - `seq {}` allows `yield` but not `return`
-  - `async {}`: vice versa
+* CE enforces appropriate syntax by implementing 1! of these methods:
+  * `seq {}` allows `yield` but not `return`
+  * `async {}`: vice versa
 
 #### `For` and `While`
 
-| Method  | CE       | Signature                                       |
-|---------|----------|-------------------------------------------------|
-| `For`   | Monoidal | `seq<T> * (T -> M<U>)    -> M<U> or seq<M<U>>`  |
-|         | Monadic  | `seq<T> * (T -> M<unit>) -> M<unit>`            |
-| `While` | Monoidal | `(unit -> bool) * Delayed<T>        -> M<T>`    |
-|         | Monadic  | `(unit -> bool) * (unit -> M<unit>) -> M<unit>` |
+<table><thead><tr><th width="99">Method</th><th width="147">CE</th><th>Signature</th></tr></thead><tbody><tr><td><code>For</code></td><td>Monoidal</td><td><code>seq&#x3C;T> * (T -> M&#x3C;U>)    -> M&#x3C;U> or seq&#x3C;M&#x3C;U>></code></td></tr><tr><td></td><td>Monadic</td><td><code>seq&#x3C;T> * (T -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr><tr><td><code>While</code></td><td>Monoidal</td><td><code>(unit -> bool) * Delayed&#x3C;T>        -> M&#x3C;T></code></td></tr><tr><td></td><td>Monadic</td><td><code>(unit -> bool) * (unit -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr></tbody></table>
 
-👉 ≠ use cases:
+👉 Different use cases:
 
-- Monoidal: Comprehension syntax
-- Monadic: Series of effectful commands
+* Monoidal: Comprehension syntax
+* Monadic: Series of effectful commands
 
 ### CE monadic and delayed
 
-Like monoidal CE, monadic CE can use a `Delayed<'t>` type. \
+Like monoidal CE, monadic CE can use a `Delayed<'t>` type.\
 → Impacts on the method signatures:
 
 ```fsharp
@@ -455,9 +450,9 @@ Like monoidal CE, monadic CE can use a `Delayed<'t>` type. \
 
 **Other example:** `result {}` CE handling:
 
-- `if` w/o `else` → `Zero`
-- `do! command` → `Combine`
-- lazy evaluation → `Delay`, `Run`
+* `if` without `else` → `Zero`
+* `do! command` → `Combine`
+* lazy evaluation → `Delay`, `Run`
 
 ```fsharp
 type ResultBuilder() =
@@ -498,35 +493,33 @@ let tryGet421 () =
 
 ### CE monadic: FSharpPlus `monad` CE
 
-[FSharpPlus](http://fsprojects.github.io/FSharpPlus//computation-expressions.html) provides a `monad` CE
+[FSharpPlus](http://fsprojects.github.io/FSharpPlus/computation-expressions.html) provides a `monad` CE
 
-- Works for all monadic types: `Option`, `Result`, ... and even `Lazy` 🎉
-- Supports monad stacks with monad transformers 📍
+* Works for all monadic types: `Option`, `Result`, ... and even `Lazy` 🎉
+* Supports monad stacks with monad transformers 📍
 
 ⚠️ **Limits:**
 
-- Confusing: the `monad` CE has 4 flavours to cover all cases: delayed or strict, embedded side-effects or not
-- Based on SRTP: can be very long to compile!
-- Documentation not exhaustive, relying on Haskell knowledges
-- Very Haskell-oriented: not idiomatic F♯
+* Confusing: the `monad` CE has 4 flavours to cover all cases: delayed or strict, embedded side-effects or not
+* Based on SRTP: can be very long to compile!
+* Documentation not exhaustive, relying on Haskell knowledges
+* Very Haskell-oriented: not idiomatic F♯
 
 ### Monad stack, monad transformers
 
-A monad stack is a composition of different monads. \
+A monad stack is a composition of different monads.\
 → Example: `Async`+`Option`.
 
-How to handle it? \
-→ Academic style *vs* idiomatic F♯
+How to handle it?\
+→ Academic style _vs_ idiomatic F♯
 
 #### 1. Academic style (with FSharpPlus)
 
-Monad transformer (here `MaybeT`) \
-→ Extends `Async` to handle both effects \
+Monad transformer (here `MaybeT`)\
+→ Extends `Async` to handle both effects\
 → Resulting type: `MaybeT<Async<'t>>`
 
-✅ reusable with other inner monad
-❌ less easy to evaluate the resulting value
-❌ not idiomatic
+✅ reusable with other inner monad ❌ less easy to evaluate the resulting value ❌ not idiomatic
 
 #### 2. Idiomatic style
 
@@ -551,25 +544,25 @@ type AsyncOptionBuilder() =
 
 ## CE Applicative
 
-An applicative CE is revealed through the usage of the `and!` keyword *(F♯ 5).*
+An applicative CE is revealed through the usage of the `and!` keyword _(F♯ 5)._
 
 An applicative CE builder is special compared to monoidal and monadic CE builders:
 
-- Not following the definition of the applicative: no method matching `apply`
-- Based on `MergeSources: M<'T1> * M<'T2> -> M<'T1 * 'T2>`
-- Fine tuning with `BindNReturn` method matching the `mapN` functions, N >= 2
+* Not following the definition of the applicative: no method matching `apply`
+* Based on `MergeSources: M<'T1> * M<'T2> -> M<'T1 * 'T2>`
+* Fine tuning with `BindNReturn` method matching the `mapN` functions, N >= 2
 
 ### CE Applicative example
 
 [FsToolkit.ErrorHandling](https://github.com/demystifyfp/FsToolkit.ErrorHandling/) offers:
 
-- Type `Validation<'Ok, 'Err>` ≡ `Result<'Ok, 'Err list>`
-- CE `validation {}` supporting `let!...and!...` syntax.
+* Type `Validation<'Ok, 'Err>` ≡ `Result<'Ok, 'Err list>`
+* CE `validation {}` supporting `let!...and!...` syntax.
 
 Allows errors to be accumulated in use cases like:
 
-- Parsing external inputs
-- *Smart constructor* *(example on the next slide...)*
+* Parsing external inputs
+* _Smart constructor_ _(example on the next slide...)_
 
 ```fsharp
 #r "nuget: FSToolkit.ErrorHandling"
@@ -607,27 +600,27 @@ let c3 = Customer.tryCreate "" 0<cm>    // Error ["Name can't be empty"; "Height
 
 The CE builder methods definition can involve not 2 but 3 types:
 
-- The wrapper type `M<T>`
-- The `Delayed<T>` type
-- An `Internal<T>` type
+* The wrapper type `M<T>`
+* The `Delayed<T>` type
+* An `Internal<T>` type
 
 ### `M<T>` wrapper type
 
-☝️ We use the generic type notation `M<T>` to indicate any of these aspects: generic or container.
+☝️ We use the generic type notation `M<T>` to indicate any of these aspects: generic or container.
 
 Examples of candidate types:
 
-- Any generic type
-- Any monoidal, monadic, or applicative type
-- `string` as it contains `char`s
-- Any type itself as `type Identity<'t> = 't` – see previous `logger {}` CE
+* Any generic type
+* Any monoidal, monadic, or applicative type
+* `string` as it contains `char`s
+* Any type itself as `type Identity<'t> = 't` – see previous `logger {}` CE
 
 ### `Delayed<T>` type
 
-- Return type of `Delay`
-- Parameter to `Run`, `Combine`, `While`, `TryWith`, `TryFinally`
-- Default type when `Delay` is not defined: `M<T>`
-- Common type for a real delay: `unit -> M<T>` - see `member _.Delay f = f`
+* Return type of `Delay`
+* Parameter to `Run`, `Combine`, `While`, `TryWith`, `TryFinally`
+* Default type when `Delay` is not defined: `M<T>`
+* Common type for a real delay: `unit -> M<T>` - see `member _.Delay f = f`
 
 #### `Delayed<T>` type example: `eventually {}`
 
@@ -694,12 +687,12 @@ type ListSeqBuilder() =
 let listSeq = ListSeqBuilder()
 ```
 
-💡 Highlights the usefulness of `ReturnFrom`, `YieldFrom`, implemented as an *identity* function until now.
+💡 Highlights the usefulness of `ReturnFrom`, `YieldFrom`, implemented as an _identity_ function until now.
 
 ### Builder methods without type
 
 {% hint style="success" %}
-## Another trick regarding types
+### Another trick regarding types
 
 As a F# developer in a .NET team using only C#, feel free to use these materials (both git-book and slides) to train your team.
 
@@ -708,12 +701,12 @@ As a F# developer in a .NET team using only C#, feel free to use these materials
 
 Example: `activity {}` CE to configure an `Activity` without passing the instance
 
-- Type with builder extension methods: `System.Diagnostics.Activity`
-- Return type: `unit` (no value returned)
-- Internal type involved: `type ActivityAction = delegate of Activity -> unit`
-- CE behaviour:
-  - monoidal internally: composition of `ActivityAction`
-  - like a `State` monad externally, with only the setter(s) part
+* Type with builder extension methods: `System.Diagnostics.Activity`
+* Return type: `unit` (no value returned)
+* Internal type involved: `type ActivityAction = delegate of Activity -> unit`
+* CE behaviour:
+  * monoidal internally: composition of `ActivityAction`
+  * like a `State` monad externally, with only the setter(s) part
 
 ```fsharp
 type ActivityAction = delegate of Activity -> unit
@@ -757,20 +750,20 @@ activity {
 }
 ```
 
-- The `activity` instance supports the CE syntax thanks to its extensions.
-- The extension methods are marked as not `EditorBrowsable` for proper DevExp.
-- Externally, the `activity` is implicit in the CE body, like a `State` monad.
-- Internally, the state is handled as a composition of `ActivityAction`.
-- The final `Run` enables us to evaluate the built `ActivityAction`, \
+* The `activity` instance supports the CE syntax thanks to its extensions.
+* The extension methods are marked as not `EditorBrowsable` for proper DevExp.
+* Externally, the `activity` is implicit in the CE body, like a `State` monad.
+* Internally, the state is handled as a composition of `ActivityAction`.
+* The final `Run` enables us to evaluate the built `ActivityAction`,\
   resulting in the change (mutation) of the `activity` (the side effect).
 
 ### CE creation guidelines 📃
 
-- Choose the main **behaviour**: monoidal? monadic? applicative?
-  - Prefer a single behaviour unless it's a generic/multi-purpose CE
-- Create a **builder** class
-- Implement the main **methods** to get the selected behaviour
-- Use/Test your CE to verify it compiles *(see typical compilation errors below),* produces the expected result, and performs well.
+* Choose the main **behaviour**: monoidal? monadic? applicative?
+  * Prefer a single behaviour unless it's a generic/multi-purpose CE
+* Create a **builder** class
+* Implement the main **methods** to get the selected behaviour
+* Use/Test your CE to verify it compiles _(see typical compilation errors below),_ produces the expected result, and performs well.
 
 ```txt
 1. This control construct may only be used if the computation expression builder defines a 'Delay' method
@@ -781,13 +774,13 @@ activity {
 
 ### CE creation tips 💡
 
-- Overload methods to support more use cases like different input types
-  - `Async<Return<_,_>>` + `Async<_>` + `Result<_,_>`
-  - `Option<_>` and `Nullable<_>`
-- Get inspired by existing codebases that provide CEs \
+* Overload methods to support more use cases like different input types
+  * `Async<Return<_,_>>` + `Async<_>` + `Result<_,_>`
+  * `Option<_>` and `Nullable<_>`
+* Get inspired by existing codebases that provide CEs\
   → e.g. Tips found in [FsToolkit/OptionCE.fs](https://github.com/demystifyfp/FsToolkit.ErrorHandling/blob/master/src/FsToolkit.ErrorHandling/OptionCE.fs):
-  - Undocumented `Source` methods
-  - Force the method overload order with extension methods \
+  * Undocumented `Source` methods
+  * Force the method overload order with extension methods\
     → to get better code completion assistance.
 
 🔗 [Computation Expressions Workshop: 6 - Extensions | GitHub](https://github.com/panesofglass/computation-expressions-workshop/blob/master/exercises/06_Extensions.pdf)
@@ -796,54 +789,50 @@ activity {
 
 What: builder methods annotated with `[<CustomOperation("myOperation")>]`
 
-Use cases: add new keywords, build a custom DSL
-→ Example: the `query` core CE supports `where` and `select` keywords like LINQ
+Use cases: add new keywords, build a custom DSL → Example: the `query` core CE supports `where` and `select` keywords like LINQ
 
 ⚠️ **Warning:** you may need additional things that are not well documented:
 
-- Additional properties for the `CustomOperation` attribute:
-  - `AllowIntoPattern`, `MaintainsVariableSpace`
-  - `IsLikeJoin`, `IsLikeGroupJoin`, `JoinConditionWord`
-  - `IsLikeZip`...
-- Additional attributes on the method parameters, like `[<ProjectionParameter>]`
+* Additional properties for the `CustomOperation` attribute:
+  * `AllowIntoPattern`, `MaintainsVariableSpace`
+  * `IsLikeJoin`, `IsLikeGroupJoin`, `JoinConditionWord`
+  * `IsLikeZip`...
+* Additional attributes on the method parameters, like `[<ProjectionParameter>]`
 
 🔗 [Computation Expressions Workshop: 7 - Query Expressions | GitHub](https://github.com/panesofglass/computation-expressions-workshop/blob/master/exercises/07_Queries.pdf)
 
 ### CE benefits ✅
 
-- **Increased Readability**: imperative-like code
-- **Reduced Boilerplate**: hides a "machinery"
-- **Extensibility**: we can write our own "builder" for specific logic
+* **Increased Readability**: imperative-like code
+* **Reduced Boilerplate**: hides a "machinery"
+* **Extensibility**: we can write our own "builder" for specific logic
 
 ### CE limits ⚠️
 
-- **Compiler error messages** within a CE body can be cryptic
-- **Nesting different CEs** can make the code more cumbersome
-  - E.g. `async` + `result`
-  - Alternative: custom combining CE - see `asyncResult` in [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling/#a-motivating-example)
-- Writing our own CE can be **challenging**
-  - Implementing the right methods, each the right way
-  - Understanding the underlying concepts
+* **Compiler error messages** within a CE body can be cryptic
+* **Nesting different CEs** can make the code more cumbersome
+  * E.g. `async` + `result`
+  * Alternative: custom combining CE - see `asyncResult` in [FsToolkit](https://demystifyfp.gitbook.io/fstoolkit-errorhandling/#a-motivating-example)
+* Writing our own CE can be **challenging**
+  * Implementing the right methods, each the right way
+  * Understanding the underlying concepts
 
 ### Other CEs
 
 We've seen 2 libraries that extend F♯ and offer their CEs:
 
-- FSharpPlus → `monad`
-- FsToolkit.ErrorHandling → `option`, `result`, `validation`
+* FSharpPlus → `monad`
+* FsToolkit.ErrorHandling → `option`, `result`, `validation`
 
-Many libraries have their own DSL *(Domain Specific Language)*.
-Some are based on computation expression(s):
+Many libraries have their own DSL _(Domain Specific Language)_. Some are based on computation expression(s):
 
-- [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
-- [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
-- [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
+* [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
+* [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
+* [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
 
 ## 🍔 Quiz
 
-### Question 1
-
-**What is the primary purpose of computation expressions in F#?**
+#### Question 1: **What is the primary purpose of computation expressions in F#?**
 
 **A.** To replace all functional programming patterns
 
@@ -861,11 +850,7 @@ Some are based on computation expression(s):
 
 </details>
 
-***
-
-### Question 2
-
-**Which keywords identify a monadic computation expression?**
+#### Question 2: **Which keywords identify a monadic computation expression?**
 
 **A.** `yield` and `yield!`
 
@@ -889,11 +874,7 @@ Some are based on computation expression(s):
 
 </details>
 
-***
-
-### Question 3
-
-**In a computation expression builder, what does the `Bind` method correspond to?**
+#### Question 3: **In a computation expression builder, what does the `Bind` method correspond to?**
 
 **A.** The `yield` keyword
 
@@ -917,11 +898,7 @@ Some are based on computation expression(s):
 
 </details>
 
-***
-
-### Question 4
-
-**What is the signature of a typical monadic `Bind` method?**
+#### Question 4: **What is the signature of a typical monadic `Bind` method?**
 
 **A.** `M<T> -> M<T>`
 
@@ -935,35 +912,35 @@ Some are based on computation expression(s):
 
 <summary>Answer</summary>
 
-**A.** `M<T> -> M<T>` is the signature of `ReturnFrom` and `YieldFrom` methods ✖️
+**A.** `M<T> -> M<T>` is the typical signature of `ReturnFrom` and `YieldFrom` methods ✖️
 
-**B.** `T -> M<T>` is the signature of `Return` and `Yield` methods ✖️
+**B.** `T -> M<T>` is the typical  signature of `Return` and `Yield` methods ✖️
 
-**C.** `M<T> * (T -> M<U>) -> M<U>` is the signature of the `Bind` method ✅
+**C.** `M<T> * (T -> M<U>) -> M<U>` is the typical signature of the `Bind` method ✅
 
-**D.** `M<T> * M<U> -> M<T * U>` is the signature of `MergeSources` method ✖️
+**D.** `M<T> * M<U> -> M<T * U>` is the typical signature of `MergeSources` method ✖️
 
 </details>
 
-## CE wrap up
+## 📜 CE wrap up
 
-- Syntactic sugar: inner syntax: standard or "banged" (`let!`) \
+* Syntactic sugar: inner syntax: standard or "banged" (`let!`)\
   → Imperative-like • Easy to use
-- CE is based on a *builder*
-  - instance of a class with standard methods like `Bind` and `Return`
-- *Separation of Concerns*
-  - Business logic in the CE body
-  - Machinery behind the scene in the CE builder
-- Little issues for nesting or combining CEs
-- Underlying functional patterns: monoid, monad, applicative
-- Libraries: FSharpPlus, FsToolkit, Expecto, Farmer, Saturn...
+* CE is based on a _builder_
+  * instance of a class with standard methods like `Bind` and `Return`
+* _Separation of Concerns_
+  * Business logic in the CE body
+  * Machinery behind the scene in the CE builder
+* Little issues for nesting or combining CEs
+* Underlying functional patterns: monoid, monad, applicative
+* Libraries: FSharpPlus, FsToolkit, Expecto, Farmer, Saturn...
 
 ## 🔗 Additional resources
 
-- [Code examples in FSharpTraining.sln](https://github.com/rdeneau/formation-fsharp/tree/main/src/FSharpTraining) —Romain Deneau
-- [*The "Computation Expressions" series*](https://fsharpforfunandprofit.com/series/computation-expressions/) —F# for Fun and Profit
-- [All CE methods | Learn F#](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions#creating-a-new-type-of-computation-expression) —Microsoft
-- [Computation Expressions Workshop](https://github.com/panesofglass/computation-expressions-workshop)
-- [The F# Computation Expression Zoo](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/computation-zoo.pdf) —Tomas Petricek and Don Syme
-  - [Documentation | Try Joinads](http://tryjoinads.org/docs/computations/home.html) —Tomas Petricek
-- Extending F# through Computation Expressions: 📹 [Video](https://youtu.be/bYor0oBgvws) • 📜 [Article](https://panesofglass.github.io/computation-expressions/#/)
+* [Code examples in FSharpTraining.sln](https://github.com/rdeneau/formation-fsharp/tree/main/src/FSharpTraining) —Romain Deneau
+* [_The "Computation Expressions" series_](https://fsharpforfunandprofit.com/series/computation-expressions/) —F# for Fun and Profit
+* [All CE methods | Learn F#](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions#creating-a-new-type-of-computation-expression) —Microsoft
+* [Computation Expressions Workshop](https://github.com/panesofglass/computation-expressions-workshop)
+* [The F# Computation Expression Zoo](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/computation-zoo.pdf) —Tomas Petricek and Don Syme
+  * [Documentation | Try Joinads](http://tryjoinads.org/docs/computations/home.html) —Tomas Petricek
+* Extending F# through Computation Expressions: 📹 [Video](https://youtu.be/bYor0oBgvws) • 📜 [Article](https://panesofglass.github.io/computation-expressions/#/)
