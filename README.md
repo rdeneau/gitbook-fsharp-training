@@ -76,10 +76,15 @@ As a F# developer in a .NET team using only C#, feel free to use these materials
 
 ## Changelog
 
+### 2025-08-18
+
+* Improve [4-functional-pattern.md](types-monadic/4-functional-pattern.md "mention")
+* Improve [5-computation-expressions.md](types-monadic/5-computation-expressions.md "mention")
+
 ### 2025-05-13
 
 * Dedicated page to cover everything regarding [exceptions.md](fundamentals/2-syntax/exceptions.md "mention")
-* Misc precisions regarding [Broken link](broken-reference "mention")
+* Misc. precisions regarding [Broken link](broken-reference "mention")
 
 ### 2025-04-02
 
