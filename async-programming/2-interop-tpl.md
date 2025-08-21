@@ -9,7 +9,7 @@ description: 'TPL : Task Parallel Library'
 Asynchronous libraries in .NET and the `async`/`await` C♯ pattern:\
 → Based on **TPL** and the `Task` type
 
-Gateways with asynchronous worflow F♯ :
+Gateways with asynchronous workflow F♯ :
 
 * `Async.AwaitTask` and `Async.StartAsTask` functions
 * `task {}` block
@@ -38,9 +38,9 @@ let computationForCaller param =
 
 ## `task {}` block
 
-> Allows to consume an asynchronous .NET library directly, using a single `Async.AwaitTask` rather than 1 for each async method called.
+> Allows consuming an asynchronous .NET library directly, using a single `Async.AwaitTask` rather than one for each async method called.
 
-💡 Available since F♯ 6 _(before, we need_ [_Ply_](https://github.com/crowded/ply) _package nuget)_
+💡 Available since F♯ 6 _(before, we_ needed the [_Ply_](https://github.com/crowded/ply) _NuGet package)_
 
 ```fsharp
 task {
@@ -65,11 +65,11 @@ task {
 #### 2. Cancellation support
 
 `Task`: by adding a `CancellationToken` parameter to async methods\
-→ Forces manual testing if token is canceled = tedious + _error prone❗_
+→ Forces manual testing if token is canceled = tedious + _error-prone_❗
 
 `Async`: automatic support in calculations - token to be provided at startup 👍
 
-## Recommendation for async function in F♯
+## Recommendation for async functions in F♯
 
 C♯ `async` applied at a method level\
 ≠ F♯ `async` defines an async block, not an async function
@@ -95,7 +95,7 @@ let workThenWait () = async {
 
 ### Pitfall 1 - Really asynchronous?
 
-In C♯: method `async` remains on the calling thread until the 1st `await`\
+In C♯: method `async` remains on the calling thread until the first `await`\
 → Misleading feeling of being asynchronous throughout the method
 
 ```csharp

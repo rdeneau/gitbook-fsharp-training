@@ -10,7 +10,7 @@
 
 Represents an asynchronous calculation
 
-📆 Similar to the `async/await` pattern way before C♯ and JS
+📆 Similar to the `async/await` pattern, way before C♯ and JS
 
 * 2007: `Async<'T>` F♯
 * 2012: `Task<T>` .NET and pattern `async`/`await`
@@ -30,7 +30,7 @@ FSharp.Control `CommonExtensions` module: extends the `System.IO.Stream` type ([
 
 FSharp.Control `WebExtensions` module: extends type `System.Net.WebClient` ([doc](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-webextensions.html))\
 → `AsyncDownloadData(address : Uri) : Async<byte[]>`\
-→ `AsyncDownloadString(address : Uri) : Async<string`
+→ `AsyncDownloadString(address : Uri) : Async<string>`
 
 ## Run an async calculation
 
@@ -38,14 +38,14 @@ FSharp.Control `WebExtensions` module: extends type `System.Net.WebClient` ([doc
 → Waits for the calculation to end, blocking the calling thread! (≠ `await` C♯) ⚠️
 
 `Async.Start(operation: Async<unit>, ?cancellationToken) : unit`\
-→ Perform the operation in the background _(without blocking the calling thread)_\
+→ Performs the operation in the background _(without blocking the calling thread)_\
 ⚠️ If an exception occurs, it is "swallowed"!
 
 `Async.StartImmediate(calc: Async<'T>, ?cancellationToken) : unit`\
-→ Perform the calculation in the calling thread!
+→ Performs the calculation in the calling thread!
 
 `Async.StartWithContinuations(calc, continuations..., ?cancellationToken)`\
-→ Ditto `Async.RunSynchronously` ⚠️ ... with 3 _callbacks_ of continuation:\
+→ Like `Async.RunSynchronously` ⚠️ ... with 3 continuation _callbacks_:\
 → on success ✅, exception 💥 and cancellation 🛑
 
 ## `async { expression }` block
@@ -59,8 +59,8 @@ Syntax for sequentially writing an asynchronous calculation\
 
 * `return` → final value of calculation • `unit` if omitted
 * `let!` → access to the result of an async sub-calculation _(≃ `await` in C♯)_
-* `use!` → ditto `use` _(management of an `IDisposable`)_ + `let!`
-* `do!` → ditto `let!` for async calculation without return (`Async<unit>`)
+* `use!` → like `use` _(management of an `IDisposable`)_ + `let!`
+* `do!` → like `let!` for async calculation without return (`Async<unit>`)
 
 ```fsharp
 let repeat (computeAsync: int -> Async<string>) times = async {
@@ -277,7 +277,7 @@ let sleepLoop = async {
     let log message = printfn $"""   [{stopwatch.Elapsed.ToString("s\.fff")}] {message}"""
 
     use! __ = Async.OnCancel (fun () ->
-        log $"  Cancelled ❌")
+        log "  Cancelled ❌")
 
     for i in [ 1..5 ] do
         log $"Step #{i}..."
