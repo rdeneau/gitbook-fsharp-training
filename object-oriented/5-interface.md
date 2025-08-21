@@ -14,7 +14,7 @@ type [accessibility-modifier] interface-name =
     abstract memberN : [ argument-typesN -> ] return-typeN
 ```
 
-* Interface name begins with `I` to follow .NET convention
+* Interface name begins with `I` to follow the .NET convention
 * Arguments can be named _(without parentheses otherwise 💥)_
 
 ```fsharp
@@ -105,7 +105,7 @@ let s = (o :> IValue<string>).Get() // "hello"
 
 ## Inheritance
 
-Defined with `inherit` keyword
+Defined with the `inherit` keyword
 
 ```fsharp
 type A(x: int) =

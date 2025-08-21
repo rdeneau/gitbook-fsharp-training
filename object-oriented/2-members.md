@@ -23,7 +23,7 @@ Instance member:
 
 ☝ `member-name` in PascalCase _(.NET convention)_
 
-☝ No `protected` member !
+☝ No `protected` member!
 
 ## _Self-identifier_
 
@@ -46,7 +46,7 @@ Calling a static member\
 Calling an instance member inside the type\
 → Prefix with _self-identifier_: `self-identifier.instance-member-name`
 
-Call an instance member from outside the type\
+Calling an instance member from outside the type\
 → Prefix with instance-name: `instance-name.instance-member-name`
 
 ## Method
@@ -94,13 +94,13 @@ type SpeedingTicket() =
         if x.SpeedExcess(limit = 55, speed = 70) < 20 then 50.0 else 100.0
 ```
 
-Useful for :
+Useful to:
 
 * Clarify a usage for the reader or compiler (in case of overloads)
 * Choose the order of arguments
 * specify only certain arguments, the others being optional
 
-☝ Arguments _after a named argument_ are necessarily named too.
+☝ Arguments _after a named argument_ must be named too.
 
 ## Optional parameters
 
@@ -219,8 +219,8 @@ let logger = Logger()
 
 ## Parameter array
 
-Allows you to specify a variable number of parameters of the same type\
-→ Via `System.ParamArray` attribute on **last** method argument
+Allows specifying a variable number of parameters of the same type\
+→ Via `System.ParamArray` attribute on the **last** method argument
 
 ```fsharp
 open System
@@ -246,7 +246,7 @@ let x = MathHelper.Max(1, 2, 4, 5)  // 5
 
 ```fsharp
   match System.Int32.TryParse text with
-  | true, i  -> printf $"It's the number {value}."
+  | true, i  -> printf $"It's the number {i}."
   | false, _ -> printf $"{text} is not a number."
 ```
 
@@ -263,7 +263,7 @@ let peter = friendsLocation.TryGetValue (0,0)
 // 💥 Error FS0001: expression supposed to have type `int * int`, not `int`.
 ```
 
-💡 **Explanations:** `TryGetValue(0,0)` = method call in tuplified mode\
+💡 **Explanation:** `TryGetValue(0,0)` = method call in tuplified mode\
 → Specifies 2 parameters, `0` and `0`.\
 → `0` is an `int` whereas we expect an `int * int` tuple!
 
@@ -302,7 +302,7 @@ let peter = friendsLocation.TryGetValue (0,0)
 | Feature                   | Function      | Static method   | Instance method    |
 | ------------------------- | ------------- | --------------- | ------------------ |
 | Naming                    | camelCase     | PascalCase      | PascalCase         |
-| Support of `inline`       | ✅ yes         | ✅ yes           | ✅ yes              |
+| Support for `inline`      | ✅ yes         | ✅ yes           | ✅ yes              |
 | Recursive                 | ✅ if `rec`    | ✅ yes           | ✅ yes              |
 | Inference of `x` in       | `f x` → ✅ yes | `K.M x` → ✅ yes | `x.M()` → ❌ no     |
 | Can be passed as argument | ✅ yes : `g f` | ✅ yes : `g T.M` | ❌ no : `g x.M` 1️⃣ |
@@ -444,9 +444,9 @@ let salut =
 ## Indexed properties
 
 Allows access by index, as if the class were an array: `instance[index]`\
-→ Interesting for an ordered collection, to hide the implementation
+→ Useful for an ordered collection, to hide the implementation
 
-Set up by declaring member `Item`
+Set up by declaring the member `Item`
 
 ```fsharp
 member self-identifier.Item

@@ -2,7 +2,7 @@
 
 In F♯, object-oriented is sometimes more practical than functional style.
 
-Object-oriented bricks in F♯:
+Object-oriented building blocks in F♯:
 
 1. Members
    * Methods, properties, operators
@@ -52,8 +52,8 @@ Inheritance is an object-oriented technique. Still, F♯ supports it, with just 
 
 In fact, there are several polymorphisms. The main ones are:
 
-1. By sub-typing: the one classically evoked with object-orientation\
-   → Basic type defining abstract or virtual members\
+1. By sub-typing: the one classically associated with object-orientation\
+   → Base type defining abstract or virtual members\
    → Subtypes inheriting and implementing these members
 2. Ad hoc/overloading → overloading of members with the same name
 3. Parametric → generic in C♯, Java, TypeScript

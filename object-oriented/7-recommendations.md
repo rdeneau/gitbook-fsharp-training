@@ -6,7 +6,7 @@ description: Recommendations for object-oriented programming
 
 ## No object orientation where F♯ is good
 
-Inference works better with `function (object)` than `object.Member`
+Type inference works better with `function object` than `object.Member`
 
 ### Simple object hierarchy
 
@@ -38,7 +38,7 @@ This is particularly true for recursive types. You can define a `fold` function 
 1. Encapsulate mutable state → in a class
 2. Group features → in an interface
 3. Expressive, user-friendly API → tuplified methods
-4. API F♯ consumed in C♯ → member extensions
+4. F♯ API consumed in C♯ → member extensions
 5. Dependency management → injection into the constructor
 6. Tackle higher-order functions limits
 
@@ -248,7 +248,7 @@ _Reader_ monad
 
 ### 2. Lambda is a **command** `'T -> unit`
 
-✅ Prefer to trigger an side-effect via an object\
+✅ Prefer to trigger a side-effect via an object\
 → `type ICommand = abstract Execute : 'T -> unit`
 
 ### 3. Lambda: "really" generic!?

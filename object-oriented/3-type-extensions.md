@@ -6,7 +6,7 @@ Members of a type defined outside its main `type` block.
 
 Each of these members is called **augmentation** or **extension**.
 
-3 categories of extension :
+3 categories of extensions:
 
 * Intrinsic extension
 * Optional extension
@@ -21,12 +21,12 @@ Each of these members is called **augmentation** or **extension**.
 
 _How to implement it following top-down declarations?_
 
-**1. Implement in type**, Redirect module functions to type members\
+**1. Implement in type**: Redirect module functions to type members\
 → More straightforward
 
 **2. Intrinsic extensions:**\
 → Declare type "naked", Implement in module, Augment type after\
-→ Favor FP style, Transparent for Interop
+→ Favors FP style, Transparent for Interop
 
 **Example:**
 
@@ -50,7 +50,7 @@ type Variant with
 
 ## Optional extension
 
-Extension defined outside the type module/namespace/assembly
+Extension defined outside the type's module/namespace/assembly
 
 **Use cases:**
 
@@ -153,7 +153,7 @@ type System.Int32 with
 
 ## Type extension _vs_ Generic type constraints
 
-Extension allowed on generic type except when constraints differ:
+Extensions allowed on generic type except when constraints differ:
 
 ```fsharp
 open System.Collections.Generic
@@ -174,7 +174,7 @@ type IEnumerable<'T> with
 Static method:
 
 * Decorated with `[<Extension>]`
-* In F♯ < 8.0: Defined in class decorated with `[<Extension>]`
+* In F♯ < 8.0: Defined in a class decorated with `[<Extension>]`
 * Type of 1st argument = extended type _(`IEnumerable<'T>` below)_
 
 **Example:**
@@ -257,5 +257,5 @@ Type extensions do not support (sub-typing) polymorphism:
 | Feature             | Multi-files | Compiled into the type | Any type             |
 | ------------------- | ----------- | ---------------------- | -------------------- |
 | C♯ partial class    | ✅ Yes       | ✅ Yes                  | Only `partial class` |
-| Extension intrinsic | ❌ No        | ✅ Yes                  | ✅ Yes                |
-| Extension optional  | ✅ Yes       | ❌ No                   | ✅ Yes                |
+| Intrinsic extension | ❌ No        | ✅ Yes                  | ✅ Yes                |
+| Optional extension  | ✅ Yes       | ❌ No                   | ✅ Yes                |

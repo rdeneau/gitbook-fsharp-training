@@ -102,7 +102,7 @@ We can use `do` bindings in the class definition to trigger side-effects _(like 
 type K() =
     static let mutable count = 0
 
-    // do binding exécuté à chaque construction
+    // do executed for each instance during construction
     do
         count <- count + 1
 
@@ -199,10 +199,10 @@ Annotated with `[<AbstractClass>]`
 One of the members is **abstract**:
 
 1. Declared with the `abstract` keyword
-2. No default implementation (with `default` keyword) \
+2. No default implementation (with the `default` keyword) \
    &#xNAN;_(Otherwise the member is virtual)_
 
-Inheritance with `inherit` keyword\
+Inheritance with the `inherit` keyword\
 → Followed by a call to the base class constructor
 
 **Example:**

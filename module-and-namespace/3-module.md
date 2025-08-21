@@ -21,7 +21,7 @@ Full name (`[namespace.]module-name`) must be unique\
 ## Top-level module
 
 * Only one top-level module per file\
-  → Declared on very top of the file
+  → Declared at the very top of the file
 * Can (should?) be qualified\
   → Attached to a parent namespace _(already declared or not)_
 * Contains all the rest of the file\
@@ -46,7 +46,7 @@ Syntax similar to `let`
 
 ## Content
 
-A module, _local as top-level_, can contain:
+A module, _local or top-level_, can contain:
 
 * local types and sub-modules
 * values, functions
@@ -121,11 +121,11 @@ Same principle as recursive namespace\
 ### `[<RequireQualifiedAccess>]`
 
 Prevents the module import hence any unqualified use of its elements\
-→ 💡 Useful for avoiding _shadowing_ for common names: `add`, `parse`...
+→ 💡 Useful for avoiding _shadowing_ of common names: `add`, `parse`...
 
 ### `[<AutoOpen>]`
 
-Import module at same time as the parent namespace/module\
+Import module at the same time as the parent namespace/module\
 → 💡 Handy for "mounting" values/functions at namespace level\
 → ⚠️ Pollutes the current _scope_
 
@@ -154,7 +154,7 @@ Let's consider a `Cart` type with its `Cart` companion module.
 * `addItemToCart item cart`:\
   → function name is _self-explicit_\
   → `[<AutoOpen>]` interesting to prevent `Cart.addItemToCart`\
-  → Works only if `Cart` parent _(if any)_ is not `RequireQualifiedAccess` and opened
+  → Works only if `Cart` parent _(if any)_ is not `RequireQualifiedAccess` and is opened
 
 If the `Cart` module contains other functions like this, it's probably better to apply the same naming convention to all of them.
 
@@ -185,7 +185,7 @@ person |> Person.fullName // "John Doe"
 
 ### Multi-type module
 
-Contains several small types + related functions _(eventually)_
+Contains several small types + related functions _(optionally)_
 
 ```fsharp
 module Common.Errors
@@ -252,7 +252,7 @@ open System
 let x = Math.Max(123., 456.)
 ```
 
-☝️ In general, use case only recommended for classes designed for this usage.
+☝️ In general, only recommended for classes designed for this usage.
 
 ### **2.** Cherry-pick imports
 
@@ -267,5 +267,5 @@ module Domain.Sales =
 // Other/Module.fs ---
 open type Sales.Balance
 
-let myBalance = Remaining of 500. // myBalance is of type Balance.
+let myBalance = Remaining 500.00 // myBalance is of type Balance.
 ```
