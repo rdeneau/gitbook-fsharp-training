@@ -10,7 +10,7 @@
 > 2. Depending on the kind of computation expression, they can be thought of as a way to express monads, monoids, monad transformers, and applicatives.
 
 {% hint style="info" %}
-## Note
+### Note
 
 > monads, monoids, monad transformers, and applicatives
 
@@ -43,7 +43,7 @@ These keywords hide a ❝ **machinery** ❞ to perform background **specific** e
 A _computation expression_ relies on an object called _Builder_.
 
 {% hint style="warning" %}
-### Warning
+#### Warning
 
 This is not exactly the _Builder_ OO design pattern.
 {% endhint %}
@@ -170,8 +170,7 @@ Need: successively try to find in maps by identifiers\
 
 #### Implementation #1: based on match expressions
 
-TODO: add line number
-
+{% code lineNumbers="true" %}
 ```fsharp
 match policyCodesByRoomRate.TryFind(roomRateId) with
 | None -> None
@@ -180,6 +179,7 @@ match policyCodesByRoomRate.TryFind(roomRateId) with
     | None -> None                                    // ⚠️ Duplicates line 2
     | Some policyType -> Some(buildResult policyCode policyType)
 ```
+{% endcode %}
 
 #### Implementation #2: based on `Option` module helpers
 
@@ -193,8 +193,8 @@ policyCodesByRoomRate.TryFind(roomRateId)
 
 👉 Issues ⚠️:
 
-- Nesting too
-- Even more difficult to read because of parentheses
+* Nesting too
+* Even more difficult to read because of parentheses
 
 #### Implementation #3: based on the `option {}` CE
 
@@ -218,7 +218,7 @@ option {
 
 A monoidal CE can be identified by the usage of `yield` and `yield!` keywords.
 
-**Relationship with the monoid:** \
+**Relationship with the monoid:**\
 → Hidden in the builder methods:
 
 * `+` operation → `Combine` method
@@ -226,10 +226,10 @@ A monoidal CE can be identified by the usage of `yield` and `yield!` keywords.
 
 ### CE monoidal builder method signatures
 
-Like we did for functional patterns, we use the generic type notation: \
+Like we did for functional patterns, we use the generic type notation: \\
 
-- `M<T>`: type returned by the CE
-- `Delayed<T>`: presented later 📍
+* `M<T>`: type returned by the CE
+* `Delayed<T>`: presented later 📍
 
 ```fsharp
 // Method     | Signature                           | CE syntax supported
@@ -252,12 +252,12 @@ Like we did for functional patterns, we use the generic type notation: \
 
 #### Comprehension definition
 
-> It is the concise and declarative syntax to build collections with control flow keywords `if`, `for`, `while`... and ranges `start..end`.
+> It is the concise and declarative syntax to build collections with control flow keywords `if`, `for`, `while`... and ranges `start..end`.
 
 #### Comparison
 
-- Similar syntax from caller perspective
-- Distinct overlapping concepts
+* Similar syntax from caller perspective
+* Distinct overlapping concepts
 
 #### Minimal set of methods expected for each
 
@@ -287,11 +287,13 @@ let factorialOf5 = multiplication { for i in 2..5 -> i } // 2 * 3 * 4 * 5
 ```
 
 {% hint style="success" %}
-## Exercise
+### Exercise
 
-- Copy this snippet in vs code
-- Comment out builder methods (add a `let _ = ()` if necessary)
-- Let the compiler errors in `shouldBe10` and `factorialOf5` guides you to ad the relevant methods
+* Copy this snippet in vs code
+* Comment out builder methods
+  * To start with an empty builder, add this line `let _ = ()` in the body.
+  * After adding the first method, this line can be removed.
+* Let the compiler errors in `shouldBe10` and `factorialOf5` guides you to ad the relevant methods.
 {% endhint %}
 
 Desugared `multiplication { yield 5; yield 2 }`:
@@ -336,8 +338,8 @@ let factorialOf5 =
 
 `Delayed<T>` represents a delayed computation and is used in these methods:
 
-- `Delay` returns this type, hence defines it for the CE
-- `Combine`, `Run`, `While` and `TryFinally` used it as input parameter
+* `Delay` returns this type, hence defines it for the CE
+* `Combine`, `Run`, `While` and `TryFinally` used it as input parameter
 
 ```fsharp
  Delay      : thunk: (unit -> M<T>) -> Delayed<T>
@@ -347,10 +349,10 @@ let factorialOf5 =
  TryFinally : Delayed<T> * finalizer: (unit -> unit) -> M<T>
 ```
 
-- `Delay` is called each time converting from `M<T>` to `Delayed<T>` is needed
-- `Delayed<T>` is internal to the CE
-  - `Run` is required at the end to get back the `M<T>`...
-  - ... **only** when `Delayed<T>` ≠ `M<T>`, otherwise it can be omitted
+* `Delay` is called each time converting from `M<T>` to `Delayed<T>` is needed
+* `Delayed<T>` is internal to the CE
+  * `Run` is required at the end to get back the `M<T>`...
+  * ... **only** when `Delayed<T>` ≠ `M<T>`, otherwise it can be omitted
 
 👉 Enables to implement **laziness and short-circuiting** at the CE level.
 
@@ -373,7 +375,7 @@ type MultiplicationBuilder() =
 ```
 
 | Difference              | Eager   | Lazy                           |
-|-------------------------|---------|--------------------------------|
+| ----------------------- | ------- | ------------------------------ |
 | `Delay` return type     | `int`   | `unit -> int`                  |
 | `Run`                   | Omitted | Required to get back an `int`  |
 | `Combine` 2nd parameter | `int`   | `unit -> int`                  |
@@ -383,11 +385,11 @@ type MultiplicationBuilder() =
 
 ### CE monoidal kinds
 
-With `multiplication {}`, we've seen a first kind of monoidal CE: \
+With `multiplication {}`, we've seen a first kind of monoidal CE:\
 → To reduce multiple yielded values into 1.
 
-Second kind of monoidal CE: \
-→ To aggregate multiple yielded values into a collection. \
+Second kind of monoidal CE:\
+→ To aggregate multiple yielded values into a collection.\
 → Example: `seq {}` returns a `'t seq`.
 
 ### CE monoidal to generate a collection
@@ -407,14 +409,14 @@ let list = ListBuilder()
 ```
 
 {% hint style="info" %}
-## Notes 💡
+### Notes 💡
 
-- `M<T>` is `'t list` → type returned by `Yield` and `Zero`
-- `For` uses an intermediary sequence to collect the values returned by `f`.
+* `M<T>` is `'t list` → type returned by `Yield` and `Zero`
+* `For` uses an intermediary sequence to collect the values returned by `f`.
 {% endhint %}
 
 Let's test the CE to generate the list `[begin; 16; 9; 4; 1; 2; 4; 6; 8; end]`\
-&#xNAN;_(Desugared code simplified)_
+\&#xNAN;_(Desugared code simplified)_
 
 <figure><img src="../.gitbook/assets/list-ce-desugared.png" alt=""><figcaption></figcaption></figure>
 
@@ -430,8 +432,8 @@ Comparison with the same expression in a list comprehension:
 | Method    | `list { expr }`              | `[ expr ]`      |
 | --------- | ---------------------------- | --------------- |
 | `Combine` | `xs @ ys => List.append`     | `Seq.append`    |
-| `Yield`   | `[x]     => List.singleton`  | `Seq.singleton` |
-| `Zero`    | `[]      => List.empty`      | `Seq.empty`     |
+| `Yield`   | `[x] => List.singleton`      | `Seq.singleton` |
+| `Zero`    | `[] => List.empty`           | `Seq.empty`     |
 | `For`     | `Seq.collect` & `Seq.toList` | `Seq.collect`   |
 
 ## CE monadic
@@ -470,7 +472,7 @@ Behind the scene, builders of these CE should/can implement these methods:
 
 #### `For` and `While`
 
-<table><thead><tr><th width="99">Method</th><th width="147">CE</th><th>Signature</th></tr></thead><tbody><tr><td><code>For</code></td><td>Monoidal</td><td><code>seq&#x3C;T> * (T -> M&#x3C;U>)    -> M&#x3C;U> or seq&#x3C;M&#x3C;U>></code></td></tr><tr><td></td><td>Monadic</td><td><code>seq&#x3C;T> * (T -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr><tr><td><code>While</code></td><td>Monoidal</td><td><code>(unit -> bool) * Delayed&#x3C;T>        -> M&#x3C;T></code></td></tr><tr><td></td><td>Monadic</td><td><code>(unit -> bool) * (unit -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr></tbody></table>
+<table><thead><tr><th width="99">Method</th><th width="147">CE</th><th>Signature</th></tr></thead><tbody><tr><td><code>For</code></td><td>Monoidal</td><td><code>seq&#x3C;T> * (T -> M&#x3C;U>) -> M&#x3C;U> or seq&#x3C;M&#x3C;U>></code></td></tr><tr><td></td><td>Monadic</td><td><code>seq&#x3C;T> * (T -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr><tr><td><code>While</code></td><td>Monoidal</td><td><code>(unit -> bool) * Delayed&#x3C;T> -> M&#x3C;T></code></td></tr><tr><td></td><td>Monadic</td><td><code>(unit -> bool) * (unit -> M&#x3C;unit>) -> M&#x3C;unit></code></td></tr></tbody></table>
 
 👉 Different use cases:
 
@@ -622,8 +624,8 @@ let validation = ValidationBuilder()
 
 **Usage:** validate a customer
 
-- Name not null or empty
-- Height strictly positive
+* Name not null or empty
+* Height strictly positive
 
 ```fsharp
 type [<Measure>] cm
@@ -692,10 +694,10 @@ validation {                                ;  validation.Run(
 
 In FsToolkit `validation {}`, there are a couple of `Source` defined:
 
-- The main definition is the `id` function.
-- Another overload is interesting: it converts a `Result<'a, 'e>` into a `Validation<'a, 'e>`. As it's defined as an extension method, it has a lower priority for the compiler, leading to a better type inference. Otherwise, we would need to add type annotations.
+* The main definition is the `id` function.
+* Another overload is interesting: it converts a `Result<'a, 'e>` into a `Validation<'a, 'e>`. As it's defined as an extension method, it has a lower priority for the compiler, leading to a better type inference. Otherwise, we would need to add type annotations.
 
-☝️ **Note:** `Source` documentation is scarce. The most valuable information comes from a [question on stackoverflow](https://stackoverflow.com/a/35301315/8634147) mentioned in FsToolkit source code!
+☝️ **Note:** `Source` documentation is scarce. The most valuable information comes from a [question on stackoverflow](https://stackoverflow.com/a/35301315/8634147) mentioned in FsToolkit source code!
 
 ## Creating CEs
 
@@ -795,7 +797,7 @@ let listSeq = ListSeqBuilder()
 ### Builder methods without type
 
 {% hint style="success" %}
-### Another trick regarding types
+#### Another trick regarding types
 
 As a F# developer in a .NET team using only C#, feel free to use these materials (both git-book and slides) to train your team.
 
@@ -864,16 +866,15 @@ activity {
 
 What: builder methods annotated with `[<CustomOperation("myOperation")>]`
 
-Use cases: add new keywords, build a custom DSL
-→ Example: the `query` core CE supports `where` and `select` keywords like LINQ
+Use cases: add new keywords, build a custom DSL → Example: the `query` core CE supports `where` and `select` keywords like LINQ
 
 ⚠️ **Warning:** you may need additional things that are not well documented:
 
-- Additional properties for the `CustomOperation` attribute:
-  - `AllowIntoPattern`, `MaintainsVariableSpace`
-  - `IsLikeJoin`, `IsLikeGroupJoin`, `JoinConditionWord`
-  - `IsLikeZip`...
-- Additional attributes on the method parameters, like `[<ProjectionParameter>]`
+* Additional properties for the `CustomOperation` attribute:
+  * `AllowIntoPattern`, `MaintainsVariableSpace`
+  * `IsLikeJoin`, `IsLikeGroupJoin`, `JoinConditionWord`
+  * `IsLikeZip`...
+* Additional attributes on the method parameters, like `[<ProjectionParameter>]`
 
 🔗 [Computation Expressions Workshop: 7 - Query Expressions | GitHub](https://github.com/panesofglass/computation-expressions-workshop/blob/master/exercises/07_Queries.pdf)
 
@@ -894,19 +895,19 @@ Use cases: add new keywords, build a custom DSL
 
 ### CE creation tips 💡
 
-- Get inspired by existing codebases that provide CEs - examples:
-  - FSharpPlus → `monad`
-  - FsToolkit.ErrorHandling → `option`, `result`, `validation`
-  - [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
-  - [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
-  - [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
-- Overload methods to support more use cases like different input types
-  - `Async<Result<_,_>>` + `Async<_>` + `Result<_,_>`
-  - `Option<_>` and `Nullable<_>`
+* Get inspired by existing codebases that provide CEs - examples:
+  * FSharpPlus → `monad`
+  * FsToolkit.ErrorHandling → `option`, `result`, `validation`
+  * [Expecto](https://github.com/haf/expecto): Testing library (`test "..." {...}`)
+  * [Farmer](https://github.com/compositionalit/farmer): Infra as code for Azure (`storageAccount {...}`)
+  * [Saturn](https://saturnframework.org/): Web framework on top of ASP.NET Core (`application {...}`)
+* Overload methods to support more use cases like different input types
+  * `Async<Result<_,_>>` + `Async<_>` + `Result<_,_>`
+  * `Option<_>` and `Nullable<_>`
 
 ### CE benefits ✅
 
-* **Increased Readability**: imperative-like code, DSL *(Domain Specific Language)*
+* **Increased Readability**: imperative-like code, DSL _(Domain Specific Language)_
 * **Reduced Boilerplate**: hides a "machinery"
 * **Extensibility**: we can write our own "builder" for specific logic
 
@@ -1004,7 +1005,7 @@ Use cases: add new keywords, build a custom DSL
 
 **A.** `M<T> -> M<T>` is the typical signature of `ReturnFrom` and `YieldFrom` methods ✖️
 
-**B.** `T -> M<T>` is the typical  signature of `Return` and `Yield` methods ✖️
+**B.** `T -> M<T>` is the typical signature of `Return` and `Yield` methods ✖️
 
 **C.** `M<T> * (T -> M<U>) -> M<U>` is the typical signature of the `Bind` method ✅
 
