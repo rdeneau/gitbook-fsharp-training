@@ -31,7 +31,7 @@ graph LR
 ```
 
 {% hint style="warning" %}
-They are more functional patterns coming from category theory, but they are out of scope.
+There are more functional patterns coming from category theory, but they are out of scope.
 {% endhint %}
 
 ### F♯ hidden patterns
@@ -54,7 +54,7 @@ In F♯, the functional patterns consist of:
 * An eventual special instance of this type
 * Some laws constraining/shaping the whole
 
-The type is generally noted `M<'t>`, where `M` is a _generic type_ and `'t` its type parameter referring to the type of elements that can contained `M`.
+The type is generally noted `M<'T>`, where `M` is a _generic type_ and `'T` its type parameter referring to the type of elements that can be contained in `M`.
 
 ## Monoid
 
@@ -74,9 +74,9 @@ Etymology (Greek): `monos` _(single, unique)_ • `eidos` _(form, appearance)_
 `+` is associative\
 → `a + (b + c)` ≡ `(a + b) + c`
 
-#### 2. - **Identity Element**
+#### 2. **Identity Element**
 
-`e` is combinable with any instance `a` of `T` without effects\
+`e` is combinable with any instance `a` of `T` without effect\
 → `a + e` ≡ `e + a` ≡ `a`
 
 ### Monoid examples
@@ -159,8 +159,8 @@ mapping `f` and then mapping `g` over the result.\
 
 `bind` is associative.
 
-Given 2 monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>`\
-→ `(m |> bind f) |> bind g` ≡ `m |> bind (fun x -> f x |> bind g)`
+Given two monadic functions `f: 'a -> M<'b>` and `g: 'b -> M<'c>`\
+→ `(m |> bind f) |> bind g` ≡ `m |> bind (f >> bind g)`
 
 💡 `bind` allows us to chain monadic functions, like the `|>` for regular functions
 
@@ -222,12 +222,12 @@ Monads purposes:
 * Maintain purity of the surrounding functional code,
 * Provide a controlled environment in which effects can happen.
 
-Dealing with a computation has an effect using monads means:
+Dealing with a computation that has an effect using monads means:
 
 1. **Wrapping:** we don't get a value directly, we get a monadic value that represents the computation and its associated effect.
 2. **Sequencing:** `bind` (or `let!` in a monadic CE) allows you to chain together effectful computations in a sequential order.
 3. **Returning:** `return` wraps a **pure** value → computation w/o effects.\
-   👉 The same monadic sequence can mix pure and effectful computations.
+   👉 A monadic sequence can mix pure and effectful computations.
 
 From the _caller_ perspective, a function returning a monadic value is **pure.**\
 → Encapsulated effects only "happen" when monadic value is **evaluated.**
@@ -292,7 +292,7 @@ Same as the functor identity law applied to applicative:
 
 #### Law 3 - **Interchange**
 
-We can provide first the wrapped function `Ff` or the value `x`, wrapped directly or captured in `(|>) x` _(partial application of the `|>` operator used as function)_
+We can provide the wrapped function `Ff` first or the value `x`, wrapped directly or captured in `(|>) x` _(partial application of the `|>` operator used as function)_
 
 `Ff <*> (pure x)` ≡ `pure ((|>) x) <*> Ff`
 
@@ -455,8 +455,8 @@ let apply (rf: Result<'a -> 'b, 'err list>) (result: Result<'a, 'err list>) : Re
 
 ☝️ **Notes:**
 
-* Errors are either accumulated _(L6)_ or propagated _(L4, L5)_.
-* At lines L4, L6, `rf` is no longer a wrapped function but an `Error`. It happens after a first `apply` when there is an `Error` instead of a wrapped value _(L5, L6)_.
+* Errors are either accumulated _(line 6)_ or propagated _(lines 4, 5)_.
+* At lines 4 and 6, `rf` is no longer a wrapped function but an `Error`. It happens after a first `apply` when there is an `Error` instead of a wrapped value _(lines 5, 6)_.
 
 💡 Handy for validating inputs and reporting all errors to the user.\
 🔗 [Validation with F# 5 and FsToolkit](https://www.compositional-it.com/news-blog/validation-with-f-5-and-fstoolkit/), Compositional IT
@@ -481,9 +481,9 @@ In F♯, these functional patterns are applied under the hood:
 
 Meaning: what about F♯ codebases full of `monad`, `Reader`, `State`...?
 
-* Generally **not recommmended**, at least by Don Syme
+* Generally **not recommended**, at least by Don Syme
   * Indeed, the F♯ language is not designed that way.
-  * Albeit, libraries such as _FSharpPlus_ offer such extensions to F♯. 📍
+  * Although, libraries such as _FSharpPlus_ offer such extensions to F#. 📍
 * To be evaluated for each team: idiomatic _vs_ consistency ⚖️\
   → Examples:
   * **Idiomatic F♯** recommended in .NET teams using both C♯ and F♯ code
