@@ -226,7 +226,7 @@ A monoidal CE can be identified by the usage of `yield` and `yield!` keywords.
 
 ### CE monoidal builder method signatures
 
-Like we did for functional patterns, we use the generic type notation: \\
+Like we did for functional patterns, we use the generic type notation:
 
 * `M<T>`: type returned by the CE
 * `Delayed<T>`: presented later 📍
@@ -798,8 +798,6 @@ let listSeq = ListSeqBuilder()
 
 {% hint style="success" %}
 #### Another trick regarding types
-
-As a F# developer in a .NET team using only C#, feel free to use these materials (both git-book and slides) to train your team.
 
 💡 Any type can be turned into a CE by adding builder methods as extensions.
 {% endhint %}
