@@ -76,10 +76,11 @@ As a F# developer in a .NET team using only C#, feel free to use these materials
 
 ## Changelog
 
-### 2025-08-18
+### 2025-08-21
 
 * Improve [4-functional-pattern.md](types-monadic/4-functional-pattern.md "mention")
 * Improve [5-computation-expressions.md](types-monadic/5-computation-expressions.md "mention")
+* Fix a lot of typos (with the help of Copilot)
 
 ### 2025-05-13
 

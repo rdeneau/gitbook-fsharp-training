@@ -48,7 +48,7 @@ type ComplexNumber =
     | Polar of Magnitude: float * Phase: float
 ```
 
-## Instanciation
+## Instantiation
 
 _Case_ ≃ **constructor**\
 → Function called with any _case_ data
@@ -120,7 +120,7 @@ let fetchOrder (OrderId orderId) =    // 💡 Direct deconstruction without 'mat
 
 * **Benefits** 👍
   * Ensures _type safety_ unlike simple type alias\
-    &#x20;    → Impossible to pass a `CustomerId` to a function waiting for an `OrderId`
+    → Impossible to pass a `CustomerId` to a function waiting for an `OrderId`
   * Prevents _Primitive Obsession_ at a minimal cost
 * **Trap** ⚠️
   * `OrderId orderId` looks like C# parameter definition

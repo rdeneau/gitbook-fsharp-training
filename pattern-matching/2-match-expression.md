@@ -127,7 +127,7 @@ fun value ->
 
 **Benefits:**
 
-1. In a pipeline
+1. In pipelines
 
 ```fsharp
 value
@@ -137,7 +137,7 @@ value
     | false -> "ko"
 ```
 
-2. Terser function
+2. More concise function
 
 ```fsharp
 let is123 = function

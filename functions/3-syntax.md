@@ -33,8 +33,8 @@ Syntax: `fun parameter1 parameter2 etc. -> expression`
 
 ☝ **Note:**
 
-* `fun` keyword mandatory
-* Thin arrow `->` ≠ Bold arrow `=>` _(C♯, Js)_
+* `fun` keyword is mandatory
+* Thin arrow `->` ≠ Bold arrow `=>` _(C♯, JS)_
 
 ### Lambda: usage examples
 

@@ -9,7 +9,7 @@ Alternative to tuples when they are imprecise, for instance `float * float`:
 * Point? Coordinates? Vector?
 * Real and imaginary parts of a complex number?
 
-Eleviate the doubt by naming both the type and its elements:
+Alleviate the doubt by naming both the type and its elements:
 
 ```fsharp
 type Point = { X: float; Y: float }
@@ -148,7 +148,7 @@ let pointKo = { Y = 2.0 }           // 💥 Error FS0764
 //            ~~~~~~~~~~~ FS0764: No assignment given for field 'X' of type 'Point'
 ```
 
-⚠️ **Trap:** differences declaration / instanciation\
+⚠️ **Trap:** differences declaration / instantiation\
 &#x20;    → `:` for field type in record declaration\
 &#x20;    → `=` for field value in record expression
 
@@ -204,7 +204,7 @@ let departmentKo zip =
 
 ## Pattern matching
 
-Let's use an example: `inhabitantOf` is a function giving the inhabitants name _(in French)_ at a given address _(in France)_
+Let's use an example: `inhabitantOf` is a function giving the inhabitant's name _(in French)_ at a given address _(in France)_
 
 ```fsharp
 type Address = { Street: string; City: string; Zip: string }

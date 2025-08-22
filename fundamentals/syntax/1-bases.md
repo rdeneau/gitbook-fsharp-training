@@ -187,7 +187,7 @@ int "2";;             // val it : int = 2
 ```fsharp
 let name = "Bob"              // val name : string = "Bob"
 
-// String formatting (available from the get go)
+// String formatting (available from the get-go)
 let name2 = sprintf "%s Marley" name  // val name2 : string = "Bob Marley"
 
 // String interpolation (F♯ 5)

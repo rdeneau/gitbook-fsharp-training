@@ -149,11 +149,11 @@ public static class A
 
 👉 **Universal signature** of a function in F♯: `'T -> 'U`.
 
-## Parameters order
+## Parameter order
 
 Between C♯ and F♯, the parameter concerning the main object (the `this` in case of a method) is not placed in the same place:
 
-* In a method extension C♯, the `this` object is the 1st parameter.
+* In a method extension C♯, the `this` object is the first parameter.
   * E.g. `items.Select(x => x)`
 * In F♯, the main object is _rather_ the **last parameter**:\
   &#xNAN;_(it's called the **data-last style**)_
@@ -166,7 +166,7 @@ The _data-last_ style favors :
 * Composition of partially applied functions up to param “_data_”.
   * `(List.map square) >> List.sum`
 
-⚠️ There can be some friction .NET/BCL methods because the BCL is also _data-first_ driven. The solution is to wrap the method in a new curried function having parameters sorted in an order more F♯ piping friendly.
+⚠️ There can be some friction with .NET BCL methods because the BCL is _data-first_ driven. The solution is to wrap the method in a new curried function having parameters sorted in an order more F♯ piping friendly.
 
 ```fsharp
 let startsWith (prefix: string) (value: string) =

@@ -97,13 +97,13 @@ Resulting JSON:
 💡 **Solution:** Define an anonymous record as "DTO" to serialize a _customer_.
 
 ```fsharp
-let serialisable customer =
+let serializable customer =
     let (CustomerId customerId) = customer.Id
     {| customer with
          Id = customerId
          Title = customer.Title |> Option.toObj |}
 
-serialize (serialisable { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Some "Mr" })
+serialize (serializable { Id = CustomerId 1; Age = 23; Name = "Abc"; Title = Some "Mr" })
 ```
 
 Resulting JSON:

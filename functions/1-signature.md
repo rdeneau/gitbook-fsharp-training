@@ -9,7 +9,7 @@
 * 2 types of delegates: `Action` vs `Func<T>`
 * 2 types od task: `Task` vs `Task<T>`
 
-### Exemple : `ITelemetry`
+### Example : `ITelemetry`
 
 ```csharp
 interface ITelemetry
@@ -45,7 +45,7 @@ Let's play with it...
 
 ### `ITelemetry` simplification
 
-First, let's define the following helpers to convert to `Void` :
+First, let's define the following helpers to convert to `Void`:
 
 ```csharp
 public static class VoidExtensions
@@ -58,7 +58,7 @@ public static class VoidExtensions
     }
 
     // Func<Task> -> Func<Task<Void>>
-    public async static Func<Task<Void>> AsAsyncFunc(this Func<Task> asyncAction)
+    public static async Func<Task<Void>> AsAsyncFunc(this Func<Task> asyncAction)
     {
         await asyncAction();
         return Void.Instance;

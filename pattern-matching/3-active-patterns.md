@@ -9,7 +9,7 @@ Impossibility of factoring the action of patterns with their own guard
 * `Pattern1 when Guard1 | Pattern2 when Guard2 -> do` 💥
 * `Pattern1 when Guard1 -> do | Pattern2 when Guard2 -> do` 😕
 
-Patterns are not 1st class citizens\
+Patterns are not first-class citizens\
 &#xNAN;_&#x45;x: a function can't return a pattern_\
 → Just a kind of syntactic sugar
 
@@ -25,14 +25,14 @@ Integrated into F♯ 2.0 (2010)
 💡 **Ideas**
 
 * Enable _pattern matching_ on other data structures
-* Make these new patterns 1st class citizens
+* Make these new patterns first-class citizens
 
 ## Syntax
 
 General syntax : `let (|Cases|) [arguments] valueToMatch = expression`
 
-1. **Function** with a special name defined in a "banana" `(|...|)`
-2. Set of 1..N **cases** in which to store `valueToMatch` parameter
+1. **Function** with a special name defined in "bananas" `(|...|)`
+2. Set of 1..N **cases** in which to store the `valueToMatch` parameter
 
 💡 Kind of _factory_ function of an "anonymous" **union** type, defined _inline_
 
@@ -118,9 +118,7 @@ let hasSquare square value =                        ┆  let hasSquare' square v
     | _ -> false                                    ┆      | _ -> false
 ```
 
-### Active pattern partiel
-
-Partial active pattern
+### Partial active pattern
 
 Syntax: `let (|Case|_|) value = Some Case | Some data | None`\
 → Returns the type `'T option` if _Case_ includes data, otherwise `unit option`\
@@ -139,7 +137,7 @@ let (|Float|_|) (x: string) = // (x: string) -> float option
 
 let detectNumber = function
     | Integer i -> $"Integer {i}"   // detectNumber "10"
-    | Float f -> $"Float {f}"       // detectNumber "1,1" = "Float 1,1" (en France)
+    | Float f -> $"Float {f}"       // detectNumber "1.1" = "Float 1.1" (US locale)
     | s -> $"NaN {s}"               // detectNumber "abc" = "NaN abc"
 ```
 
@@ -192,7 +190,7 @@ module Parsing =
 Syntax: `let (|Case|_|) ...arguments value = Some Case | Some data | None`
 
 **Example 1: leap year**\
-→ Year multiple of 4 but not 100 except 400
+→ Year divisible by 4 but not by 100, except if divisible by 400
 
 ```fsharp
 let (|DivisibleBy|_|) factor x =  // (factor: int) -> (x: int) -> unit option
@@ -428,10 +426,10 @@ let topAnimes =
     |> List.filter ``Is anime rated 10/10``
 ```
 
-## Active pattern: 1st class citizen
+## Active pattern: first-class citizen
 
 An active pattern ≃ function with metadata \
-→ 1st class citizen in F♯
+→ first-class citizen in F♯
 
 ```fsharp
 // 1. Return an active pattern from a function

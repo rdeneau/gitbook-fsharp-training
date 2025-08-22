@@ -95,7 +95,7 @@ Creation in the IDE or using the CLI `dotnet`:
 
 * `dotnet new -l` : list supported project types
 * `dotnet new console --language F♯ -o MyFSharpApp`
-  * Création of a console project named `MyFSharpApp`
+  * Creation of a console project named `MyFSharpApp`
   * `--language F♯` is key to specify the language, by default in C#
 * `dotnet build` : to build the project
 * `dotnet run` : to build the project and run the underlying executable

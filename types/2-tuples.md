@@ -152,7 +152,7 @@ let toList (x, y) = [x; y]
 
 <summary>Answer</summary>
 
-`x: 'a * y: 'a -> 'a list`
+`'a * 'a -> 'a list`
 
 * Returns a list with the 2 elements `x` and `y` of the pair
 * The elements are therefore of the same type

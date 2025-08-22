@@ -8,10 +8,10 @@ Patterns are rules for detecting input data structure.
 
 Used extensively in F♯
 
-* _match expression_, _let binding_, parameters deconstruction...
+* _match expression_, _let binding_, parameter deconstruction...
 * Very practical for manipulating F♯ algebraic types (tuple, record, union)
 * Composable: supports multiple nesting levels
-* Composed by logical AND/OR
+* Combined using logical AND/OR
 * Supports literals: `1.0`, `"test"`...
 
 ## Wildcard Pattern
@@ -78,7 +78,7 @@ let isInt (s: string) =
 ```fsharp
 let elementsAreEqualKo tuple =
     match tuple with
-    | x, x -> true  // 💥 Error FS0038: x' is linked twice in this model
+    | x, x -> true  // 💥 Error FS0038: 'x' is bound twice in this pattern
     | _, _ -> false
 ```
 
@@ -254,7 +254,7 @@ _Cons Pattern_ : `head :: tail` → decomposes a list _(with >= 1 element)_ into
 * _Head_: 1st element
 * _Tail_: another list with the remaining elements - can be empty
 
-_List Pattern_ : `[items]` → decompose a list into 0..N items
+_List Pattern_ : `[items]` → decomposes a list into 0..N items
 
 * `[]` : empty list
 * `[x]` : list with 1 element set in the `x` variable
@@ -290,7 +290,7 @@ let length vector =
     | [| x |] -> x
     | [| x; y |] -> sqrt (x*x + y*y)
     | [| x; y; z |] -> sqrt (x*x + y*y + z*z)
-    | _ -> invalidArg (nameof vector) $"Vector with more than 4 dimensions not supported"
+    | _ -> invalidArg (nameof vector) "Vector with more than 3 dimensions not supported"
 ```
 
 ☝ There is no pattern for sequences, as they are _"lazy "_.

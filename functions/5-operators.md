@@ -31,7 +31,7 @@ Binary operators, placed between a simple value and a function
 
 * Apply the value to the function = Pass value as argument
 * Avoid parentheses otherwise required for precedence reason
-* There are several _pipes_
+* There are several _pipes:_
   * _Pipe right_ `|>` : the usual _pipe_
   * _Pipe left_ `<|` a.k.a. reversed _pipe_
   * _Pipe right 2_ `||>`
@@ -41,8 +41,8 @@ Binary operators, placed between a simple value and a function
 
 Reverse the order between function and value: `val |> fn` ≡ `fn val`
 
-* Natural "subject-verb" order, as a method call of an object (`obj.M(x)`)
-* _Pipeline_: chain function calls, without intermediate variable
+* Natural "subject-verb" order, like a method call of an object (`obj.M(x)`)
+* _Pipeline_: chain function calls, without intermediate variables
 * Help the type inference - example:
 
 ```fsharp
@@ -144,7 +144,7 @@ let Odd = not << Even
 
 ## _Pipe_ `|>` or _Compose_ `>>` ?
 
-<table><thead><tr><th width="137"></th><th>Definition</th><th>Focus, Mindset</th></tr></thead><tbody><tr><td><em><strong>Compose</strong></em> </td><td><strong><code>let h = f >> g</code></strong></td><td>Functions</td></tr><tr><td><em><strong>Pipe</strong></em> </td><td><strong><code>let result = value |> f</code></strong></td><td>Values</td></tr></tbody></table>
+<table><thead><tr><th width="137"></th><th>Definition</th><th>Focus, Mindset</th></tr></thead><tbody><tr><td><em><strong>Compose</strong></em></td><td><strong><code>let h = f >> g</code></strong></td><td>Functions</td></tr><tr><td><em><strong>Pipe</strong></em></td><td><strong><code>let result = value |> f</code></strong></td><td>Values</td></tr></tbody></table>
 
 ## Point-free style
 
@@ -250,15 +250,15 @@ tryMatch 2;; // Some "Even 2"
 
 ## Symbols allowed in an operator
 
-**Unary operator "tilde "**\
+**Unary "tilde" operator**\
 → `~` followed by `+`, `-`, `+.`, `-.`, `%`, `%%`, `&`, `&&`
 
-**Unary operator "snake "**\
+**Unary "snake " operator**\
 → Several `~`, e.g. `~~~~`
 
-**Unary operator "bang "**\
+**Unary "bang" operator**\
 → `!` followed by a combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?`\
-→ Except `!=` (!=) which is binary
+→ Except `!=` which is binary
 
 **Binary operator**\
 → Any combination of `!`, `%`, `&`, `*`, `+`, `.`, `/`, `<`, `=`, `>`, `@`, `^`, `|`, `~`, `?`\
@@ -267,14 +267,14 @@ tryMatch 2;; // Some "Even 2"
 ## Usage symbols
 
 All operators are used as is\
-❗ Except the unary operator "tilde": used without the initial `~`.
+❗ Except the unary "tilde" operator: used without the initial `~`
 
-| Operator     | Declaration         | Usage     |
-| ------------ | ------------------- | --------- |
-| Unaire tilde | `let (~&&) x = …`   | `&&x`     |
-| Unaire snake | `let (~~~) x = …`   | `~~~x`    |
-| Unaire bang  | `let (!!!) x = …`   | `!!!x`    |
-| Binary       | `let (<ˆ>) x y = …` | `x <ˆ> y` |
+| Operator    | Declaration         | Usage     |
+| ----------- | ------------------- | --------- |
+| Unary tilde | `let (~&&) x = …`   | `&&x`     |
+| Unary snake | `let (~~~) x = …`   | `~~~x`    |
+| Unary bang  | `let (!!!) x = …`   | `!!!x`    |
+| Binary      | `let (<ˆ>) x y = …` | `x <ˆ> y` |
 
 ☝ To define an operator beginning or ending with a `*`, you must put a space between `(` and `*` as well as between `*` and `)` to distinguish from a block of F♯ comments `(* *)`.\
 → `let ( *+ ) x y = x * y + y` ✅
@@ -283,25 +283,23 @@ All operators are used as is\
 
 ### Infix operator _vs_ function
 
-👍 **Pros** :
+👍 **Pros**:
 
 * Respects the natural reading order (left → right)
-*   avoids parentheses\
-    → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
+* Avoids parentheses\
+  → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
 
-    → `1 + 2 * 3` _vs_ `multiply (add 1 2) 3`
-
-⚠️ **Cons** :
+⚠️ **Cons**:
 
 * A "folkloric" operator (e.g. `@!`) will be less comprehensible than a function whose name uses the **domain language**.
 
 ### Using an operator as a function
 
-💡 You can use the partial application of a binary operator :
+💡 You can use the partial application of a binary operator:
 
 Examples:
 
 * Instead of a lambda:\
   → `(+) 1` ≡ `fun x -> x + 1`
 * To define a new function :\
-  → `let isPositive = (<) 0` ≡ `let isPositive x = 0 < x` ≡ `x >= 0` \\
+  → `let isPositive = (<) 0` ≡ `let isPositive x = 0 < x` ≡ `x >= 0`

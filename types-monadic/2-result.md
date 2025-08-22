@@ -122,12 +122,12 @@ module Result =
         | None -> Error error
 ```
 
-### 📅 Dates
+#### 📅 Dates
 
-* The `Option` type is part of F# from the get go
+* The `Option` type has been part of F# from the beginning
 * The `Result` type is more recent: introduced in F# 4.1 (2016)
 
-### 📝 Memory
+#### 📝 Memory
 
 * The `Option` type (alias: `option`) is a regular union: a reference type
 * The `Result` type is a _struct_ union: a value type

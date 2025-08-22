@@ -1,12 +1,12 @@
 # Option type
 
-A.k.a `Maybe` *(Haskell),* `Optional` *(Java 8)*
+A.k.a `Maybe` _(Haskell),_ `Optional` _(Java 8)_
 
-Models the absence of value \
-→ In the sense of a possibility for a value to be absent \
+Models the absence of a value\
+→ In the sense of a possibility for a value to be absent\
 → ≠ `unit`: used in the case where there is never a value
 
-Defined as a union with 2 *cases* :
+Defined as a union with 2 _cases_ :
 
 ```fsharp
 type Option<'Value> =
@@ -16,8 +16,8 @@ type Option<'Value> =
 
 Common use cases:
 
-- Modeling an optional field
-- Turning a partial operation into a total operation
+* Modeling an optional field
+* Turning a partial operation into a total operation
 
 ## Modeling an optional field
 
@@ -31,12 +31,12 @@ let guest = { Name = "Guest"; Civility = None }
 
 → Make it explicit that `Name` is mandatory and `Civility` optional
 
-☝ **Warning:** this design does not prevent `Name = null` here *(BCL limit)*
+☝ **Warning:** this design does not prevent `Name = null` here _(BCL limit)_
 
 ## Partial to total operation
 
-- An operation is **partial** when no output value is possible for certain inputs.
-- The operation can become **total** by wrapping the result in an `option`, `None` being used when the operation gives no output.
+* An operation is **partial** when no output value is possible for certain inputs.
+* The operation can become **total** by wrapping the result in an `option`, `None` being used when the operation gives no output.
 
 ### Example 1: inverse of a number
 
@@ -50,33 +50,33 @@ let tryInverse n =
 ```
 
 | Function     | Operation | Signature               | `n = 0.5`  | `n = 0.0`    |
-|--------------|-----------|-------------------------|------------|--------------|
+| ------------ | --------- | ----------------------- | ---------- | ------------ |
 | `inverse`    | Partial   | `float -> float`        | `2.0`      | `infinity` ❓ |
 | `tryInverse` | Total     | `float -> float option` | `Some 2.0` | `None` 👌    |
 
 ### Example 2: find an element in a collection
 
-- Partial operation: `find predicate` → 💥 when item not found
-- Total operation: `tryFind predicate` → `None` or `Some item`
+* Partial operation: `find predicate` → 💥 when item not found
+* Total operation: `tryFind predicate` → `None` or `Some item`
 
 ### Benefits 👍
 
-- Explicit, honest / partial operation
-  - No special value: `null`, `infinity`
-  - No exception
-- Forces calling code to handle all cases:
-  - `Some value` → output value given
-  - `None .....` → output value missing
+* Explicit, honest regarding partial operation
+  * No special value: `null`, `infinity`
+  * No exception
+* Forces calling code to handle all cases:
+  * `Some value` → output value given
+  * `None .....` → output value missing
 
 ## Control flow
 
-How to test for the presence of the value *(of type `'T`)* in the option?
+How to test for the presence of the value _(of type `'T`)_ in the option?
 
-- ❌ Do not use `if option.IsSome then ... option.Value` pattern
-- ✅ Do *pattern match* the option
-- ✅ Do use `Option.xxx` functions
+* ❌ Do not use `if option.IsSome then ... option.Value` pattern
+* ✅ Do _pattern match_ the option
+* ✅ Do use `Option.xxx` functions
 
-### Control flow with *pattern matching*
+### Control flow with _pattern matching_
 
 Example:
 
@@ -92,16 +92,16 @@ print None        // None
 
 ### Control flow with `Option.xxx` helpers
 
-*Mapping* of the inner value (of type `'T`) **if present**: \
-→ `map f option` with `f` total operation `'T -> 'U` \
+_Mapping_ of the inner value (of type `'T`) **if present**:\
+→ `map f option` with `f` total operation `'T -> 'U`\
 → `bind f option` with `f` partial operation `'T -> 'U option`
 
-Keep value **if present** and if conditions are met: \
+Keep value **if present** and if conditions are met:\
 → `filter predicate option` with `predicate: 'T -> bool` called only if value present
 
 #### Exercise
 
-Implement `map`, `bind` and `filter` with *pattern matching*
+Implement `map`, `bind` and `filter` with _pattern matching_
 
 <details>
 
@@ -174,38 +174,38 @@ let checkAnswer (expectedAnswer: Answer) (givenAnswer: string) =
 
 Makes business logic more readable
 
-- No `if hasValue then / else`
-- Highlight the *happy path*
-- Handle corner cases at the end
+* No `if hasValue then / else`
+* Highlight the _happy path_
+* Handle corner cases at the end
 
-💡 Alternative syntax more light: ad-hoc *computation expressions* 📍
+💡 Alternative syntax more light: ad-hoc _computation expressions_ 📍
 
 ## `Option`: comparison with other types
 
-1. `Option` *vs* `List`
-2. `Option` *vs* `Nullable`
-3. `Option` *vs* `null`
+1. `Option` _vs_ `List`
+2. `Option` _vs_ `Nullable`
+3. `Option` _vs_ `null`
 
-### `Option` *vs* `List`
+### `Option` _vs_ `List`
 
-Conceptually closed \
-→ Option ≃ List of 0 or 1 items \
+Conceptually similar\
+→ Option ≃ List of 0 or 1 items\
 → See `Option.toList` function: `'t option -> 't list` (`None -> []`, `Some x -> [x]`)
 
-💡 `Option` & `List` modules: many functions with the same name \
+💡 `Option` & `List` modules: many functions with the same name\
 → `contains`, `count`, `exist`, `filter`, `fold`, `forall`, `map`
 
-☝ A `List` can have more than 1 element \
+☝ A `List` can have more than 1 element\
 → Type `Option` models absence of value better than type `List`
 
-### `Option` *vs* `Nullable`
+### `Option` _vs_ `Nullable`
 
 `System.Nullable<'T>` ≃ `Option<'T>` but more limited
 
-- ❗ Does not work for reference types
-- ❗ Lacks monadic behavior i.e. `map` and `bind` functions
-- ❗ Lacks built-in pattern matching `Some x | None`
-- ❗ In F♯, no magic as in C♯ / keyword `null`
+* ❗ Does not work for reference types
+* ❗ Lacks monadic behavior i.e. `map` and `bind` functions
+* ❗ Lacks built-in pattern matching `Some x | None`
+* ❗ In F♯, no magic as in C♯ with the `null` keyword
 
 **Example:**
 
@@ -224,7 +224,7 @@ let y = Nullable(1)
 
 👉 C♯ uses `Nullable` whereas F♯ uses only `Option`. However, `Nullable` can be required with some libraries, for instance to deal with nullable columns in a database.
 
-### `Option` *vs* `null`
+### `Option` _vs_ `null`
 
 Due to the interop with the BCL, F♯ has to deal with `null` objects in some cases.
 
@@ -235,7 +235,7 @@ let readLine (reader: System.IO.TextReader) =
     reader.ReadLine() // Can return `null`
     |> Option.ofObj   // `null` becomes None
 
-    // Same than:
+    // Same as:
     match reader.ReadLine() with
     | null -> None
     | line -> Some line
@@ -247,8 +247,8 @@ F♯ 9 introduces nullable reference types: a type-safe way to deal with referen
 
 This feature must be activated:
 
-- Adds `<Nullable>enable</Nullable>` in your `.fsproj`
-- Passes `--checknulls+` options to `dotnet fsi` - see `FSharp.FSIExtraInteractiveParameters` settings in vscode
+* Adds `<Nullable>enable</Nullable>` in your `.fsproj`
+* Passes `--checknulls+` options to `dotnet fsi` - see `FSharp.FSIExtraInteractiveParameters` settings in vscode
 
 Then, `| null` needs to be added to the type annotation to indicate that `null` as a valid value. It's really similar to nullable reference types: F♯ `string | null` is equivalent to C♯ `string?`, with the usual tradeoff for explicitness over terseness/magic.
 

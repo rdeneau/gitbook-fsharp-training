@@ -15,7 +15,7 @@ Balance:
 * Pros:
   * no cyclic dependencies
   * faster and more predictable compilation
-  * code easier de reason about
+  * code easier to reason about
 * Cons:
   * need more coding discipline
 
@@ -34,7 +34,7 @@ let fn i = i + 1
   → It creates visual structures that match the logical structure, the hierarchy.
 * The indentation is optional in C♯ because it's the combination of curly braces `{ }` and semi-colons `;` that defines the logical blocks.\
   → These characters don't help the readability by themselves. It's the indentation that matters, then the curly braces can help to improve the block visual separation.\
-  → More importantly, a code not properly indented can be mis-interpreted, that can lead to bugs!
+  → More importantly, a code not properly indented can be misinterpreted, that can lead to bugs!
 * Indentation in F♯ is required:
   * It's the only way to define code blocks
   * Compiler ensures that the indentation is correct so the reader can really trust the indentation to understand the code structure.
@@ -43,7 +43,7 @@ let fn i = i + 1
 
 ### Vertical line of indentation
 
-It's a concept a little more tricky, related to the way F♯ understands the indentation.
+It's a concept a little more tricky, related to how F♯ understands the indentation.
 
 * In general, a block starts in a new line, at a greater indentation level.
 * But sometimes a block can start in a middle of a line. In this case, this position defines the expected vertical indentation line.
